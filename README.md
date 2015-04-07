@@ -15,4 +15,4 @@ Run `grunt` for building and `grunt serve` for preview.
 Running `grunt test` will run the unit tests with karma.
 
 ## Run
-Running `grunt serve` will serve the application, autoreload on 
+Running `grunt serve` will serve the application, autoreload on. Runs on http://localhost:9000/
