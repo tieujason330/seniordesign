@@ -6,7 +6,7 @@ version 0.11.1.
 
 ## Build & development
 Follow steps to set up dependencies:
-https://github.com/yeoman/generator-angular#service
+https://github.com/yeoman/generator-angular
 
 Need to have npm installed 
 
