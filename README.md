@@ -9,13 +9,15 @@ Follow steps to set up dependencies:
 https://github.com/yeoman/generator-angular
 
 Need to have npm installed 
+`1. npm install` 
+`2. bower install`
+
 
 Run `grunt` for building and `grunt serve` for preview.
 
 ## Build issues encountered
 compass binaries not found  -- try gem uninstall compass then gem install
 compass
-
 
 ## Testing
 
