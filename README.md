@@ -16,8 +16,9 @@ Need to have npm installed
 Run `grunt` for building and `grunt serve` for preview.
 
 ## Build issues encountered
-compass binaries not found  -- try gem uninstall compass then gem install
+1. compass binaries not found  -- try gem uninstall compass then gem install
 compass
+2. if it ask for sudo then, run `sudo chown -R $(whoami) ~/.npm` , `sudo chown -R $(whoami) /usr/local/lib/node_modules`
 
 ## Testing
 
