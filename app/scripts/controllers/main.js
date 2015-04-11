@@ -20,7 +20,7 @@ Do not use controllers to:
 4. Share code or state across controllers — Use angular services instead.
 5. Manage the life-cycle of other components (for example, to create service instances).
 
- */
+**/
 angular.module('projectsApp')
   .controller('MainCtrl', function ($scope) {
     $scope.awesomeThings = [
