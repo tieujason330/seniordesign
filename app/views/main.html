@@ -21,3 +21,71 @@
   <h4>Karma</h4>
   <p>Spectacular Test Runner for JavaScript.</p>
 </div>
+
+<div layout="row" layout-sm="column">
+  <div flex>
+    I'm above on mobile, and to the left on larger devices.
+  </div>
+  <div flex>
+    I'm below on mobile, and to the right on larger devices.
+  </div>
+
+</div>
+
+<md-button class="md-warn">Careful</md-button>
+
+<div ng-controller="MainCtrl" layout="row" layout-align="space-around center">
+  <div id="tab1">I'm left.</div>
+  <div id="tab2">I'm right</div>
+</div>
+
+
+
+<div ng-controller="MainCtrl">
+    <md-tabs class="md-accent" layout-align="space-around center">
+      <md-tab id="tab1" layout-align="space-around center"  >
+        <md-tab-label>Item One</md-tab-label>
+        <md-tab-template>
+        <md-card>
+          View for Item #1 <br/>
+          data.selectedIndex = 0;
+        </md-card>
+        </md-tab-template>
+
+      </md-tab>
+      <md-tab id="tab2">
+        <md-tab-label>{{data.secondLabel}}</md-tab-label>
+        <md-tab-template>
+        <md-card>
+          View for Item #2 <br/>
+          data.selectedIndex = 1;
+        </md-card>
+        </md-tab-template>
+      </md-tab>
+    </md-tabs>
+</div>
+
+
+
+
+
+<div layout="row">
+    <md-button class="md-warn" flex>Sign In</md-button>
+    <md-button class="md-warn" flex>Sign Up</md-button>
+</div>
+
+<div layout="column" layout-fill flex>
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <span>My App's Title</span>
+      <!-- fill up the space between left and right area -->
+      <span flex></span>
+      <md-button>
+        Right Bar Button
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-content>
+    Hello!
+  </md-content>
+</div>
