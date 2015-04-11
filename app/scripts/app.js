@@ -30,7 +30,7 @@ angular
     //    Avoid using the same color for the floating action button and the background.
 
 
-    $mdThemingProvider.theme('default')//.light();//.dark();
+    $mdThemingProvider.theme('default');//.light();//.dark();
       //.primaryPalette('indigo')
       //.accentPalette('pink');
       //.warnPalette (''); 
