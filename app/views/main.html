@@ -1,5 +1,8 @@
+
+
+
 <div class="jumbotron">
-  <h1>'Allo, 'Allo!</h1>
+<h1 class="md-display-3">UCRPals</h1>
   <p class="lead">
     <img src="images/yeoman.png" alt="I'm Yeoman"><br>
     Always a pleasure scaffolding your apps.
@@ -7,85 +10,73 @@
   <p><a class="btn btn-lg btn-success" ng-href="#/">Splendid!<span class="glyphicon glyphicon-ok"></span></a></p>
 </div>
 
-<div class="row marketing">
-  <h4>HTML5 Boilerplate</h4>
-  <p>
-    HTML5 Boilerplate is a professional front-end template for building fast, robust, and adaptable web apps or sites.
-  </p>
+<div class="login-container">
+  <div ng-controller="MainCtrl">
+      <md-tabs class="md-primary" md-stretch-tabs="always">
+        <md-tab id="tab1">
+          <md-tab-label>Create Account</md-tab-label>
+          <md-tab-template>
+            <md-card style="margin: 1px !important">
+              <form name="loginForm">
+                <div layout layout-sm="column">
+                  <md-input-container flex>
+                    <label>First Name</label>
+                    <input ng-model="user.firstName">
+                  </md-input-container>
+                  <md-input-container flex>
+                    <label>Last Name</label>
+                    <input ng-model="user.lastname">
+                  </md-input-container>
+                </div>
+                <md-input-container flex>
+                  <label>E-mail</label>
+                  <input ng-model="user.email">
+                </md-input-container>
+                <md-input-container flex>
+                  <label>Password</label>
+                  <input ng-model="user.email">
+                </md-input-container>
+              <section layout="row" layout-sm="column" layout-align="center center">
+                <p>
+                  <a class="btn btn-lg btn-success" style="" ng-submit="">Sign Up</a>
+                </p>
+              </section>
+            </form>
 
-  <h4>Angular</h4>
-  <p>
-    AngularJS is a toolset for building the framework most suited to your application development.
-  </p>
+              <section layout="row" layout-sm="column" layout-align="center center">
+                <md-divider layout-align="center center">
+              <a class="btn btn-lg btn-facebook-icon">
+               <i class="fa fa-facebook"></i>
+              </a>
 
-  <h4>Karma</h4>
-  <p>Spectacular Test Runner for JavaScript.</p>
-</div>
 
-<div layout="row" layout-sm="column">
-  <div flex>
-    I'm above on mobile, and to the left on larger devices.
+
+
+          </md-divider>
+              </section>
+            </md-card>
+          </md-tab-template>
+        </md-tab>
+        <md-tab id="tab2">
+          <md-tab-label>Login</md-tab-label>
+          <md-tab-template>
+            <md-card style="margin: 1px !important">
+                <md-input-container flex>
+                  <label>E-mail</label>
+                  <input ng-model="user.email">
+                </md-input-container>
+                <md-input-container flex>
+                  <label>Password</label>
+                  <input ng-model="user.email">
+                </md-input-container>
+              <section layout="row" layout-sm="column" layout-align="center center">
+                <p>
+                  <a class="btn btn-lg btn-success" style="" ng-submit="">Login</a>
+                </p>
+              </section>
+          </md-card>
+          </md-tab-template>
+        </md-tab>
+      </md-tabs>
   </div>
-  <div flex>
-    I'm below on mobile, and to the right on larger devices.
-  </div>
-
-</div>
-
-<md-button class="md-warn">Careful</md-button>
-
-<div ng-controller="MainCtrl" layout="row" layout-align="space-around center">
-  <div id="tab1">I'm left.</div>
-  <div id="tab2">I'm right</div>
-</div>
-
-
-
-<div ng-controller="MainCtrl">
-    <md-tabs class="md-accent" layout-align="space-around center">
-      <md-tab id="tab1" layout-align="space-around center"  >
-        <md-tab-label>Item One</md-tab-label>
-        <md-tab-template>
-        <md-card>
-          View for Item #1 <br/>
-          data.selectedIndex = 0;
-        </md-card>
-        </md-tab-template>
-
-      </md-tab>
-      <md-tab id="tab2">
-        <md-tab-label>{{data.secondLabel}}</md-tab-label>
-        <md-tab-template>
-        <md-card>
-          View for Item #2 <br/>
-          data.selectedIndex = 1;
-        </md-card>
-        </md-tab-template>
-      </md-tab>
-    </md-tabs>
-</div>
-
-
-
-
-
-<div layout="row">
-    <md-button class="md-warn" flex>Sign In</md-button>
-    <md-button class="md-warn" flex>Sign Up</md-button>
-</div>
-
-<div layout="column" layout-fill flex>
-  <md-toolbar>
-    <div class="md-toolbar-tools">
-      <span>My App's Title</span>
-      <!-- fill up the space between left and right area -->
-      <span flex></span>
-      <md-button>
-        Right Bar Button
-      </md-button>
-    </div>
-  </md-toolbar>
-  <md-content>
-    Hello!
-  </md-content>
 </div>
