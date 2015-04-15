@@ -28,7 +28,7 @@ angular.module('projectsApp')
 	      secondLocked : true,
 	      secondLabel : 'Item Two'
 	};
-	
+
     $scope.next = function() {
       $scope.data.selectedIndex = Math.min($scope.data.selectedIndex + 1, 2) ;
     };
