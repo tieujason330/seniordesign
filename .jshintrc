@@ -8,10 +8,10 @@
   "eqeqeq": true,
   "immed": true,
   "indent": 2,
+  "quotmark": "single",
   "latedef": true,
   "newcap": true,
   "noarg": true,
-  "quotmark": "single",
   "regexp": true,
   "undef": true,
   "unused": true,
@@ -19,6 +19,7 @@
   "trailing": true,
   "smarttabs": true,
   "globals": {
-    "angular": false
+    "angular": false,
+    "Firebase": false
   }
 }
