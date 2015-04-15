@@ -47,6 +47,10 @@ angular
         templateUrl: 'views/myroute.html',
         controller: 'MyrouteCtrl'
       })
+      .when('/settings', {
+        templateUrl: 'views/testbox.html',
+        controller: 'ToolboxCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
