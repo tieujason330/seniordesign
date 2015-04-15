@@ -22,7 +22,7 @@ Do not use controllers to:
 
 **/
 angular.module('projectsApp')
-  .controller('MainCtrl', function ($scope) {
+  .controller('MainCtrl', function ($scope, $location) {
 	 $scope.data = {
 	      selectedIndex : 0,
 	      secondLocked : true,
@@ -35,6 +35,10 @@ angular.module('projectsApp')
 
     $scope.previous = function() {
       $scope.data.selectedIndex = Math.max($scope.data.selectedIndex - 1, 0);
+    };
+
+    $scope.redirectTo = function(){
+      $location.path('/settings');
     };
 
     $scope.awesomeThings = [
