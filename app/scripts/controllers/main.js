@@ -22,7 +22,7 @@ Do not use controllers to:
 
 **/
 angular.module('projectsApp')
-  .controller('MainCtrl', function ($scope, $location) {
+  .controller('MainCtrl', function ($scope, $location, $firebaseAuth, firebaseService) {
 	 $scope.data = {
 	      selectedIndex : 0,
 	      secondLocked : true,
@@ -37,13 +37,103 @@ angular.module('projectsApp')
       $scope.data.selectedIndex = Math.max($scope.data.selectedIndex - 1, 0);
     };
 
-    $scope.redirectTo = function(){
-      $location.path('/settings');
-    };
-
     $scope.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
       'Karma'
     ];
+
+      //fb ref
+    var ref = new Firebase(firebaseService.getFirebBaseURL());
+    var auth = $firebaseAuth(ref);
+    //registers users on firebase
+    $scope.createUser = function(user) {
+      console.log('register user on firebase');
+
+      auth.$createUser({
+        email: user.email,
+        password: user.password
+      }).then(function (userData) {
+        //stores other registration information at user endpoint
+        window.alert('User created successfully!');
+        ref.child('users').child(userData.uid).set({
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName
+        });
+      }).catch(function (error) {
+        window.alert('Error: ' + error);
+        //should use a pop up modal
+      });
+    };
+
+    var changeLocation = function(url, forceReload) {
+      $location.path(url);
+      $scope = $scope || angular.element(document).scope();
+      if(forceReload || !$scope.$$phase) {
+        $scope.$apply();
+      }
+    };
+
+
+    $scope.login = function(user) {
+      auth.$authWithPassword({
+        email: user.email,
+        password: user.password
+
+      }).then(function (authData) {
+        console.log('Logged in as:' + authData.uid);
+        ref.child('users').child(authData.uid).once('value', function (snapshot) {
+          var val = snapshot.val();
+          console.log(val);
+
+          changeLocation('/home', true)
+        // To Update AngularJS $scope either use $apply or $timeout
+       //   $scope.$apply(function () {
+        //    $rootScope.displayName = val;
+         // });
+        });
+
+        //should go to this state
+        //$state.go('tab.chats');
+
+      ////once signed in, store user name and unique id through some user profile service
+        // var uniqueID = authData.uid.split(':');
+        // $scope.uid = uniqueID[1];
+        // sharedProperties is a profile service
+        // sharedProperties.setUID(uniqueID[1]);
+        // var reff = new Firebase('https://lahax.firebaseio.com/users/' + authData.uid);
+        // reff.once('value', function(data) {
+        // sharedProperties.setDisplayName(data.val().displayName);
+      // });
+
+      }).catch(function (error) {
+        window.alert('Authentication failed:' + error.message);
+        //should use a pop up modal
+      });
+    };
+
+    /*
+    function populateSettings(user) {
+
+    }
+
+    $scope.registerFB = function() {
+
+
+
+    };
+
+    $scope.registerGoogle = function() {
+
+
+
+    };
+
+    $scope.registerTwitter = function() {
+
+
+
+    };
+    */
   });
