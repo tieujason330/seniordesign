@@ -22,8 +22,7 @@ Do not use controllers to:
 
 **/
 angular.module('projectsApp')
-  .controller('MainCtrl', function ($scope, $firebaseAuth, firebaseService) {
-
+  .controller('MainCtrl', function ($scope, $location, $firebaseAuth, firebaseService) {
 	 $scope.data = {
 	      selectedIndex : 0,
 	      secondLocked : true,
@@ -68,6 +67,14 @@ angular.module('projectsApp')
       });
     };
 
+    var changeLocation = function(url, forceReload) {
+      $location.path(url);
+      $scope = $scope || angular.element(document).scope();
+      if(forceReload || !$scope.$$phase) {
+        $scope.$apply();
+      }
+    };
+
 
     $scope.login = function(user) {
       auth.$authWithPassword({
@@ -79,6 +86,8 @@ angular.module('projectsApp')
         ref.child('users').child(authData.uid).once('value', function (snapshot) {
           var val = snapshot.val();
           console.log(val);
+
+          changeLocation('/home', true);
         // To Update AngularJS $scope either use $apply or $timeout
        //   $scope.$apply(function () {
         //    $rootScope.displayName = val;
