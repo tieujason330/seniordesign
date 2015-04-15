@@ -53,8 +53,8 @@ angular
         controller: 'HomeCtrl'
       })
       .when('/settings', {
-        templateUrl: 'views/testbox.html',
-        controller: 'ToolboxCtrl'
+        templateUrl: 'views/settings.html',
+        controller: 'SettingsCtrl'
       })
       .otherwise({
         redirectTo: '/'

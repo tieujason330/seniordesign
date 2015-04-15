@@ -87,7 +87,7 @@ angular.module('projectsApp')
           var val = snapshot.val();
           console.log(val);
 
-          changeLocation('/home', true)
+          changeLocation('/home', true);
         // To Update AngularJS $scope either use $apply or $timeout
        //   $scope.$apply(function () {
         //    $rootScope.displayName = val;
