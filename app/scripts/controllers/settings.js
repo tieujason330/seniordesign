@@ -8,14 +8,9 @@
  * Controller of the projectsApp
  */
 angular.module('projectsApp')
-  .controller('SettingsCtrl', function ($scope) {
-   //Firebase URL
-    var URL = 'https://shining-torch-23.firebaseio.com/';
-    //Initialize Firebase
-    var ref = new Firebase(URL+'/users');
-    //Defaults
-    $scope.firstName = "Matt";
-    $scope.lastName = "Utha";
-    $scope.email="matt-utha-was-here";
+  .controller('SettingsCtrl', function ($scope, userService) {
+   //Current User Factory
+   $scope.user = userService.getCurrentUser();
+   
 
   });

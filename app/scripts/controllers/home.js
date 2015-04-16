@@ -9,8 +9,12 @@
  * */
 
 angular.module('projectsApp')
-  .controller('HomeCtrl', function ($scope, $location, $timeout, $mdSidenav, $log) {
+  .controller('HomeCtrl', function ($scope, $location, $timeout, $mdSidenav, $log, userService) {
     
+    $scope.getUser = function() {
+      return userService.getCurrentUser();
+    };
+
     $scope.toggleLeft = function() {
       $mdSidenav('left').toggle()
           .then(function(){

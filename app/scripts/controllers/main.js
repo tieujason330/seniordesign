@@ -22,7 +22,7 @@ Do not use controllers to:
 
 **/
 angular.module('projectsApp')
-  .controller('MainCtrl', function ($scope, $location, $firebaseAuth, firebaseService) {
+  .controller('MainCtrl', function ($scope, $location, $firebaseAuth, firebaseService, userService) {
 	 $scope.data = {
 	      selectedIndex : 0,
 	      secondLocked : true,
@@ -85,6 +85,7 @@ angular.module('projectsApp')
         console.log('Logged in as:' + authData.uid);
         ref.child('users').child(authData.uid).once('value', function (snapshot) {
           var val = snapshot.val();
+          userService.setCurrentUser(val);
           console.log(val);
 
           changeLocation('/home', true);
