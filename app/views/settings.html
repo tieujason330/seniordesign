@@ -55,13 +55,31 @@
         <md-card style="margin: 1px !important">
         <md-content layout-padding>
         <form name="privacyForm">
-            <!-- These should be saved pull downs -->
-          <md-input-container flex>
-            <label>Who can see my posts?</label>
-          </md-input-container>
-          <md-input-container flex>
-            <label>Who can send me messages?</label>
-          </md-input-container>
+          <!-- These should be saved pull downs -->
+          <div layout layout-sm="column">
+            <md-container flex>
+              <md-select placeholder="Who can see my posts?" ng-model="postPrivacyVal">
+                <md-option value="Everyone">Everyone</md-option>
+                <md-option value="Friends">Friends</md-option>
+              </md-select>
+            </md-container>
+            <md-container flex>
+              <p class="md-caption"> {{ postPrivacyVal ? postPrivacyVal + ' can see your posts.' : '' }}</p>
+            </md-container>
+          </div>
+
+          <div layout layout-sm="column">
+            <md-container flex>
+              <md-select placeholder="Who can send me messages?" ng-model="messagePrivacyVal">
+                <md-option value="Everyone">Everyone</md-option>
+                <md-option value="Friends">Friends</md-option>
+              </md-select>
+            </md-container>
+            <md-container flex>
+              <p class="md-caption"> {{ messagePrivacyVal ? messagePrivacyVal + ' can send me messages.' : '' }}</p>
+            </md-container>
+          </div>
+
         <md-card-footer>
         <p></p>
         </md-card-footer>
