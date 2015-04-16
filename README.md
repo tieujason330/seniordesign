@@ -15,16 +15,15 @@ Need to have npm installed
 
 Run `grunt` for building and `grunt serve` for preview.
 
-If you have this problem: 
-Stack trace:
-  Error: EACCES,
-  
-Run: sudo bower install --allow-root
 
 ## Build issues encountered
 1. compass binaries not found  -- try gem uninstall compass then gem install
 compass
 2. if it ask for sudo then, run `sudo chown -R $(whoami) ~/.npm` , `sudo chown -R $(whoami) /usr/local/lib/node_modules`
+3. If you have this problem: 
+Stack trace:
+  Error: EACCES,
+Run: `sudo bower install --allow-root`
 
 ## Testing
 
