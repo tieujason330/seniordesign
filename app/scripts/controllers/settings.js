@@ -13,16 +13,9 @@ angular.module('projectsApp')
     var URL = 'https://shining-torch-23.firebaseio.com/';
     //Initialize Firebase
     var ref = new Firebase(URL+'/users');
-    $scope.genToolbox = function(){
-      console.log('spinning settings...');
-
-
-    //$scope.edit = function(){
-    //  userEdit.$push({
-    //    email: $scope.emailEdit
-    //  });
-    //}
-
-    };
+    //Defaults
+    $scope.firstName = "Matt";
+    $scope.lastName = "Utha";
+    $scope.email="matt-utha-was-here";
 
   });
