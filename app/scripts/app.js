@@ -19,6 +19,17 @@ angular
     'ngMaterial',
     'firebase'
   ])
+  .run(["$rootScope", "$location", function($rootScope, $location) {
+    $rootScope.$on("$routeChangeError", function(event, next, previous, error) {
+      // We can catch the error thrown when the $requireAuth promise is rejected
+      // and redirect the user back to the home page
+      if (error === "AUTH_REQUIRED") {
+        window.alert('You forgot to log in!');
+        console.log("auth required");
+        $location.path("/");
+      }
+    });
+  }])
   .config(function ($routeProvider, $mdThemingProvider) {
     //sharing firebase base url throughout application using the rootScope
 
@@ -50,11 +61,33 @@ angular
       })
       .when('/home', {
         templateUrl: 'views/home.html',
-        controller: 'HomeCtrl'
+        controller: 'HomeCtrl',
+        resolve: {
+        // controller will not be loaded until $waitForAuth resolves
+        // Auth refers to our $firebaseAuth wrapper in the example above
+          "currentAuth": ["$firebaseAuth", function ($firebaseAuth) {
+              // $waitForAuth returns a promise so the resolve waits for it to complete
+                  var ref = new Firebase('https://shining-torch-23.firebaseio.com/');
+                  var authObj = $firebaseAuth(ref);
+                  return authObj.$requireAuth();
+              }
+          ]
+        }
       })
       .when('/settings', {
         templateUrl: 'views/settings.html',
-        controller: 'SettingsCtrl'
+        controller: 'SettingsCtrl',
+        resolve: {
+        // controller will not be loaded until $waitForAuth resolves
+        // Auth refers to our $firebaseAuth wrapper in the example above
+          "currentAuth": ["$firebaseAuth", function ($firebaseAuth) {
+              // $waitForAuth returns a promise so the resolve waits for it to complete
+                  var ref = new Firebase('https://shining-torch-23.firebaseio.com/');
+                  var authObj = $firebaseAuth(ref);
+                  return authObj.$requireAuth();
+              }
+          ]
+        }
       })
       .otherwise({
         redirectTo: '/'
