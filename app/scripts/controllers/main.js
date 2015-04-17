@@ -47,24 +47,39 @@ angular.module('projectsApp')
     var ref = new Firebase(firebaseService.getFirebBaseURL());
     var auth = $firebaseAuth(ref);
     //registers users on firebase
-    $scope.createUser = function(user) {
-      console.log('register user on firebase');
+    $scope.createUser = function(user, form) {
 
-      auth.$createUser({
-        email: user.email,
-        password: user.password
-      }).then(function (userData) {
-        //stores other registration information at user endpoint
-        window.alert('User created successfully!');
-        ref.child('users').child(userData.uid).set({
-            email: user.email,
-            firstName: user.firstName,
-            lastName: user.lastName
+      //Valid form fields
+      if(form.$valid)
+      {
+        console.log('register user on firebase');
+
+        auth.$createUser({
+          email: user.email,
+          password: user.password
+        }).then(function (userData) {
+          //stores other registration information at user endpoint
+          window.alert('User created successfully!');
+
+          ref.child('users').child(userData.uid).set({
+              email: user.email,
+              firstName: user.firstName,
+              lastName: user.lastName
+          });
+        }).catch(function (error) {
+          window.alert('Error: ' + error);
+          //should use a pop up modal
         });
-      }).catch(function (error) {
-        window.alert('Error: ' + error);
-        //should use a pop up modal
-      });
+      }
+
+    };
+
+    var changeLocation = function(url, forceReload) {
+      $location.path(url);
+      $scope = $scope || angular.element(document).scope();
+      if(forceReload || !$scope.$$phase) {
+        $scope.$apply();
+      }
     };
 
     var changeLocation = function(url, forceReload) {
