@@ -8,6 +8,9 @@
  *
  * Main module of the application.
  */
+
+
+
 angular
   .module('projectsApp', [
     'ngAnimate',
