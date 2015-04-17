@@ -31,10 +31,6 @@ angular
     });
   }])
   .config(function ($routeProvider, $mdThemingProvider) {
-    //sharing firebase base url throughout application using the rootScope
-
-
-
     // themes colors:
     // Limit your selection of colors by choosing three color hues from the primary palette
     // and one accent color from the secondary palette.
@@ -44,13 +40,11 @@ angular
     //    accent color for body text color.
     // 2. Don’t use the accent color for app bars or larger areas of color.
     //    Avoid using the same color for the floating action button and the background.
-
-
     $mdThemingProvider.theme('default');//.light();//.dark();
 
-    // $mdIconProvider
-    //   .iconSet('social', 'img/icons/sets/social-icons.svg', 24)
-    //   .defaultIconSet('img/icons/sets/core-icons.svg', 24);
+      // $mdIconProvider
+      //   .iconSet('social', 'img/icons/sets/social-icons.svg', 24)
+      //   .defaultIconSet('img/icons/sets/core-icons.svg', 24);
       //.primaryPalette('indigo')
       //.accentPalette('pink');
       //.warnPalette ('');
@@ -63,10 +57,8 @@ angular
         templateUrl: 'views/home.html',
         controller: 'HomeCtrl',
         resolve: {
-        // controller will not be loaded until $waitForAuth resolves
-        // Auth refers to our $firebaseAuth wrapper in the example above
+        // controller will not be loaded until $requireAuth resolves
           "currentAuth": ["$firebaseAuth", function ($firebaseAuth) {
-              // $waitForAuth returns a promise so the resolve waits for it to complete
                   var ref = new Firebase('https://shining-torch-23.firebaseio.com/');
                   var authObj = $firebaseAuth(ref);
                   return authObj.$requireAuth();
@@ -78,10 +70,8 @@ angular
         templateUrl: 'views/settings.html',
         controller: 'SettingsCtrl',
         resolve: {
-        // controller will not be loaded until $waitForAuth resolves
-        // Auth refers to our $firebaseAuth wrapper in the example above
+        // controller will not be loaded until $requireAuth resolves
           "currentAuth": ["$firebaseAuth", function ($firebaseAuth) {
-              // $waitForAuth returns a promise so the resolve waits for it to complete
                   var ref = new Firebase('https://shining-torch-23.firebaseio.com/');
                   var authObj = $firebaseAuth(ref);
                   return authObj.$requireAuth();
