@@ -20,7 +20,8 @@ angular
     'ngSanitize',
     'ngTouch',
     'ngMaterial',
-    'firebase'
+    'firebase',
+    'ui.router'
   ])
   .run(["$rootScope", "$location", function($rootScope, $location) {
     $rootScope.$on("$routeChangeError", function(event, next, previous, error) {
