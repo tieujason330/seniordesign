@@ -113,16 +113,27 @@ angular.module('projectsApp')
       });
     };
 
+
+    $scope.registerFB = function() {
+      var ref = new Firebase("https://shining-torch-23.firebaseio.com");
+      ref.authWithOAuthPopup("facebook", function(error, authData) {
+        if (error) {
+          console.log("Login Failed!", error);
+        } else {
+          console.log("Authenticated successfully with payload:", authData);
+          console.log("Name: " + authData.facebook.displayName  + " ID: " + authData.facebook.id + " Email: " + authData.facebook.email);
+        }
+      }, {
+          scope: "email,user_likes" // permission requests
+        });
+    };
+
     /*
     function populateSettings(user) {
 
     }
 
-    $scope.registerFB = function() {
 
-
-
-    };
 
     $scope.registerGoogle = function() {
 
