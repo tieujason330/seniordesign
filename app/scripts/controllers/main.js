@@ -128,22 +128,24 @@ angular.module('projectsApp')
         });
     };
 
+    $scope.registerGoogle = function() {
+      var ref = new Firebase("https://shining-torch-23.firebaseio.com");
+      ref.authWithOAuthPopup("google", function(error, authData) {
+        if (error) {
+          console.log("Login Failed!", error);
+        } else {
+          console.log("Authenticated successfully with payload:", authData);
+        }
+      });
+    };
+
+
     /*
     function populateSettings(user) {
 
     }
 
-
-
-    $scope.registerGoogle = function() {
-
-
-
-    };
-
     $scope.registerTwitter = function() {
-
-
 
     };
     */
