@@ -115,13 +115,13 @@ angular.module('projectsApp')
 
 
     $scope.registerFB = function() {
-      var ref = new Firebase("https://shining-torch-23.firebaseio.com");
       ref.authWithOAuthPopup("facebook", function(error, authData) {
         if (error) {
           console.log("Login Failed!", error);
         } else {
           console.log("Authenticated successfully with payload:", authData);
-          console.log("Name: " + authData.facebook.displayName  + " ID: " + authData.facebook.id + " Email: " + authData.facebook.email);
+          //console.log("FacebookName: " + authData.facebook.displayName  + " ID: " + authData.facebook.id + " Email: " + authData.facebook.email);
+          changeLocation('/home', true);
         }
       }, {
           scope: "email,user_likes" // permission requests
@@ -129,24 +129,29 @@ angular.module('projectsApp')
     };
 
     $scope.registerGoogle = function() {
-      var ref = new Firebase("https://shining-torch-23.firebaseio.com");
       ref.authWithOAuthPopup("google", function(error, authData) {
         if (error) {
           console.log("Login Failed!", error);
         } else {
           console.log("Authenticated successfully with payload:", authData);
+          changeLocation('/home', true);
         }
       });
     };
 
-
+    $scope.registerTwitter = function() {
+      ref.authWithOAuthPopup("twitter", function(error, authData) {
+        if (error) {
+          console.log("Login Failed!", error);
+        } else {
+          console.log("Authenticated successfully with payload:", authData);
+          changeLocation('/home', true);
+        }
+      });
+    };
     /*
     function populateSettings(user) {
 
     }
-
-    $scope.registerTwitter = function() {
-
-    };
     */
   });
