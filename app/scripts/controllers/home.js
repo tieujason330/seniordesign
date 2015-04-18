@@ -9,11 +9,16 @@
  * */
 
 angular.module('projectsApp')
-  .controller('HomeCtrl', function ($scope, $location, $timeout, $mdSidenav, $log, userService) {
-    
-    $scope.getUser = function() {
-      return userService.getCurrentUser();
-    };
+  .controller('HomeCtrl', function ($scope, $firebaseAuth, $location, $timeout, $mdSidenav, $log) {
+    var ref = new Firebase('https://shining-torch-23.firebaseio.com/');
+    var authObj = $firebaseAuth(ref);
+    var authData = authObj.$getAuth();
+
+    if (authData) {
+      console.log("Logged in as:", authData.uid);
+    } else {
+      console.log("Logged out");
+    }
 
     $scope.toggleLeft = function() {
       $mdSidenav('left').toggle()
@@ -39,4 +44,8 @@ angular.module('projectsApp')
     $scope.goToSettings = function() {
       changeLocation('/settings')
     }
-  });
+
+    $scope.getUser = function() {
+      return userService.getCurrentUser();
+    };
+});

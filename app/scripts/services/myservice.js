@@ -12,8 +12,8 @@ angular.module('projectsApp')
   .service('firebaseService', function () {
   	var firebaseURL = 'https://shining-torch-23.firebaseio.com/';
   	return {
-		getFirebBaseURL: function(){
-			return firebaseURL;
-		}
+			getFirebBaseURL: function(){
+				return firebaseURL;
+			}
   	};
-  });
+ });
