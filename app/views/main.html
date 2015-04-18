@@ -76,7 +76,6 @@
           <md-tab-template>
             <md-card style="margin: 1px !important">
                <form name="loginForm" novalidate>
-                  <span ng-show="loginError" class="help-block">Invalid E-mail or password. Please try again</span>
                   <md-input-container flex>
                     <label>E-mail</label>
                     <input type="text" name="email" ng-model="user.email" required>
@@ -90,7 +89,7 @@
                   
                   <section layout="row" layout-sm="column" layout-align="center center">
                     <p>
-                      <input type="submit" class="btn btn-lg btn-success" ng-click="login(user, loginForm)" value="Login">
+                      <input type="submit" class="btn btn-lg btn-success" ng-click="login(user, loginForm, $event)" value="Login">
                     </p>
                   </section>
                 </form>

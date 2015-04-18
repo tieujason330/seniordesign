@@ -22,14 +22,12 @@ Do not use controllers to:
 
 **/
 angular.module('projectsApp')
-  .controller('MainCtrl', function ($scope, $location, $firebaseAuth, firebaseService) {
+  .controller('MainCtrl', function ($scope, $location, $firebaseAuth, firebaseService, $mdDialog, alertService) {
 	 $scope.data = {
 	      selectedIndex : 0,
 	      secondLocked : true,
 	      secondLabel : 'Item Two'
 	};
-
-  $scope.loginError = false; 
 
 
     $scope.next = function() {
@@ -86,9 +84,11 @@ angular.module('projectsApp')
     };
 
 
-    $scope.login = function(user, form) {
+    $scope.login = function(user, form, ev) {
         if(!form.$valid)
+        {
             return;
+        }
 
           auth.$authWithPassword({
             email: user.email,
@@ -121,10 +121,8 @@ angular.module('projectsApp')
           // });
 
           }).catch(function (error) {
-            
-              //can't authenticate user
-              $scope.loginError = true;
-
+            var msg = 'Invalid E-mail or password. Please try again';
+            alertService.loginAuthentication(msg,ev);
           });
 
 
