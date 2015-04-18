@@ -48,7 +48,7 @@ angular.module('projectsApp')
     var ref = new Firebase(firebaseService.getFirebBaseURL());
     var auth = $firebaseAuth(ref);
     //registers users on firebase
-    $scope.createUser = function(user, form) {
+    $scope.createUser = function(user, form, ev) {
 
       //Valid form fields
       if(form.$valid)
@@ -60,7 +60,9 @@ angular.module('projectsApp')
           password: user.password
         }).then(function (userData) {
           //stores other registration information at user endpoint
-          window.alert('User created successfully!');
+          var title= 'Welcome';
+          var msg = 'The new user account has been successfully created.'
+          alertService.show(title,msg,ev);
 
           ref.child('users').child(userData.uid).set({
               email: user.email,
@@ -68,8 +70,12 @@ angular.module('projectsApp')
               lastName: user.lastName
           });
         }).catch(function (error) {
-          window.alert('Error: ' + error);
-          //should use a pop up modal
+          if(error.code == "EMAIL_TAKEN")
+          {
+              var title= 'Error Creating Account';
+              var msg = 'The new user account cannot be created because the email is already in use.'
+              alertService.show(title,msg,ev);
+          }
         });
       }
 
@@ -129,8 +135,9 @@ angular.module('projectsApp')
           // });
 
           }).catch(function (error) {
+            var title= 'Authentication Error';
             var msg = 'Invalid E-mail or password. Please try again';
-            alertService.loginAuthentication(msg,ev);
+            alertService.show(title,msg,ev);
           });
 
 

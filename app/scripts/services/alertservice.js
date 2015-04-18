@@ -11,13 +11,13 @@
 angular.module('projectsApp')
   .service('alertService', function ($mdDialog) {
   		return {
-  			loginAuthentication: function(msg,event) {
+  			show: function(title,msg,event) {
 				$mdDialog.show(
 					$mdDialog.alert()
-				                .title('Authentication Error')
+				                .title(title)
 				                .content(msg)
-				                .ariaLabel('Alert Dialog Demo')
-				                .ok('Retry')
+				                .ariaLabel('Alert Dialog')
+				                .ok('close')
 				                .targetEvent(event)
 				);
   			}
