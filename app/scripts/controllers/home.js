@@ -44,8 +44,4 @@ angular.module('projectsApp')
     $scope.goToSettings = function() {
       changeLocation('/settings')
     }
-
-    $scope.getUser = function() {
-      return userService.getCurrentUser();
-    };
 });

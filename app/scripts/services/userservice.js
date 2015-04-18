@@ -9,14 +9,18 @@
  */
 // AngularJS will instantiate a singleton by calling "new" on this function
 angular.module('projectsApp')
-  .factory('userService', function () {
+  .factory('userService', function (firebaseService) {
     var user;
     return {
-      setCurrentUser: function(current_user) {
-        user = current_user;
-        console.log('User Factory init: '+user);
+      setCurrentUser: function(val) {
+        user = val;
       },
       getCurrentUser: function() {
+        console.log(user);
+        return user;
+      },
+      updateKey: function(key, value){
+        user.key = value;
         return user;
       }
     };

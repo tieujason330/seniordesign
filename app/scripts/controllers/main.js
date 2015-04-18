@@ -61,7 +61,7 @@ angular.module('projectsApp')
         }).then(function (userData) {
           //stores other registration information at user endpoint
           var title= 'Welcome';
-          var msg = 'The new user account has been successfully created.'
+          var msg = 'The new user account has been successfully created.';
           alertService.show(title,msg,ev);
 
           ref.child('users').child(userData.uid).set({
@@ -73,7 +73,7 @@ angular.module('projectsApp')
           if(error.code == "EMAIL_TAKEN")
           {
               var title= 'Error Creating Account';
-              var msg = 'The new user account cannot be created because the email is already in use.'
+              var msg = 'The new user account cannot be created because the email is already in use.';
               alertService.show(title,msg,ev);
           }
         });
@@ -103,18 +103,12 @@ angular.module('projectsApp')
         {
             return;
         }
-      }).then(function (authData) {
-        console.log('Logged in as:' + authData.uid);
-        ref.child('users').child(authData.uid).once('value', function (snapshot) {
-          var val = snapshot.val();
-          console.log(val);
-          val['uid'] = authData.uid;
-          userService.setCurrentUser(val);
-          auth.$authWithPassword({
+
+        auth.$authWithPassword({
             email: user.email,
             password: user.password
 
-          }).then(function (authData) {
+        }).then(function (authData) {
             console.log('Logged in as:' + authData.uid);
             ref.child('users').child(authData.uid).once('value', function (snapshot) {
               var val = snapshot.val();
