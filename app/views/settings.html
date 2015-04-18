@@ -25,12 +25,12 @@
           
             <div layout layout-sm="column">
               <md-input-container flex>
-                <label>{{ user.firstName }}</label>
+                <label>{{ userCurrent.firstName }}</label>
                 <input ng-model="user.firstName">
               </md-input-container>
 
               <md-input-container flex>
-                <label>{{ user.lastName }}</label>
+                <label>{{ userCurrent.lastName }}</label>
                 <input ng-model="user.lastName">
               </md-input-container>
             </div>
@@ -40,7 +40,7 @@
 
           <div layout layout-sm="column">
             <md-input-container flex>
-              <label>{{ user.email }}</label>
+              <label>{{ userCurrent.email }}</label>
               <input ng-model="user.email" >
             </md-input-container>
           </div>
@@ -61,17 +61,21 @@
 
           <section layout="row" layout-sm="column" layout-align="center center">
             <md-content layout-padding>
-              <md-button ng-click="" class="md-primary">
+              <md-button ng-click="saveSettings(user)" class="md-primary send">
                 Save
               </md-button>
             </md-content>
           </section>
 
       </form>
+        <md-container flex>
+            <p class="md-caption"> {{ alert }}</p>
+        </md-container>
       </md-content>
       </md-card>
       </md-tab-template>
       </md-tab>
+
         
    <!--Privacy Tab-->   
       <md-tab id="tab2">

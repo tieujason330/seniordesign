@@ -85,8 +85,10 @@ angular.module('projectsApp')
         console.log('Logged in as:' + authData.uid);
         ref.child('users').child(authData.uid).once('value', function (snapshot) {
           var val = snapshot.val();
-          userService.setCurrentUser(val);
           console.log(val);
+          val['uid'] = authData.uid;
+          userService.setCurrentUser(val);
+          
 
           changeLocation('/home', true);
         // To Update AngularJS $scope either use $apply or $timeout
