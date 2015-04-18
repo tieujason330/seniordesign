@@ -1,0 +1,76 @@
+<div class="jumbotron">
+<h1 class="md-display-3">UCRPals</h1>
+  <p><a class="btn btn-lg btn-success" ng-href="#/">Splendid!<span class="glyphicon glyphicon-ok"></span></a></p>
+</div>
+
+<div class="login-container">
+  <div ng-controller="ToolboxCtrl">
+    <md-tabs class="md-primary" md-stretch-tabs="always">
+        <md-tab id="tab1">
+          <md-tab-label>Account Settings</md-tab-label>
+          <md-tab-template>
+          <md-card style="margin: 1px !important">
+          <md-content layout-padding>
+          <form name="profileForm">
+             
+            <div layout layout-sm="column">
+              <md-input-container flex>
+                <label>First Name</label>
+                <input ng-model="user.firstName" placeholder="{{ firstName }}">
+              </md-input-container>
+
+              <md-input-container flex>
+                <label>Last Name</label>
+                <input ng-model="user.lastName" placeholder="{{ lastName }}">
+              </md-input-container>
+            </div>
+          
+          <div layout layout-sm="column">
+            <md-input-container flex>
+              <label>Email</label>
+              <input ng-model="user.email" placeholder="{{ email }}">
+            </md-input-container>
+          </div>
+
+          <div layout layout-sm="column">
+            <md-input-container flex>
+              <label>Password</label>
+              <input ng-model="user.password">
+            </md-input-container>
+          </div>
+
+          <md-card-footer>
+             <p></p>
+             </md-card-footer>
+        </form>
+        </md-content>
+        </md-card>
+        </md-tab-template>
+        </md-tab>
+        
+   <!--Privacy Tab-->   
+      <md-tab id="tab2">
+        <md-tab-label>Privacy Settings</md-tab-label>
+        <md-tab-template>
+        <md-card style="margin: 1px !important">
+        <md-content layout-padding>
+        <form name="privacyForm">
+            <!-- These should be saved pull downs -->
+          <md-input-container flex>
+            <label>Who can see my posts?</label>
+          </md-input-container>
+          <md-input-container flex>
+            <label>Who can send me messages?</label>
+          </md-input-container>
+        <md-card-footer>
+        <p></p>
+        </md-card-footer>
+        </form>
+        </md-content>
+        </md-card>
+        </md-tab-template>
+        </md-tab>
+
+    </md-tabs>
+  </div>
+</div>

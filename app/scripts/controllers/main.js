@@ -22,13 +22,14 @@ Do not use controllers to:
 
 **/
 angular.module('projectsApp')
-  .controller('MainCtrl', function ($scope) {
+  .controller('MainCtrl', function ($scope, $location, $firebaseAuth, firebaseService, $mdDialog, alertService) {
 	 $scope.data = {
 	      selectedIndex : 0,
 	      secondLocked : true,
 	      secondLabel : 'Item Two'
 	};
-	
+
+
     $scope.next = function() {
       $scope.data.selectedIndex = Math.min($scope.data.selectedIndex + 1, 2) ;
     };
@@ -42,4 +43,120 @@ angular.module('projectsApp')
       'AngularJS',
       'Karma'
     ];
+
+      //fb ref
+    var ref = new Firebase(firebaseService.getFirebBaseURL());
+    var auth = $firebaseAuth(ref);
+    //registers users on firebase
+    $scope.createUser = function(user, form) {
+
+      //Valid form fields
+      if(form.$valid)
+      {
+        console.log('register user on firebase');
+
+        auth.$createUser({
+          email: user.email,
+          password: user.password
+        }).then(function (userData) {
+          //stores other registration information at user endpoint
+          window.alert('User created successfully!');
+
+          ref.child('users').child(userData.uid).set({
+              email: user.email,
+              firstName: user.firstName,
+              lastName: user.lastName
+          });
+        }).catch(function (error) {
+          window.alert('Error: ' + error);
+          //should use a pop up modal
+        });
+      }
+
+    };
+
+    var changeLocation = function(url, forceReload) {
+      $location.path(url);
+      $scope = $scope || angular.element(document).scope();
+      if(forceReload || !$scope.$$phase) {
+        $scope.$apply();
+      }
+    };
+
+    var changeLocation = function(url, forceReload) {
+      $location.path(url);
+      $scope = $scope || angular.element(document).scope();
+      if(forceReload || !$scope.$$phase) {
+        $scope.$apply();
+      }
+    };
+
+
+    $scope.login = function(user, form, ev) {
+        if(!form.$valid)
+        {
+            return;
+        }
+
+          auth.$authWithPassword({
+            email: user.email,
+            password: user.password
+
+          }).then(function (authData) {
+            console.log('Logged in as:' + authData.uid);
+            ref.child('users').child(authData.uid).once('value', function (snapshot) {
+              var val = snapshot.val();
+              console.log(val);
+
+              changeLocation('/home', true);
+            // To Update AngularJS $scope either use $apply or $timeout
+           //   $scope.$apply(function () {
+            //    $rootScope.displayName = val;
+             // });
+            });
+
+            //should go to this state
+            //$state.go('tab.chats');
+
+          ////once signed in, store user name and unique id through some user profile service
+            // var uniqueID = authData.uid.split(':');
+            // $scope.uid = uniqueID[1];
+            // sharedProperties is a profile service
+            // sharedProperties.setUID(uniqueID[1]);
+            // var reff = new Firebase('https://lahax.firebaseio.com/users/' + authData.uid);
+            // reff.once('value', function(data) {
+            // sharedProperties.setDisplayName(data.val().displayName);
+          // });
+
+          }).catch(function (error) {
+            var msg = 'Invalid E-mail or password. Please try again';
+            alertService.loginAuthentication(msg,ev);
+          });
+
+
+    };
+
+    /*
+    function populateSettings(user) {
+
+    }
+
+    $scope.registerFB = function() {
+
+
+
+    };
+
+    $scope.registerGoogle = function() {
+
+
+
+    };
+
+    $scope.registerTwitter = function() {
+
+
+
+    };
+    */
   });
