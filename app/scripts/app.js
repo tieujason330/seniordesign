@@ -8,6 +8,9 @@
  *
  * Main module of the application.
  */
+
+
+
 angular
   .module('projectsApp', [
     'ngAnimate',
@@ -17,13 +20,21 @@ angular
     'ngSanitize',
     'ngTouch',
     'ngMaterial',
-    'firebase'
+    'firebase',
+    'ui.router'
   ])
+  .run(["$rootScope", "$location", function($rootScope, $location) {
+    $rootScope.$on("$routeChangeError", function(event, next, previous, error) {
+      // We can catch the error thrown when the $requireAuth promise is rejected
+      // and redirect the user back to the home page
+      if (error === "AUTH_REQUIRED") {
+        window.alert('You forgot to log in!');
+        console.log("auth required");
+        $location.path("/");
+      }
+    });
+  }])
   .config(function ($routeProvider, $mdThemingProvider) {
-    //sharing firebase base url throughout application using the rootScope
-
-
-
     // themes colors:
     // Limit your selection of colors by choosing three color hues from the primary palette
     // and one accent color from the secondary palette.
@@ -33,13 +44,11 @@ angular
     //    accent color for body text color.
     // 2. Don’t use the accent color for app bars or larger areas of color.
     //    Avoid using the same color for the floating action button and the background.
-
-
     $mdThemingProvider.theme('default');//.light();//.dark();
 
-    // $mdIconProvider
-    //   .iconSet('social', 'img/icons/sets/social-icons.svg', 24)
-    //   .defaultIconSet('img/icons/sets/core-icons.svg', 24);
+      // $mdIconProvider
+      //   .iconSet('social', 'img/icons/sets/social-icons.svg', 24)
+      //   .defaultIconSet('img/icons/sets/core-icons.svg', 24);
       //.primaryPalette('indigo')
       //.accentPalette('pink');
       //.warnPalette ('');
@@ -50,11 +59,29 @@ angular
       })
       .when('/home', {
         templateUrl: 'views/home.html',
-        controller: 'HomeCtrl'
+        controller: 'HomeCtrl',
+        resolve: {
+        // controller will not be loaded until $requireAuth resolves
+          "currentAuth": ["$firebaseAuth", function ($firebaseAuth) {
+                  var ref = new Firebase('https://shining-torch-23.firebaseio.com/');
+                  var authObj = $firebaseAuth(ref);
+                  return authObj.$requireAuth();
+              }
+          ]
+        }
       })
       .when('/settings', {
         templateUrl: 'views/settings.html',
-        controller: 'SettingsCtrl'
+        controller: 'SettingsCtrl',
+        resolve: {
+        // controller will not be loaded until $requireAuth resolves
+          "currentAuth": ["$firebaseAuth", function ($firebaseAuth) {
+                  var ref = new Firebase('https://shining-torch-23.firebaseio.com/');
+                  var authObj = $firebaseAuth(ref);
+                  return authObj.$requireAuth();
+              }
+          ]
+        }
       })
       .otherwise({
         redirectTo: '/'

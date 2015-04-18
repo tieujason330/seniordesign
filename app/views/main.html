@@ -75,6 +75,22 @@
           <md-tab-label>Login</md-tab-label>
           <md-tab-template>
             <md-card style="margin: 1px !important">
+
+                <md-input-container flex>
+                  <label>E-mail</label>
+                  <input ng-model="user.email" required>
+                </md-input-container>
+                <md-input-container flex>
+                  <label>Password</label>
+                  <input type="password" ng-model="user.password" required>
+                </md-input-container>
+
+              <section layout="row" layout-sm="column" layout-align="center center">
+                <p>
+                  <a class="btn btn-lg btn-success" style="" ng-click="login(user)">Login</a>
+                </p>
+              </section>
+
                <form name="loginForm" novalidate>
                   <md-input-container flex>
                     <label>E-mail</label>
@@ -110,8 +126,8 @@
                   </a>
                 </md-divider>
               </section>
-              
-<!-- 
+
+<!--
              <md-card-footer>
              <p></p>
              </md-card-footer>
