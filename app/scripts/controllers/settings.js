@@ -50,6 +50,16 @@ angular.module('projectsApp')
         console.log('attempting to save settings...');
         console.log(user);  
         //Email changes require authorization from old email
+        if(user.firstName != ''){
+          ref.child('users').child($scope.userCurrent.uid).set({
+                firstName: user.firstName
+          });
+        }
+        if(user.lastName != ''){
+          ref.child('users').child($scope.userCurrent.uid).set({
+                lastName: user.lastName
+          });
+        }
         if(user.email != ''){
           $scope.emailConfirm(user.email, $scope.userCurrent.email);
         }
