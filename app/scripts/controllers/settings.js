@@ -18,9 +18,12 @@ angular.module('projectsApp')
       $scope.alert = '';
 
     function DialogController($scope, $mdDialog) {
-      $scope.hide = function(input) {
-        $mdDialog.hide(input);
+      $scope.hide = function() {
+        $mdDialog.hide();
       };
+      $scope.enter = function(input) {
+        $mdDialog.hide(input);
+      }
       $scope.cancel = function() {
         $mdDialog.cancel();
       };
