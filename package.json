@@ -42,6 +42,6 @@
   },
   "scripts": {
     "test": "grunt test",
-    "postinstall": "bower install; gem install compass --pre"
+    "postinstall": "bower install"
   }
 }
