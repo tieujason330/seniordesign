@@ -48,7 +48,7 @@ angular.module('projectsApp')
     var ref = new Firebase(firebaseService.getFirebBaseURL());
     var auth = $firebaseAuth(ref);
     //registers users on firebase
-    $scope.createUser = function(user, form, ev) {
+    $scope.createUser = function(user, form) {
 
       //Valid form fields
       if(form.$valid)
