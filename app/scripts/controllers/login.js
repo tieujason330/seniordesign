@@ -22,7 +22,7 @@ Do not use controllers to:
 
 **/
 angular.module('projectsApp')
-  .controller('MainCtrl', function ($scope, $location, $firebaseAuth, firebaseService, $mdDialog, alertService) {
+  .controller('LoginCtrl', function ($scope, $location, $firebaseAuth, firebaseService, $mdDialog, alertService) {
 	 $scope.data = {
 	      selectedIndex : 0,
 	      secondLocked : true,
@@ -61,12 +61,14 @@ angular.module('projectsApp')
           var title= 'Welcome';
           var msg = 'The new user account has been successfully created.';
           alertService.show(title,msg,"");
-
           ref.child('users').child(userData.uid).set({
               email: user.email,
               firstName: user.firstName,
               lastName: user.lastName
           });
+
+
+
         }).catch(function (error) {
           if(error.code == "EMAIL_TAKEN")
           {
