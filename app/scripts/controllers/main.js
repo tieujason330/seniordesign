@@ -103,27 +103,43 @@ angular.module('projectsApp')
         });
     };
 
-    /*
-    function populateSettings(user) {
-
-    }
-
-    $scope.registerFB = function() {
-
-
-
+ $scope.registerFB = function() {
+      ref.authWithOAuthPopup("facebook", function(error, authData) {
+        if (error) {
+          console.log("Login Failed!", error);
+        } else {
+          console.log("Authenticated successfully with payload:", authData);
+          //console.log("FacebookName: " + authData.facebook.displayName  + " ID: " + authData.facebook.id + " Email: " + authData.facebook.email);
+          changeLocation('/home', true);
+        }
+      }, {
+          scope: "email,user_likes" // permission requests
+        });
     };
 
     $scope.registerGoogle = function() {
-
-
-
+      ref.authWithOAuthPopup("google", function(error, authData) {
+        if (error) {
+          console.log("Login Failed!", error);
+        } else {
+          console.log("Authenticated successfully with payload:", authData);
+          changeLocation('/home', true);
+        }
+      });
     };
 
     $scope.registerTwitter = function() {
-
-
-
+      ref.authWithOAuthPopup("twitter", function(error, authData) {
+        if (error) {
+          console.log("Login Failed!", error);
+        } else {
+          console.log("Authenticated successfully with payload:", authData);
+          changeLocation('/home', true);
+        }
+      });
     };
+    /*
+    function populateSettings(user) {
+    }
     */
   });
