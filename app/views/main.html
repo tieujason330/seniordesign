@@ -87,7 +87,7 @@
                     <input type="password" name="password" ng-model="user.password" required>
                     <span ng-show="loginForm.$submitted &&  loginForm.password.$error.required" class="help-block">Password required</span>
                   </md-input-container>
-                  
+
                   <section layout="row" layout-sm="column" layout-align="center center">
                     <p>
                       <input type="submit" class="btn btn-lg btn-success" ng-click="login(user, loginForm, $event)" value="Login">
