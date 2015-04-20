@@ -44,12 +44,10 @@ angular.module('projectsApp')
       'Karma'
     ];
 
-      //fb ref
     var ref = new Firebase(firebaseService.getFirebBaseURL());
     var auth = $firebaseAuth(ref);
     //registers users on firebase
     $scope.createUser = function(user, form) {
-
       //Valid form fields
       if(form.$valid)
       {
@@ -61,8 +59,8 @@ angular.module('projectsApp')
         }).then(function (userData) {
           //stores other registration information at user endpoint
           var title= 'Welcome';
-          var msg = 'The new user account has been successfully created.'
-          alertService.show(title,msg,ev);
+          var msg = 'The new user account has been successfully created.';
+          alertService.show(title,msg,"");
 
           ref.child('users').child(userData.uid).set({
               email: user.email,
@@ -73,8 +71,8 @@ angular.module('projectsApp')
           if(error.code == "EMAIL_TAKEN")
           {
               var title= 'Error Creating Account';
-              var msg = 'The new user account cannot be created because the email is already in use.'
-              alertService.show(title,msg,ev);
+              var msg = 'The new user account cannot be created because the email is already in use.';
+              alertService.show(title,msg,"");
           }
         });
       }
@@ -89,31 +87,19 @@ angular.module('projectsApp')
       }
     };
 
-    var changeLocation = function(url, forceReload) {
-      $location.path(url);
-      $scope = $scope || angular.element(document).scope();
-      if(forceReload || !$scope.$$phase) {
-        $scope.$apply();
-      }
-    };
-
-
     $scope.login = function(user, form, ev) {
         if(!form.$valid) {
             return;
         }
-
         auth.$authWithPassword({
-          email: user.email,
-          password: user.password
-
+            email: user.email,
+            password: user.password
         }).then(function (authData) {
           console.log('Logged in as:' + authData.uid);
           changeLocation('/home', true);
-
         }).catch(function (error) {
           var msg = 'Invalid E-mail or password. Please try again';
-          alertService.loginAuthentication(msg,ev);
+          alertService.show(msg,ev);
         });
     };
 

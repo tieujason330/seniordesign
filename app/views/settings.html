@@ -12,41 +12,70 @@
           <md-card style="margin: 1px !important">
           <md-content layout-padding>
           <form class="simple-form" name="profileForm">
-             
+
+          <div layout layout-sm="column">
+            <label>First Name</label>
+            <md-container flex>
+            </md-container>
+
+            <label>Last Name</label>
+            <md-container flex>
+            </md-container>
+          </div>
+          
             <div layout layout-sm="column">
               <md-input-container flex>
-                <label>First Name</label>
-                <input ng-model="user.firstName" >
+                <label>{{ userCurrent.firstName }}</label>
+                <input ng-model="user.firstName">
               </md-input-container>
 
               <md-input-container flex>
-                <label>Last Name</label>
-                <input ng-model="user.lastName" >
+                <label>{{ userCurrent.lastName }}</label>
+                <input ng-model="user.lastName">
               </md-input-container>
             </div>
-          
+          <div layout layout-sm="column">
+            <label>Email</label>
+          </div>
+
           <div layout layout-sm="column">
             <md-input-container flex>
-              <label>Email</label>
+              <label>{{ userCurrent.email }}</label>
               <input ng-model="user.email" >
             </md-input-container>
           </div>
 
           <div layout layout-sm="column">
-            <md-input-container flex>
+            <md-container flex>
               <label>Password</label>
-              <input ng-model="user.password">
-            </md-input-container>
+            </md-container>
+            <md-container flex>
+              <section layout="row" layout-sm="column" layout-align="center center">
+                <md-button ng-click="" class="md-primary">
+                Reset
+                </md-button>
+              </section>
+            </md-container>
+            </md-content>
           </div>
 
-          <md-card-footer>
-             <p></p>
-          </md-card-footer>
-        </form>
-        </md-content>
-        </md-card>
-        </md-tab-template>
-        </md-tab>
+          <section layout="row" layout-sm="column" layout-align="center center">
+            <md-content layout-padding>
+              <md-button ng-click="saveSettings(user)" class="md-primary send">
+                Save
+              </md-button>
+            </md-content>
+          </section>
+
+      </form>
+        <md-container flex>
+            <p class="md-caption"> {{ alert }}</p>
+        </md-container>
+      </md-content>
+      </md-card>
+      </md-tab-template>
+      </md-tab>
+
         
    <!--Privacy Tab-->   
       <md-tab id="tab2">
@@ -55,6 +84,7 @@
         <md-card style="margin: 1px !important">
         <md-content layout-padding>
         <form name="privacyForm">
+
             <!-- These should be saved pull downs -->
           <md-input-container flex>
             <label>Who can see my posts?</label>
@@ -62,10 +92,39 @@
           <md-input-container flex>
             <label>Who can send me messages?</label>
           </md-input-container>
+        
+
+          <!-- These should be saved pull downs -->
+          <div layout layout-sm="column">
+            <md-container flex>
+              <md-select placeholder="Who can see my posts?" ng-model="postPrivacyVal">
+                <md-option value="Everyone">Everyone</md-option>
+                <md-option value="Friends">Friends</md-option>
+              </md-select>
+            </md-container>
+            <md-container flex>
+              <p class="md-caption"> {{ postPrivacyVal ? postPrivacyVal + ' can see your posts.' : '' }}</p>
+            </md-container>
+          </div>
+
+          <div layout layout-sm="column">
+            <md-container flex>
+              <md-select placeholder="Who can send me messages?" ng-model="messagePrivacyVal">
+                <md-option value="Everyone">Everyone</md-option>
+                <md-option value="Friends">Friends</md-option>
+              </md-select>
+            </md-container>
+            <md-container flex>
+              <p class="md-caption"> {{ messagePrivacyVal ? messagePrivacyVal + ' can send me messages.' : '' }}</p>
+            </md-container>
+          </div>
+
         <md-card-footer>
         <p></p>
         </md-card-footer>
+
         </form>
+        
         </md-content>
         </md-card>
         </md-tab-template>
