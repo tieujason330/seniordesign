@@ -46,5 +46,12 @@ angular.module('projectsApp')
 
     $scope.goToSettings = function() {
       changeLocation('/settings')
-    }
+    };
+
+    $scope.logoutSocialMedia = function(){
+      console.log("Logging Out!")
+      ref.unauth();
+      changeLocation('/', true);
+    };
+
 });

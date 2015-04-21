@@ -84,11 +84,22 @@ angular.module('projectsApp')
 
  $scope.registerFB = function() {
       ref.authWithOAuthPopup("facebook", function(error, authData) {
+        scope: "email,user_likes" // permission requests
         if (error) {
           console.log("Login Failed!", error);
         } else {
           console.log("Authenticated successfully with payload:", authData);
-          //console.log("FacebookName: " + authData.facebook.displayName  + " ID: " + authData.facebook.id + " Email: " + authData.facebook.email);
+          console.log("FacebookName: " + authData.facebook.displayName  + " ID: " + authData.facebook.id + " Email: " + authData.facebook.email);
+
+        /*FB.api(
+            "/{user-id}",
+            function (response) {
+              if (response && !response.error) {
+                console.log(response);
+              }
+            }
+        );*/
+
           changeLocation('/home', true);
         }
       }, {
