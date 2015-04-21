@@ -86,37 +86,41 @@
         <form name="privacyForm">
 
             <!-- These should be saved pull downs -->
-          <md-input-container flex>
-            <label>Who can see my posts?</label>
-          </md-input-container>
-          <md-input-container flex>
-            <label>Who can send me messages?</label>
-          </md-input-container>
+          <section>
+            <md-container flex>
+              <label>Who can see my posts?</label>
+              <label>{{ userCurrent.postPrivacy }}</label>
+            </md-container>
+          </section>
+          <section>
+            <md-container flex>
+              <label>Who can send me messages?</label>
+              <label>{{ userCurrent.messagePrivacy }}</label>
+            </md-container>
+          </section>
         
 
           <!-- These should be saved pull downs -->
-          <div layout layout-sm="column">
+          <div layout layout-sm="row">
             <md-container flex>
-              <md-select placeholder="Who can see my posts?" ng-model="postPrivacyVal">
+              <md-select placeholder="Who can see my posts?" ng-model="privacy" ng-change="postSettings(privacy)">
                 <md-option value="Everyone">Everyone</md-option>
                 <md-option value="Friends">Friends</md-option>
+                <md-option value="No One">No One</md-option>
               </md-select>
             </md-container>
-            <md-container flex>
-              <p class="md-caption"> {{ postPrivacyVal ? postPrivacyVal + ' can see your posts.' : '' }}</p>
-            </md-container>
+
           </div>
 
-          <div layout layout-sm="column">
+          <div layout layout-sm="row">
             <md-container flex>
-              <md-select placeholder="Who can send me messages?" ng-model="messagePrivacyVal">
+              <md-select placeholder="Who can send me messages?" ng-model="mess" ng-change="messageSettings(mess)">
                 <md-option value="Everyone">Everyone</md-option>
                 <md-option value="Friends">Friends</md-option>
+                <md-option value="No One">No One</md-option>
               </md-select>
             </md-container>
-            <md-container flex>
-              <p class="md-caption"> {{ messagePrivacyVal ? messagePrivacyVal + ' can send me messages.' : '' }}</p>
-            </md-container>
+
           </div>
 
         <md-card-footer>
