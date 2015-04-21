@@ -64,7 +64,8 @@ angular.module('projectsApp')
           ref.child('users').child(userData.uid).set({
               email: user.email,
               firstName: user.firstName,
-              lastName: user.lastName
+              lastName: user.lastName,
+              provisioned: 0
           });
 
 

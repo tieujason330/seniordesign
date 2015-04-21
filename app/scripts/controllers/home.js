@@ -9,10 +9,27 @@
  * */
 
 angular.module('projectsApp')
-  .controller('HomeCtrl', function ($scope, $firebaseAuth, $location, $timeout, $mdSidenav, $log) {
+  .controller('HomeCtrl', function ($scope, $firebaseAuth, $location, $timeout, $mdSidenav, $log, provisionSettings) {
+    var provision = provisionSettings.getUserProvision();
+    console.log(provision);
     var ref = new Firebase('https://shining-torch-23.firebaseio.com/');
     var authObj = $firebaseAuth(ref);
     var authData = authObj.$getAuth();
+
+    console.log('not working');
+    if (provision == '0') {
+      console.log('working');
+      var showAdvanced = function() {
+          $mdDialog.show({
+            templateUrl: 'views/about.tmpl.html',
+          })
+          .then(function(answer) {
+            $scope.alert = 'You said the information was "' + answer + '".';
+          }, function() {
+            $scope.alert = 'You cancelled the dialog.';
+          });
+      };
+    }
 
     if (authData) {
       console.log("Logged in as:", authData.uid);
@@ -43,5 +60,9 @@ angular.module('projectsApp')
 
     $scope.goToSettings = function() {
       changeLocation('/settings')
+    }
+
+    $scope.updateProvision = function() {
+      provisionSettings.setUserProvision();
     }
 });
