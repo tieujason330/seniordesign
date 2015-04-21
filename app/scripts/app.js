@@ -54,8 +54,8 @@ angular
       //.warnPalette ('');
     $routeProvider
       .when('/', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl'
+        templateUrl: 'views/login.html',
+        controller: 'LoginCtrl'
       })
       .when('/home', {
         templateUrl: 'views/home.html',
