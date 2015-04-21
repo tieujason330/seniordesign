@@ -22,6 +22,14 @@ angular.module('projectsApp')
       updateKey: function(key, value){
         user.key = value;
         return user;
+      },
+      getUserProvisionSetting: function() {
+        console.log(user);
+        return user;
+      },
+      setUserProvisionSetting: function() {
+        console.log(user);
+        return user;
       }
     };
   });

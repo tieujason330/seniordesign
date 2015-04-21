@@ -10,6 +10,9 @@
 <div class="login-container">
   <div ng-controller="LoginCtrl">
       <md-tabs class="md-primary" md-stretch-tabs="always" style="padding: 5px;">
+      <!-- To do: replace md tabs with ng-switch
+                  reference https://docs.angularjs.org/api/ng/directive/ngSwitch
+       -->
         <md-tab id="tab1">
           <md-tab-label>Create Account</md-tab-label>
           <md-tab-template>
@@ -99,13 +102,13 @@
                     <label>Or Sign Up With: </label>
                   </md-input-container>
                   <a class="btn btn-social-icon btn-lg btn-primary btn-facebook-icon">
-                   <i class="fa fa-facebook"></i>
+                   <i class="fa fa-facebook" ng-click="registerFacebook()"></i>
                   </a>
                   <a class="btn btn-social-icon btn-lg btn-danger btn-google-icon">
-                    <i class="fa fa-google-plus"></i>
+                    <i class="fa fa-google-plus" ng-click="registerGoogle()"></i>
                   </a>
                   <a class="btn btn-social-icon btn-lg btn-info btn-twitter-icon">
-                    <i class="fa fa-twitter"></i>
+                    <i class="fa fa-twitter" ng-click="registerTwitter()"></i>
                   </a>
                 </md-divider>
               </section>
