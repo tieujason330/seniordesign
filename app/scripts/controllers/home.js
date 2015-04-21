@@ -44,4 +44,4 @@ angular.module('projectsApp')
     $scope.goToSettings = function() {
       changeLocation('/settings')
     }
-  });
+});

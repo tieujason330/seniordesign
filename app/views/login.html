@@ -8,12 +8,11 @@
 </div>
 
 <div class="login-container">
-  <div ng-controller="MainCtrl">
+  <div ng-controller="LoginCtrl">
       <md-tabs class="md-primary" md-stretch-tabs="always" style="padding: 5px;">
         <md-tab id="tab1">
           <md-tab-label>Create Account</md-tab-label>
           <md-tab-template>
-
             <md-card style="margin: 1px !important">
               <form name="registrationForm" novalidate>
                 <div layout layout-sm="column">
@@ -53,13 +52,13 @@
                     <label>Or Sign Up With: </label>
                   </md-input-container>
                   <a class="btn btn-social-icon btn-lg btn-primary btn-facebook-icon">
-                   <i class="fa fa-facebook" ng-click=""></i>
+                   <i class="fa fa-facebook" ng-click="registerFB()"></i>
                   </a>
                   <a class="btn btn-social-icon btn-lg btn-danger btn-google-icon">
-                    <i class="fa fa-google-plus" ng-click=""></i>
+                    <i class="fa fa-google-plus" ng-click="registerGoogle()"></i>
                   </a>
                   <a class="btn btn-social-icon btn-lg btn-info btn-twitter-icon">
-                    <i class="fa fa-twitter" ng-click=""></i>
+                    <i class="fa fa-twitter" ng-click="registerTwitter()"></i>
                   </a>
                 </md-divider>
               </section>
@@ -75,7 +74,6 @@
           <md-tab-label>Login</md-tab-label>
           <md-tab-template>
             <md-card style="margin: 1px !important">
-
                <form name="loginForm" novalidate>
                   <md-input-container flex>
                     <label>E-mail</label>
@@ -85,9 +83,9 @@
                   <md-input-container flex>
                     <label>Password</label>
                     <input type="password" name="password" ng-model="user.password" required>
-                    <span ng-show="loginForm.$submitted &&  loginForm.password.$error.required" class="help-block">Password required</span>
+                    <span ng-show="loginForm.$submitted && loginForm.password.$error.required" class="help-block">Password required</span>
                   </md-input-container>
-                  
+
                   <section layout="row" layout-sm="column" layout-align="center center">
                     <p>
                       <input type="submit" class="btn btn-lg btn-success" ng-click="login(user, loginForm, $event)" value="Login">
@@ -112,11 +110,10 @@
                 </md-divider>
               </section>
 
-<!--
              <md-card-footer>
              <p></p>
              </md-card-footer>
--->
+
           </md-card>
           </md-tab-template>
         </md-tab>
