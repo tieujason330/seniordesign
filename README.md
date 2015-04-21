@@ -30,6 +30,10 @@ Run: `sudo bower install --allow-root`
 Running `grunt test` will run the unit test
 
 ## Run
-Running `grunt serve` will serve the application, autoreload on. Runs on http://localhost:9000/
+Running `grunt serve` will serve the application, autoreload on. Runs on http://localhost:9000
 
-
+## Deploy to Heroku
+1. Switch to a different BRANCH-NAME
+2. Run "grunt build" and remove "dist" from .gitignore. 
+3. Commit changes
+4. Run "git push heroku BRANCH-NAME:master"
