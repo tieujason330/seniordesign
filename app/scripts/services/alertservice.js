@@ -10,16 +10,16 @@
 // AngularJS will instantiate a singleton by calling "new" on this function
 angular.module('projectsApp')
   .service('alertService', function ($mdDialog) {
-  		return {
-  			show: function(title,msg,event) {
-				$mdDialog.show(
-					$mdDialog.alert()
-				                .title(title)
-				                .content(msg)
-				                .ariaLabel('Alert Dialog')
-				                .ok('close')
-				                .targetEvent(event)
-				);
-  			}
-  		}
+      return {
+        show: function(title,msg,event) {
+        $mdDialog.show(
+          $mdDialog.alert()
+            .title(title)
+            .content(msg)
+            .ariaLabel('Alert Dialog')
+            .ok('close')
+            .targetEvent(event)
+        );
+        }
+      }
   });

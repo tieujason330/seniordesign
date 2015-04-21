@@ -10,6 +10,8 @@
 
 angular.module('projectsApp')
   .controller('HomeCtrl', function ($scope, $firebaseAuth, $location, $timeout, $mdSidenav, $log) {
+    console.log('I am in home controller');
+
     var ref = new Firebase('https://shining-torch-23.firebaseio.com/');
     var authObj = $firebaseAuth(ref);
     var authData = authObj.$getAuth();
@@ -19,6 +21,7 @@ angular.module('projectsApp')
     } else {
       console.log("Logged out");
     }
+
 
     $scope.toggleLeft = function() {
       $mdSidenav('left').toggle()
