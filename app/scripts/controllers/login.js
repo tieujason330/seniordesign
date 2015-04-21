@@ -105,6 +105,7 @@ angular.module('projectsApp')
         });
     };
 
+
  $scope.registerFB = function() {
       ref.authWithOAuthPopup("facebook", function(error, authData) {
         scope: "email,user_likes" // permission requests
@@ -113,15 +114,15 @@ angular.module('projectsApp')
         } else {
           console.log("Authenticated successfully with payload:", authData);
           console.log("FacebookName: " + authData.facebook.displayName  + " ID: " + authData.facebook.id + " Email: " + authData.facebook.email);
+          console.log("FacebookFirstName: " + authData.facebook.cachedUserProfile.first_name + " FacebookLastName: " + authData.facebook.cachedUserProfile.last_name + " FacebookEmail: " + authData.facebook.cachedUserProfile.email + " FacebookPicture: " + authData.facebook.cachedUserProfile.picture.data.url);
 
-        /*FB.api(
-            "/{user-id}",
-            function (response) {
-              if (response && !response.error) {
-                console.log(response);
-              }
-            }
-        );*/
+          // creating firebase endpoint
+          ref.child('users').child(authData.uid).set({
+              email: authData.facebook.cachedUserProfile.email,
+              firstName: authData.facebook.cachedUserProfile.first_name,
+              lastName: authData.facebook.cachedUserProfile.last_name,
+              picture: authData.facebook.cachedUserProfile.picture.data.url
+          });
 
           changeLocation('/home', true);
         }
