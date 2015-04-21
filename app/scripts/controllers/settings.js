@@ -101,7 +101,7 @@ angular.module('projectsApp')
             newEmail: userMail,
             password: passwd,
           }, function(error){
-            console.log(error ? 'Failed to change email: ' + error : 'Email changed!');
+            console.log(error ? 'Failed to change email. ' + error : 'Email changed!');
             if(error){
               $scope.alert = 'Failed to change email.';
             }
@@ -110,7 +110,7 @@ angular.module('projectsApp')
               ref.child('users').child($scope.userCurrent.uid).update({
                 email: userMail
               });
-              $userCurrent.updateKey(email, userMail);
+              $scope.userCurrent.email = userMail;
             }
         });
     };
