@@ -90,11 +90,6 @@ angular.module('projectsApp')
           console.log('Login Failed!', error);
         } else {
           console.log("Authenticated successfully with payload:", authData);
-          console.log("FacebookName: " + authData.facebook.displayName  + " ID: " + authData.facebook.id + " Email: " + authData.facebook.email);
-          console.log("FacebookFirstName: " + authData.facebook.cachedUserProfile.first_name + 
-            " FacebookLastName: " + authData.facebook.cachedUserProfile.last_name + 
-            " FacebookEmail: " + authData.facebook.cachedUserProfile.email + 
-            " FacebookPicture: " + authData.facebook.cachedUserProfile.picture.data.url);
 
           // creating firebase endpoint
           ref.child('users').child(authData.uid).set({
@@ -139,6 +134,19 @@ angular.module('projectsApp')
           console.log("Login Failed!", error);
         } else {
           console.log("Authenticated successfully with payload:", authData);
+
+          console.log("TwitterFirstName: " + authData.twitter.cachedUserProfile.name + 
+            " TwiterLastName: " + authData.twitter.cachedUserProfile.familys_name +  // **** SOMEHOW GET LAST NAME ****
+            " TwitterEmail: " + authData.twitter.cachedUserProfile.screen_name + // **** SOMEHOW GET EMAIL ****
+            " TwitterPicture: " + authData.twitter.cachedUserProfile.profile_image_url);
+
+         /* ref.child('users').child(authData.uid).set({
+              email: // EMAIL ,
+              firstName: authData.twitter.cachedUserProfile.name,
+              lastName: // LAST NAME ,
+              picture: authData.twitter.cachedUserProfile.profile_image_url
+          });*/
+
           changeLocation('/home', true);
         }
       });
