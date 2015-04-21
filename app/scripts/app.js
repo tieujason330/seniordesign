@@ -34,43 +34,36 @@ angular
       }
     });
   }])
-  .config(function ($routeProvider, $mdThemingProvider) {
-    // themes colors:
-    // Limit your selection of colors by choosing three color hues from the primary palette
-    // and one accent color from the secondary palette.
-    // The accent color may or may not need fallback options.
-    // Rules :
-    // 1. Only use the accent color for body text to accent a web link. Do not use the
-    //    accent color for body text color.
-    // 2. Don’t use the accent color for app bars or larger areas of color.
-    //    Avoid using the same color for the floating action button and the background.
+  .config(function ($urlRouterProvider, $stateProvider,  $mdThemingProvider) {
     $mdThemingProvider.theme('default');//.light();//.dark();
-
-      // $mdIconProvider
-      //   .iconSet('social', 'img/icons/sets/social-icons.svg', 24)
-      //   .defaultIconSet('img/icons/sets/core-icons.svg', 24);
-      //.primaryPalette('indigo')
-      //.accentPalette('pink');
-      //.warnPalette ('');
-    $routeProvider
-      .when('/', {
+    $urlRouterProvider.otherwise('/');
+    $stateProvider
+      .state('login', {
+        url: '/',
         templateUrl: 'views/login.html',
         controller: 'LoginCtrl'
       })
-      .when('/home', {
-        templateUrl: 'views/home.html',
+      .state('home',{
+        url: '/home',
+        templateUrl: '/views/home.html',
+        // views: {
         controller: 'HomeCtrl',
         resolve: {
         // controller will not be loaded until $requireAuth resolves
           "currentAuth": ["$firebaseAuth", function ($firebaseAuth) {
-                  var ref = new Firebase('https://shining-torch-23.firebaseio.com/');
-                  var authObj = $firebaseAuth(ref);
-                  return authObj.$requireAuth();
-              }
-          ]
+            var ref = new Firebase('https://shining-torch-23.firebaseio.com/');
+            var authObj = $firebaseAuth(ref);
+            return authObj.$requireAuth();
+          }]
         }
       })
-      .when('/settings', {
+      .state('dashboard', {
+        url: 'dashboard',
+        parent: 'home',
+        templateUrl: '/views/test.html',
+      })
+      .state('settings', {
+        url: '/settings',
         templateUrl: 'views/settings.html',
         controller: 'SettingsCtrl',
         resolve: {
@@ -83,7 +76,19 @@ angular
           ]
         }
       })
-      .otherwise({
-        redirectTo: '/'
-      });
   });
+// themes colors:
+// Limit your selection of colors by choosing three color hues from the primary palette
+// and one accent color from the secondary palette.
+// The accent color may or may not need fallback options.
+// Rules :
+// 1. Only use the accent color for body text to accent a web link. Do not use the
+//    accent color for body text color.
+// 2. Don’t use the accent color for app bars or larger areas of color.
+//    Avoid using the same color for the floating action button and the background.
+// $mdIconProvider
+//   .iconSet('social', 'img/icons/sets/social-icons.svg', 24)
+//   .defaultIconSet('img/icons/sets/core-icons.svg', 24);
+//.primaryPalette('indigo')
+//.accentPalette('pink');
+//.warnPalette ('');
