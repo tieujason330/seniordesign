@@ -22,28 +22,7 @@ Do not use controllers to:
 
 **/
 angular.module('projectsApp')
-  .controller('LoginCtrl', function ($scope, $location, $firebaseAuth, firebaseService, $mdDialog, alertService) {
-	 $scope.data = {
-	      selectedIndex : 0,
-	      secondLocked : true,
-	      secondLabel : 'Item Two'
-	};
-
-
-    $scope.next = function() {
-      $scope.data.selectedIndex = Math.min($scope.data.selectedIndex + 1, 2) ;
-    };
-
-    $scope.previous = function() {
-      $scope.data.selectedIndex = Math.max($scope.data.selectedIndex - 1, 0);
-    };
-
-    $scope.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
-
+  .controller('LoginCtrl', function ($scope, $location, $state, $firebaseAuth, firebaseService, $mdDialog, alertService) {
     var ref = new Firebase(firebaseService.getFirebBaseURL());
     var auth = $firebaseAuth(ref);
     //registers users on firebase
@@ -64,11 +43,9 @@ angular.module('projectsApp')
           ref.child('users').child(userData.uid).set({
               email: user.email,
               firstName: user.firstName,
-              lastName: user.lastName
+              lastName: user.lastName,
+              provisioned: 0
           });
-
-
-
         }).catch(function (error) {
           if(error.code == 'EMAIL_TAKEN')
           {
@@ -78,8 +55,7 @@ angular.module('projectsApp')
           }
         });
       }
-
-    };
+    }
 
     var changeLocation = function(url, forceReload) {
       $location.path(url);
@@ -98,7 +74,8 @@ angular.module('projectsApp')
             password: user.password
         }).then(function (authData) {
           console.log('Logged in as:' + authData.uid);
-          changeLocation('/home', true);
+          $state.go('home');
+          //changeLocation('/home', true);
         }).catch(function (error) {
           var msg = 'Invalid E-mail or password. Please try again';
           alertService.show(msg,ev);

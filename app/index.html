@@ -17,22 +17,21 @@
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
-  </head>
-  <body ng-app="projectsApp">
+    </head>
+
+    <body ng-app="projectsApp">
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-
-    <div ng-view=""></div>
-
-    <br><br>
-<!--
+      <div id="content" ui-view></div>
+      <br><br>
+  <!--
     <div class="footer">
       <div class="container flex" layout-align="start end">
         <p><span class="glyphicon glyphicon-heart" style="right"></span> from the Riverside Pals Team</p>
       </div>
     </div>
--->
+  -->
 
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -66,16 +65,16 @@
     <!-- endbower -->
     <!-- endbuild -->
 
-        <!-- build:js({.tmp,app}) scripts/scripts.js -->
-        <script src="scripts/app.js"></script>
-        <script src="scripts/controllers/login.js"></script>
-        <script src="scripts/controllers/user.js"></script>
-        <script src="scripts/controllers/settings.js"></script>
-        <script src="scripts/controllers/home.js"></script>
-        <script src="scripts/services/myservice.js"></script>
-        <script src="scripts/services/userservice.js"></script>
-        <script src="scripts/services/alertservice.js"></script>
+    <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <script src="scripts/app.js"></script>
+    <script src="scripts/controllers/login.js"></script>
+    <script src="scripts/controllers/user.js"></script>
+    <script src="scripts/controllers/settings.js"></script>
+    <script src="scripts/controllers/home.js"></script>
+    <script src="scripts/services/myservice.js"></script>
+    <script src="scripts/services/userservice.js"></script>
+    <script src="scripts/services/alertservice.js"></script>
 
         <!-- endbuild -->
-</body>
+    </body>
 </html>
