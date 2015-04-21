@@ -135,17 +135,24 @@ angular.module('projectsApp')
         } else {
           console.log("Authenticated successfully with payload:", authData);
 
-          console.log("TwitterFirstName: " + authData.twitter.cachedUserProfile.name + 
-            " TwiterLastName: " + authData.twitter.cachedUserProfile.familys_name +  // **** SOMEHOW GET LAST NAME ****
+          var name = authData.twitter.cachedUserProfile.name;
+          name = name.split(" ");
+          var firstName = name[0];
+          var lastName = name[name.length-1];
+
+          console.log("TwitterFirstName: " + firstName + 
+            " TwiterLastName: " + lastName +  // **** SOMEHOW GET LAST NAME ****
             " TwitterEmail: " + authData.twitter.cachedUserProfile.screen_name + // **** SOMEHOW GET EMAIL ****
             " TwitterPicture: " + authData.twitter.cachedUserProfile.profile_image_url);
 
-         /* ref.child('users').child(authData.uid).set({
-              email: // EMAIL ,
-              firstName: authData.twitter.cachedUserProfile.name,
-              lastName: // LAST NAME ,
+         /*
+         ref.child('users').child(authData.uid).set({
+              email:  authData.twitter.id +"@twitter.com" ,
+              firstName: firstName,
+              lastName: lastName,
               picture: authData.twitter.cachedUserProfile.profile_image_url
-          });*/
+          });
+          */
 
           changeLocation('/home', true);
         }
