@@ -1,0 +1,111 @@
+<div layout="column" layout-fill ng-controller='ToolBarCtrl'>
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <!-- fill up the space between left and right area -->
+      <md-button class="md-icon-button" aria-label="Settings" ng-click='toggleLeft()'>
+          <md-icon md-svg-icon="images/icons/menu.svg"></md-icon>
+      </md-button>
+      <span flex></span>
+      some cool logo
+      <span flex></span>
+      search
+<!--       <md-button ng-click='toggleRight()'>
+        Right Bar Button
+      </md-button>
+ -->
+ 		</div>
+  </md-toolbar>
+</div>
+
+<md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left">
+  <md-toolbar class="md-theme-dark">
+    <h1 class="md-toolbar-tools">Menu</h1>
+  </md-toolbar>
+	<md-content ng-controller="LeftCtrl" layout-padding>
+	<!--dashboard  -->
+		<md-content layout-padding>
+			<md-button ng-click="goToDashboard()" class="md-primary">
+			  Dashboard
+			</md-button>
+		</md-content>
+
+	<!-- Me -->
+		<md-content layout-padding>
+		  <md-button ng-click="goToProfile()" class="md-primary">
+		    Profile
+		  </md-button>
+		</md-content>
+
+	<!--Friends -->
+		<md-content layout-padding>
+		  <md-button ng-click="goToFriends()" class="md-primary">
+		    Friends
+		  </md-button>
+		</md-content>
+
+	<!--Settings -->
+		<md-content layout-padding>
+		  <md-button ng-click="goToSettings()" class="md-primary">
+		    Settings
+		  </md-button>
+		</md-content>
+
+	<!--Photos -->
+		<md-content layout-padding>
+			<md-button ng-click="goToPhotos()" class="md-primary">
+			Photos
+			</md-button>
+		</md-content>
+
+	<!--Messages -->
+		<md-content layout-padding>
+			<md-button ng-click="goToMessages()" class="md-primary">
+			Messages
+			</md-button>
+		</md-content>
+
+		<md-content layout-padding>
+			<md-button ng-click="logout()" class="btn-danger btn-raised">
+			Log Out
+			</md-button>
+		</md-content>
+
+	</md-content>
+</md-sidenav>
+
+<!--
+<form>
+  <md-input-container>
+    <label for="testInput">Test input</label>
+    <input type="text" id="testInput"
+           ng-model="data" md-sidenav-focus>
+  </md-input-container>
+</form>
+<md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="right">
+  <md-toolbar class="md-theme-light">
+    <h1 class="md-toolbar-tools">Sidenav Right</h1>
+  </md-toolbar>
+  <md-content ng-controller="RightCtrl" layout-padding>
+    <form>
+      <md-input-container>
+        <label for="testInput">Test input</label>
+        <input type="text" id="testInput"
+               ng-model="data" md-sidenav-focus>
+      </md-input-container>
+    </form>
+     </md-content>
+		  <md-content layout-padding>
+		    <md-button ng-click="goToSettings()" class="md-primary">
+		      Settings
+		    </md-button>
+  	</md-content>
+		  <md-content layout-padding>
+		    <md-button ng-click="goToDashboard()" class="md-primary">
+		      Settings
+		    </md-button>
+  	</md-content>
+    <md-button ng-click="close()" class="md-primary">
+      Close Sidenav Right
+    </md-button>
+  </md-content>
+ --></md-sidenav>

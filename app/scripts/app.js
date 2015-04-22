@@ -45,35 +45,124 @@ angular
       })
       .state('home',{
         url: '/home',
-        templateUrl: '/views/home.html',
-        // views: {
-        controller: 'HomeCtrl',
-        resolve: {
-        // controller will not be loaded until $requireAuth resolves
-          "currentAuth": ["$firebaseAuth", function ($firebaseAuth) {
-            var ref = new Firebase('https://shining-torch-23.firebaseio.com/');
-            var authObj = $firebaseAuth(ref);
-            return authObj.$requireAuth();
-          }]
+        abstract: true,
+        views: {
+          'header': {
+            templateUrl: '/views/toolbar_partial.html',
+            controller: 'ToolBarCtrl',
+            resolve: {
+            // controller will not be loaded until $requireAuth resolves
+              "currentAuth": ["$firebaseAuth", function ($firebaseAuth) {
+                var ref = new Firebase('https://shining-torch-23.firebaseio.com/');
+                var authObj = $firebaseAuth(ref);
+                return authObj.$requireAuth();
+              }]
+            }
+          }
         }
       })
-      .state('dashboard', {
-        url: 'dashboard',
-        parent: 'home',
-        templateUrl: '/views/test.html',
+      .state('home.dashboard', {
+        url: '/dashboard',
+        views: {
+          'container@': {
+            templateUrl: '/views/dashboard.html',
+            //should use separate controller
+            controller: 'ToolBarCtrl',
+            resolve: {
+            // controller will not be loaded until $requireAuth resolves
+              "currentAuth": ["$firebaseAuth", function ($firebaseAuth) {
+                var ref = new Firebase('https://shining-torch-23.firebaseio.com/');
+                var authObj = $firebaseAuth(ref);
+                return authObj.$requireAuth();
+              }]
+            }
+          }
+        }
       })
-      .state('settings', {
+      .state('home.profile', {
+        url: '/profile',
+        views: {
+          'container@': {
+            templateUrl: '/views/profile.html',
+            controller: 'ToolBarCtrl',
+            resolve: {
+            // controller will not be loaded until $requireAuth resolves
+              "currentAuth": ["$firebaseAuth", function ($firebaseAuth) {
+                var ref = new Firebase('https://shining-torch-23.firebaseio.com/');
+                var authObj = $firebaseAuth(ref);
+                return authObj.$requireAuth();
+              }]
+            }
+          }
+        }
+      })
+      .state('home.friends', {
+        url: '/friends',
+        views: {
+          'container@': {
+            templateUrl: '/views/friends.html',
+            controller: 'ToolBarCtrl',
+            resolve: {
+            // controller will not be loaded until $requireAuth resolves
+              "currentAuth": ["$firebaseAuth", function ($firebaseAuth) {
+                var ref = new Firebase('https://shining-torch-23.firebaseio.com/');
+                var authObj = $firebaseAuth(ref);
+                return authObj.$requireAuth();
+              }]
+            }
+          }
+        }
+      })
+      .state('home.settings', {
         url: '/settings',
-        templateUrl: 'views/settings.html',
-        controller: 'SettingsCtrl',
-        resolve: {
-        // controller will not be loaded until $requireAuth resolves
-          "currentAuth": ["$firebaseAuth", function ($firebaseAuth) {
-                  var ref = new Firebase('https://shining-torch-23.firebaseio.com/');
-                  var authObj = $firebaseAuth(ref);
-                  return authObj.$requireAuth();
-              }
-          ]
+        views: {
+          'container@': {
+            templateUrl: 'views/settings.html',
+            controller: 'SettingsCtrl',
+            resolve: {
+            // controller will not be loaded until $requireAuth resolves
+              "currentAuth": ["$firebaseAuth", function ($firebaseAuth) {
+                      var ref = new Firebase('https://shining-torch-23.firebaseio.com/');
+                      var authObj = $firebaseAuth(ref);
+                      return authObj.$requireAuth();
+                  }
+              ]
+            }
+          }
+        }
+      })
+      .state('home.photos', {
+        url: '/photos',
+        views: {
+          'container@': {
+            templateUrl: '/views/photos.html',
+            controller: 'ToolBarCtrl',
+            resolve: {
+            // controller will not be loaded until $requireAuth resolves
+              "currentAuth": ["$firebaseAuth", function ($firebaseAuth) {
+                var ref = new Firebase('https://shining-torch-23.firebaseio.com/');
+                var authObj = $firebaseAuth(ref);
+                return authObj.$requireAuth();
+              }]
+            }
+          }
+        }
+      })
+      .state('home.messages', {
+        url: '/messages',
+        views: {
+          'container@': {
+            templateUrl: '/views/messages.html',
+            controller: 'ToolBarCtrl',
+            resolve: {
+            // controller will not be loaded until $requireAuth resolves
+              "currentAuth": ["$firebaseAuth", function ($firebaseAuth) {
+                var ref = new Firebase('https://shining-torch-23.firebaseio.com/');
+                var authObj = $firebaseAuth(ref);
+                return authObj.$requireAuth();
+              }]
+            }
+          }
         }
       })
   });
