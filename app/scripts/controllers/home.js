@@ -15,30 +15,29 @@ angular.module('projectsApp')
     var authData = authObj.$getAuth();
 
     var getProvision = function(callback) {
-      var provision = provisionSettings.getUserProvision();
+      var provision = provisionSettings.getUserProvision(callback);
+    };
+
+    var showAboutForm = function(provision) {
       if (provision == '0') {
-        callback(provision);
+        $mdDialog.show({
+          controller: MoreInfoController,
+          templateUrl: 'views/about.tmpl.html'
+        })
+        function MoreInfoController($scope, $mdDialog) {
+          $scope.hideMoreInfo = function() {
+            $mdDialog.hide();
+            provisionSettings.setUserProvision();
+          };
+          $scope.cancel = function() {
+            $mdDialog.cancel();
+            provisionSettings.setUserProvision();
+          };
+        }
       }
     };
 
-    var showAboutForm = function() {
-      $mdDialog.show({
-        controller: MoreInfoController,
-        templateUrl: 'views/about.tmpl.html'
-      })
-      function MoreInfoController($scope, $mdDialog) {
-        $scope.hideMoreInfo = function() {
-          $mdDialog.hideMoreInfo();
-          provisionSettings.setUserProvision();
-        };
-        $scope.cancel = function() {
-          $mdDialog.cancel();
-          provisionSettings.setUserProvision();
-        };
-      }
-    };
-
-    getProvision(showAboutForm());
+    getProvision(showAboutForm);
 
     if (authData) {
       console.log("Logged in as:", authData.uid);

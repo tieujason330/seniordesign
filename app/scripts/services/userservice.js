@@ -32,10 +32,11 @@ angular.module('projectsApp')
     var authData = authObj.$getAuth();
 
     return {
-      getUserProvision: function() {
+      getUserProvision: function(callback) {
         var provisionedData = ref.child('users').child(authData.uid).child('provisioned').once('value', function (snapshot) {
           var val = snapshot.val();
           //console.log(val);
+          callback(val);
           return val;
         });
       },
