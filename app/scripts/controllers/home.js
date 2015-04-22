@@ -9,32 +9,45 @@
  * */
 
 angular.module('projectsApp')
-  .controller('HomeCtrl', function ($scope, $firebaseAuth, $location, $timeout, $mdSidenav, $log, provisionSettings) {
-    var provision = provisionSettings.getUserProvision();
-    console.log(provision);
+  .controller('HomeCtrl', function ($scope, $firebaseAuth, $location, $timeout, $mdSidenav, $log, provisionSettings, $mdDialog) {
     var ref = new Firebase('https://shining-torch-23.firebaseio.com/');
     var authObj = $firebaseAuth(ref);
     var authData = authObj.$getAuth();
 
-    console.log('not working');
-    if (provision == '0') {
-      console.log('working');
-      var showAdvanced = function() {
-          $mdDialog.show({
-            templateUrl: 'views/about.tmpl.html',
-          })
-          .then(function(answer) {
-            $scope.alert = 'You said the information was "' + answer + '".';
-          }, function() {
-            $scope.alert = 'You cancelled the dialog.';
-          });
-      };
-    }
+    var getProvision = function(callback) {
+      var provision = provisionSettings.getUserProvision();
+      if (provision == '0') {
+        callback(provision);
+      }
+    };
+
+    var showAboutForm = function() {
+      $mdDialog.show({
+        controller: MoreInfoController,
+        templateUrl: 'views/about.tmpl.html'
+      })
+      function MoreInfoController($scope, $mdDialog) {
+        $scope.hideMoreInfo = function() {
+          $mdDialog.hideMoreInfo();
+          provisionSettings.setUserProvision();
+        };
+        $scope.cancel = function() {
+          $mdDialog.cancel();
+          provisionSettings.setUserProvision();
+        };
+      }
+    };
+
+    getProvision(showAboutForm());
 
     if (authData) {
       console.log("Logged in as:", authData.uid);
     } else {
       console.log("Logged out");
+    }
+
+    $scope.updateProvision = function() {
+      provisionSettings.setUserProvision();
     }
 
     $scope.toggleLeft = function() {
@@ -60,9 +73,5 @@ angular.module('projectsApp')
 
     $scope.goToSettings = function() {
       changeLocation('/settings')
-    }
-
-    $scope.updateProvision = function() {
-      provisionSettings.setUserProvision();
     }
 });

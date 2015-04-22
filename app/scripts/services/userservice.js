@@ -35,7 +35,7 @@ angular.module('projectsApp')
       getUserProvision: function() {
         var provisionedData = ref.child('users').child(authData.uid).child('provisioned').once('value', function (snapshot) {
           var val = snapshot.val();
-          console.log(val);
+          //console.log(val);
           return val;
         });
       },
