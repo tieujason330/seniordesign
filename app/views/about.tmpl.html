@@ -4,17 +4,21 @@
       <form name="moreInfoForm" novalidate>
         <md-input-container flex>
           <label>Birthday</label>
+          <!--insert date picker-->
         </md-input-container>
         <md-input-container flex>
           <label>Name of Current School</label>
+          <input name="school" ng-model="user.school">
         </md-input-container>
         <md-input-container flex>
           <label>Favorite Movies</label>
+          <input name="movies" ng-model="user.movies">
         </md-input-container>
         <md-input-container flex>
           <label>Favorite Music</label>
+          <input name="music" ng-model="user.music">
         </md-input-container>
-        <!--Upload a profile picture -->
+          <!--Upload a profile picture -->
         <section layout="row" layout-sm="column" layout-align="center center">
           <md-button ng-click="#">
             Add a Profile Picture
@@ -25,10 +29,10 @@
   </md-content>
   <div class="md-actions" layout="row">
     <span flex></span>
-    <md-button ng-click="hideMoreInfo()">
+    <md-button ng-click="cancel()">
       Maybe later
     </md-button>
-    <md-button ng-click="hideMoreInfo()" class="md-primary">
+    <md-button ng-click="hideMoreInfo(user)" class="md-primary">
       Save
     </md-button>
   </div>
