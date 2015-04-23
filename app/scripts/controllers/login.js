@@ -74,7 +74,7 @@ angular.module('projectsApp')
             password: user.password
         }).then(function (authData) {
           console.log('Logged in as:' + authData.uid);
-          $state.go('home');
+          $state.go('home.dashboard');
           //changeLocation('/home', true);
         }).catch(function (error) {
           var msg = 'Invalid E-mail or password. Please try again';
@@ -89,7 +89,7 @@ angular.module('projectsApp')
           console.log('Login Failed!', error);
         } else {
           console.log('Authenticated successfully with payload:', authData);
-          console.log('FacebookName: ' + authData.facebook.displayName  + ' ID: ' + authData.facebook.id + 
+          console.log('FacebookName: ' + authData.facebook.displayName  + ' ID: ' + authData.facebook.id +
                       ' Email: ' + authData.facebook.email);
 
         /*FB.api(
