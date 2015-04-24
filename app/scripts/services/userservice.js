@@ -91,7 +91,16 @@ angular.module('projectsApp')
       };
       $scope.cancel = function() {
         $mdDialog.cancel();
-        setUserProvision();
+      };
+      $scope.uploadImage = function(image) {
+        imageUpload = {
+          data: image.data,
+          thumbnail: image.thumbnail,
+          name: image.filename
+        };
+        ref.child('users').child(authData.uid).update({
+        });
+        console.log('uploading image...');
       };
     }
 

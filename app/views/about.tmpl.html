@@ -18,11 +18,14 @@
           <label>Favorite Music</label>
           <input name="music" ng-model="user.music">
         </md-input-container>
-          <!--Upload a profile picture -->
+        <!--Upload a profile picture -->
         <section layout="row" layout-sm="column" layout-align="center center">
-          <md-button>
-            Add a Profile Picture
-          </md-button>
+          <form name="profilePicForm">
+            <input type="file" name="image"/>
+            <md-button type="submit" ng-click="uploadImage(image)">
+              Add Profile Picture
+            </md-button>
+          </form>
         </section>
       </form>
     </div>
