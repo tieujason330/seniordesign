@@ -22,28 +22,7 @@ Do not use controllers to:
 
 **/
 angular.module('projectsApp')
-  .controller('LoginCtrl', function ($scope, $location, $firebaseAuth, firebaseService, $mdDialog, alertService) {
-	 $scope.data = {
-	      selectedIndex : 0,
-	      secondLocked : true,
-	      secondLabel : 'Item Two'
-	};
-
-
-    $scope.next = function() {
-      $scope.data.selectedIndex = Math.min($scope.data.selectedIndex + 1, 2) ;
-    };
-
-    $scope.previous = function() {
-      $scope.data.selectedIndex = Math.max($scope.data.selectedIndex - 1, 0);
-    };
-
-    $scope.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
-
+  .controller('LoginCtrl', function ($scope, $location, $state, $firebaseAuth, firebaseService, $mdDialog, alertService) {
     var ref = new Firebase(firebaseService.getFirebBaseURL());
     var auth = $firebaseAuth(ref);
     //registers users on firebase
@@ -60,18 +39,15 @@ angular.module('projectsApp')
           //stores other registration information at user endpoint
           var title= 'Welcome';
           var msg = 'The new user account has been successfully created.';
-          alertService.show(title,msg,"");
+          alertService.show(title,msg,'');
           ref.child('users').child(userData.uid).set({
               email: user.email,
               firstName: user.firstName,
               lastName: user.lastName,
               provisioned: 0
           });
-
-
-
         }).catch(function (error) {
-          if(error.code == "EMAIL_TAKEN")
+          if(error.code == 'EMAIL_TAKEN')
           {
               var title= 'Error Creating Account';
               var msg = 'The new user account cannot be created because the email is already in use.';
@@ -79,8 +55,7 @@ angular.module('projectsApp')
           }
         });
       }
-
-    };
+    }
 
     var changeLocation = function(url, forceReload) {
       $location.path(url);
@@ -99,7 +74,8 @@ angular.module('projectsApp')
             password: user.password
         }).then(function (authData) {
           console.log('Logged in as:' + authData.uid);
-          changeLocation('/home', true);
+          $state.go('home.dashboard');
+          //changeLocation('/home', true);
         }).catch(function (error) {
           var msg = 'Invalid E-mail or password. Please try again';
           alertService.show(msg,ev);
@@ -107,12 +83,24 @@ angular.module('projectsApp')
     };
 
  $scope.registerFB = function() {
-      ref.authWithOAuthPopup("facebook", function(error, authData) {
+      ref.authWithOAuthPopup('facebook', function(error, authData) {
+        scope: 'email,user_likes' // permission requests
         if (error) {
-          console.log("Login Failed!", error);
+          console.log('Login Failed!', error);
         } else {
-          console.log("Authenticated successfully with payload:", authData);
-          //console.log("FacebookName: " + authData.facebook.displayName  + " ID: " + authData.facebook.id + " Email: " + authData.facebook.email);
+          console.log('Authenticated successfully with payload:', authData);
+          console.log('FacebookName: ' + authData.facebook.displayName  + ' ID: ' + authData.facebook.id +
+                      ' Email: ' + authData.facebook.email);
+
+        /*FB.api(
+            "/{user-id}",
+            function (response) {
+              if (response && !response.error) {
+                console.log(response);
+              }
+            }
+        );*/
+
           changeLocation('/home', true);
         }
       }, {
@@ -121,15 +109,25 @@ angular.module('projectsApp')
     };
 
     $scope.registerGoogle = function() {
-      ref.authWithOAuthPopup("google", function(error, authData) {
+      ref.authWithOAuthPopup('google', function(error, authData) {
         if (error) {
-          console.log("Login Failed!", error);
+          console.log('Login Failed!', error);
         } else {
-          console.log("Authenticated successfully with payload:", authData);
+          console.log('Authenticated successfully with payload:', authData);
+          console.log(authData.uid);
+
+          ref.child('users').child(authData.uid).set({
+              email: authData.google.email,
+              firstName: authData.google.cachedUserProfile.given_name,
+              lastName: authData.google.cachedUserProfile.family_name,
+              picture: authData.google.cachedUserProfile.picture
+          });
           changeLocation('/home', true);
         }
-      });
-    };
+      }, {
+          scope: "email" // permission requests
+      }
+      )};
 
     $scope.registerTwitter = function() {
       ref.authWithOAuthPopup("twitter", function(error, authData) {
