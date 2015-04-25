@@ -20,6 +20,7 @@ angular
     'firebase',
     'ui.router',
     'angularUtils.directives.dirPagination'
+    'flow'
   ])
   .run(["$rootScope", "$location", function($rootScope, $location, alertService) {
     $rootScope.$on("$routeChangeError", function(event, next, previous, error) {
@@ -76,6 +77,9 @@ angular
               }]
             }
           }
+        },
+        onEnter: function(provisionSettings) {
+          provisionSettings.getUserProvision(provisionSettings.getMoreUserInfo);
         }
       })
       .state('home.profile', {
