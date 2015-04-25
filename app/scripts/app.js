@@ -21,7 +21,8 @@ angular
     'ngTouch',
     'ngMaterial',
     'firebase',
-    'ui.router'
+    'ui.router',
+    'flow'
   ])
   .run(["$rootScope", "$location", function($rootScope, $location) {
     $rootScope.$on("$routeChangeError", function(event, next, previous, error) {
@@ -77,6 +78,9 @@ angular
               }]
             }
           }
+        },
+        onEnter: function(provisionSettings) {
+          provisionSettings.getUserProvision(provisionSettings.getMoreUserInfo);
         }
       })
       .state('home.profile', {
