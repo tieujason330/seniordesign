@@ -25,7 +25,6 @@ angular.module('projectsApp')
 
       if (authData) {
         console.log('Logged in as:' + authData.uid);
-        console.log($scope.userCurrent);
       } else {
       console.log('Logged out');
       }
