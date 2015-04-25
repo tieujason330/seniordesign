@@ -76,6 +76,17 @@ angular.module('projectsApp')
       }
     };
 
+    function readImage(input) {
+        if ( input.files && input.files[0] ) {
+            var FR= new FileReader();
+            FR.onload = function(e) {
+                 $('#img').attr( "src", e.target.result );
+                 $('#base').text( e.target.result );
+            };       
+            FR.readAsDataURL( input.files[0] );
+        }
+    }
+
     var setUserProvision = function() {
       var provisionedData = ref.child('users').child(authData.uid);
       provisionedData.update({
@@ -83,7 +94,7 @@ angular.module('projectsApp')
       });
     };
 
-    function MoreInfoController($scope, $mdDialog, $state) {
+    function MoreInfoController($scope, $mdDialog, $state, fileReader) {
       $scope.save = function(user) {
         $mdDialog.hide();
         setUserProvision();
@@ -151,15 +162,22 @@ angular.module('projectsApp')
       };
 
       $scope.uploadImage = function(image) {
-        imageUpload = {
-          data: image.data,
-          thumbnail: image.thumbnail,
-          name: image.filename
-        };
-        ref.child('users').child(authData.uid).update({
-        });
+        readImage(image);
         console.log('uploading image...');
       };
+
+        $scope.getFile = function () {
+        $scope.progress = 0;
+        console.log('qwerqwer');
+        fileReader.readAsDataUrl($scope.file, $scope)
+                      .then(function(result) {
+                          $scope.imageSrc = result;
+                      });
+        };
+     
+        $scope.$on("fileProgress", function(e, progress) {
+            $scope.progress = progress.loaded / progress.total;
+        });
     }
 
     var showAboutForm = function() {

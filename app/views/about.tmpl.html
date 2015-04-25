@@ -4,8 +4,9 @@
       <form name="moreInfoForm" novalidate>
         <md-input-container flex>
           <label>Birthday</label>
-          <!--insert date picker-->
+          <input type="date" ng-model="user.birthday"> 
         </md-input-container>
+
         <md-input-container flex>
           <label>Name of Current School</label>
           <input name="school" ng-model="user.school">
@@ -21,10 +22,40 @@
         <!--Upload a profile picture -->
         <section layout="row" layout-sm="column" layout-align="center center">
           <form name="profilePicForm">
-            <input type="file" name="image"/>
-            <md-button type="submit" ng-click="uploadImage(image)">
-              Add Profile Picture
-            </md-button>
+
+        <div flow-init flow-name="uploader.flow" class="container">
+          <div>
+            <!--
+               -<div class="thumbnail" ng-hide="$flow.files.length">
+               -  <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&text=no+image" />
+               -</div>
+               -<div class="thumbnail" ng-show="$flow.files.length">
+               -  <img ng-model="imag1" flow-img="$flow.files[0]" />
+               -</div>
+               -<div>
+               -  <input type="file" flow-btn flow-attrs="{accept:'image/*'}">
+               -  <a href="#" class="btn btn-danger" ng-show="$flow.files.length"
+               -     ng-click="$flow.cancel()">
+               -    Remove
+               -  </a>
+               -</div>
+               -->
+
+           <form>
+                <input type="file" ng-file-select="onFileSelect($files)" >
+           </form>
+           <b>Preview:</b><br />
+           <i ng-hide="imageSrc">No image choosed</i>
+           <img ng-src="{{imageSrc}}" /><br/>
+           <b>Progress:</b>
+          <progress value="{{progress}}"></progress>
+
+            <p>
+              Only PNG,GIF,JPG files allowed.
+            </p>
+          </div>
+        </div>
+
           </form>
         </section>
       </form>
@@ -40,7 +71,7 @@
     <md-button ng-click="cancel()">
       Maybe later
     </md-button>
-    <md-button ng-click="save(user)" class="md-primary">
+    <md-button ng-click="save(user, $flow)" class="md-primary">
       Save
     </md-button>
   </div>
