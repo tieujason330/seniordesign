@@ -1,8 +1,48 @@
-<div layout="column" flex layout-fill ng-controller='ToolBarCtrl'>
+<div layout="column" flex layout-fill ng-controller='UsersController'>
 
 <div class="jumbotron">
 <h1 class="md-display-3">Friends</h1>
   <p><a class="btn btn-lg btn-success" ng-href="#/">Splendid!<span class="glyphicon glyphicon-ok"></span></a></p>
 </div>
 
+  <div class="row">
+  <br>
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="col-xs-4">
+        <h3>Meals Page: {{ currentPage }}</h3>
+      </div>
+      <div class="col-xs-4">
+        <label for="search">Search:</label>
+        <input ng-model="q" id="search" class="form-control" placeholder="Filter text">
+      </div>
+      <div class="col-xs-4">
+        <label for="search">items per page:</label>
+        <input type="number" min="1" max="100" class="form-control" ng-model="pageSize">
+      </div>
+    </div>
+
+      <md-content dir-paginate="meal in meals | filter:q | itemsPerPage: pageSize" current-page="currentPage">
+        <md-card>
+          <!-- <img src="img/washedout.png" class="md-card-image" alt="Washed Out"> -->
+          <md-card-content>
+            <h2 class="md-title">{{meal}}</h2>
+            <p>
+            </p>
+          </md-card-content>
+          <md-action-bar layout="row">
+            <md-button>Action 1</md-button>
+            <md-button>Action 2</md-button>
+          </md-action-bar>
+        </md-card>
+      </md-content>
+    </div>
+  </div>
+
+
+  <div ng-controller="OtherController" class="other-controller">
+    <div class="text-center">
+      <dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)" template-url="views/dirPagination.tpl.html"></dir-pagination-controls>
+    </div>
+  </div>
 </div>

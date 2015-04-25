@@ -8,7 +8,7 @@
  * Controller of the projectsApp
  */
 angular.module('projectsApp')
-  .controller('SettingsCtrl', 
+  .controller('SettingsCtrl',
     function ($scope, $mdDialog, firebaseService, userService, $firebaseAuth) {
       var ref = new Firebase(firebaseService.getFirebBaseURL());
       var authObj = $firebaseAuth(ref);
@@ -22,26 +22,6 @@ angular.module('projectsApp')
       $scope.userCurrent = userService.getCurrentUser();
       $scope.user;
       $scope.alert = '';
-
-      if (authData) {
-        console.log('Logged in as:' + authData.uid);
-        console.log($scope.userCurrent);
-      } else {
-      console.log('Logged out');
-      }
-
-
-    function DialogController($scope, $mdDialog) {
-      $scope.hide = function() {
-        $mdDialog.hide();
-      };
-      $scope.enter = function(input) {
-        $mdDialog.hide(input);
-      };
-      $scope.cancel = function() {
-        $mdDialog.cancel();
-      };
-    }
 
     $scope.emailConfirm = function(userMail, oldMail) {
       // Appending dialog to document.body to cover sidenav in docs app

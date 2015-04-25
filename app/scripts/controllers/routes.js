@@ -29,18 +29,16 @@ angular.module('projectsApp')
   })
 
 angular.module('projectsApp')
-  .controller('ToolBarCtrl', function ($scope, $firebaseAuth, $location, $timeout, $mdSidenav, $log, $state ) {
-    console.log('I am in home controller');
-
+  .controller('ToolBarCtrl', function ($scope, $firebaseAuth, $location, $timeout, $mdSidenav, $log, $state, searchService ) {
     var ref = new Firebase('https://shining-torch-23.firebaseio.com/');
-    var authObj = $firebaseAuth(ref);
-    var authData = authObj.$getAuth();
+    // var authObj = $firebaseAuth(ref);
+    // var authData = authObj.$getAuth();
 
-    if (authData) {
-      console.log("Logged in as:", authData.uid);
-    } else {
-      console.log("Logged out");
-    }
+    // if (authData) {
+    //   console.log("Logged in as:", authData.uid);
+    // } else {
+    //   console.log("Logged out");
+    // }
 
     $scope.toggleRight = buildToggler('right');
     $scope.toggleLeft = buildToggler('left');
@@ -56,6 +54,11 @@ angular.module('projectsApp')
           });
       }
     }
+
+    $scope.goToSearch = function(queryString) {
+      searchService.setSearchQuery(queryString);
+      $state.go('home.search');
+    };
 
     $scope.goToProfile = function() {
       $state.go('home.profile');

@@ -16,7 +16,6 @@ angular.module('projectsApp')
         user = val;
       },
       getCurrentUser: function() {
-        console.log(user);
         return user;
       },
       updateKey: function(key, value){
@@ -24,11 +23,9 @@ angular.module('projectsApp')
         return user;
       },
       getUserProvisionSetting: function() {
-        console.log(user);
         return user;
       },
       setUserProvisionSetting: function() {
-        console.log(user);
         return user;
       }
     };

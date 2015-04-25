@@ -26,13 +26,6 @@
       <div id="content" ui-view> </div>
       <div ui-view="header"></div>
       <div style="margin: 15px" ui-view="container"></div>
-  <!--
-    <div class="footer">
-      <div class="container flex" layout-align="start end">
-        <p><span class="glyphicon glyphicon-heart" style="right"></span> from the Riverside Pals Team</p>
-      </div>
-    </div>
-  -->
 
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -63,6 +56,7 @@
     <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="bower_components/firebase/firebase.js"></script>
     <script src="bower_components/angularfire/dist/angularfire.js"></script>
+    <script src="bower_components/angular-utils-pagination/dirPagination.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -71,9 +65,12 @@
     <script src="scripts/controllers/login.js"></script>
     <script src="scripts/controllers/settings.js"></script>
     <script src="scripts/controllers/routes.js"></script>
+    <script src="scripts/controllers/search.js"></script>
+    <script src="scripts/controllers/friends.js"></script>
     <script src="scripts/services/myservice.js"></script>
     <script src="scripts/services/userservice.js"></script>
     <script src="scripts/services/alertservice.js"></script>
+    <script src="scripts/services/searchservice.js"></script>
 
         <!-- endbuild -->
     </body>
