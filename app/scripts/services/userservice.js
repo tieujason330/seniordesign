@@ -22,6 +22,7 @@ angular.module('projectsApp')
         user.key = value;
         return user;
       }
+    }
   })
   .factory('provisionSettings', function ($firebaseAuth, $mdDialog) {
   	var firebaseURL = 'https://shining-torch-23.firebaseio.com/';
@@ -32,8 +33,8 @@ angular.module('projectsApp')
     var saveMoreSettings = function(user) {
       console.log('saving more info...');
       if(user !== undefined ){
-        console.log(user);  
-        // update the user with additional info that was submitted  
+        console.log(user);
+        // update the user with additional info that was submitted
         if(user.birthday !== undefined){
           ref.child('users').child(authData.uid).update({
             birthday: user.birthday
@@ -72,7 +73,7 @@ angular.module('projectsApp')
             FR.onload = function(e) {
                  $('#img').attr( "src", e.target.result );
                  $('#base').text( e.target.result );
-            };       
+            };
             FR.readAsDataURL( input.files[0] );
         }
     }
@@ -106,7 +107,7 @@ angular.module('projectsApp')
                           $scope.imageSrc = result;
                       });
         };
-     
+
         $scope.$on("fileProgress", function(e, progress) {
             $scope.progress = progress.loaded / progress.total;
         });

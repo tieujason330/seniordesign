@@ -19,7 +19,7 @@ angular
     'ngMaterial',
     'firebase',
     'ui.router',
-    'angularUtils.directives.dirPagination'
+    'angularUtils.directives.dirPagination',
     'flow'
   ])
   .run(["$rootScope", "$location", function($rootScope, $location, alertService) {
