@@ -48,12 +48,14 @@ angular.module('projectsApp')
               provisioned: 0
           });
         }).catch(function (error) {
+
           if(error.code == 'EMAIL_TAKEN')
           {
               var title= 'Error Creating Account';
               var msg = 'The new user account cannot be created because the email is already in use.';
               alertService.show(title,msg,"");
           }
+
         });
       }
     }
@@ -82,14 +84,6 @@ angular.module('projectsApp')
           alertService.show(msg,ev);
         });
     };
-
-/*
-    $scope.me = function() {
-      Facebook.api('/me', function(response) {
-        $scope.user = response;
-      });
-    };*/
-
 
 
  $scope.registerFB = function() {
@@ -156,19 +150,21 @@ angular.module('projectsApp')
         if (error) {
           console.log("Login Failed!", error);
         } else {
-          console.log("Authenticated successfully with payload:", authData);
 
-          console.log("TwitterFirstName: " + authData.twitter.cachedUserProfile.name + 
-            " TwiterLastName: " + authData.twitter.cachedUserProfile.family_name +  // **** SOMEHOW GET LAST NAME ****
-            " TwitterEmail: " + authData.twitter.cachedUserProfile.screen_name + // **** SOMEHOW GET EMAIL ****
-            " TwitterPicture: " + authData.twitter.cachedUserProfile.profile_image_url);
+          var name = authData.twitter.cachedUserProfile.name; name = name.split(" ");
+          var firstName = name[0];
+          var lastName = name[name.length-1];
+          var aboutMe = authData.twitter.cachedUserProfile.description;
+          var twitterEmail = authData.twitter.cachedUserProfile.screen_name + "@ucrpal.com";
+          var profileImage = authData.twitter.cachedUserProfile.profile_image_url;
 
-         /* ref.child('users').child(authData.uid).set({
-              email: // EMAIL ,
-              firstName: authData.twitter.cachedUserProfile.name,
-              lastName: // LAST NAME ,
-              picture: authData.twitter.cachedUserProfile.profile_image_url
-          });*/
+         
+         ref.child('users').child(authData.uid).set({
+              email:  twitterEmail,
+              firstName: firstName,
+              lastName: lastName,
+              picture: profileImage
+          });        
 
           changeLocation('/home', true);
         }
