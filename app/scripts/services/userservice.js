@@ -30,11 +30,11 @@ angular.module('projectsApp')
     var authObj = $firebaseAuth(ref);
     var authData = authObj.$getAuth();
 
-    var saveMoreSettings = function(user) {
+    var saveMoreSettings = function(user, imageSrc) {
       console.log('saving more info...');
-      if(user !== undefined ){
-        console.log(user);
-        // update the user with additional info that was submitted
+      if(user !== undefined){
+        console.log(user);  
+        // update the user with additional info that was submitted  
         if(user.birthday !== undefined){
           ref.child('users').child(authData.uid).update({
             birthday: user.birthday
@@ -58,12 +58,12 @@ angular.module('projectsApp')
             music: user.music
           });
         }
+      }
 
-        if(user.picture !== undefined){
+      if(imageSrc !== undefined){
           ref.child('users').child(authData.uid).update({
-            picture: user.picture
+            profilePic: imageSrc
           });
-        }
       }
     };
 
@@ -86,31 +86,26 @@ angular.module('projectsApp')
     };
 
     function MoreInfoController($scope, $mdDialog, fileReader) {
-      $scope.save = function(user) {
+      $scope.save = function(user, imageSrc) {
         $mdDialog.hide();
         setUserProvision();
-        saveMoreSettings(user);
+        saveMoreSettings(user, imageSrc);
       };
       $scope.cancel = function() {
         $mdDialog.cancel();
       };
-      $scope.uploadImage = function(image) {
-        readImage(image);
-        console.log('uploading image...');
+
+      $scope.getFile = function (file) {
+      $scope.progress = 0;
+      fileReader.readAsDataUrl(file, $scope)
+                    .then(function(result) {
+                        $scope.imageSrc = result;
+                    });
       };
-
-        $scope.getFile = function () {
-        $scope.progress = 0;
-        console.log('qwerqwer');
-        fileReader.readAsDataUrl($scope.file, $scope)
-                      .then(function(result) {
-                          $scope.imageSrc = result;
-                      });
-        };
-
-        $scope.$on("fileProgress", function(e, progress) {
-            $scope.progress = progress.loaded / progress.total;
-        });
+   
+      $scope.$on("fileProgress", function(e, progress) {
+          $scope.progress = progress.loaded / progress.total;
+      });
     }
 
     var showAboutForm = function() {

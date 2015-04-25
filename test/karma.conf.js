@@ -35,7 +35,6 @@ module.exports = function(config) {
       'bower_components/firebase/firebase.js',
       'bower_components/angularfire/dist/angularfire.js',
       'bower_components/angular-utils-pagination/dirPagination.js',
-      'bower_components/md-date-time/dist/md-date-time.js',
       'bower_components/flow.js/dist/flow.js',
       'bower_components/ng-flow/dist/ng-flow.js',
       'bower_components/angular-mocks/angular-mocks.js',
