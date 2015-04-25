@@ -22,7 +22,8 @@ Do not use controllers to:
 
 **/
 angular.module('projectsApp')
-  .controller('LoginCtrl', function ($scope, $location, $state, $firebaseAuth, firebaseService, $mdDialog, alertService) {
+
+  .controller('LoginCtrl', function ($scope, $location, $state, $firebaseAuth, firebaseService, $mdDialog, alertService, Facebook) {
     var ref = new Firebase(firebaseService.getFirebBaseURL());
     var auth = $firebaseAuth(ref);
     //registers users on firebase
@@ -82,6 +83,14 @@ angular.module('projectsApp')
         });
     };
 
+/*
+    $scope.me = function() {
+      Facebook.api('/me', function(response) {
+        $scope.user = response;
+      });
+    };*/
+
+
 
  $scope.registerFB = function() {
       ref.authWithOAuthPopup('facebook', function(error, authData) {
@@ -100,10 +109,24 @@ angular.module('projectsApp')
           });
 
 
+
+         Facebook.api('/me', function(response) {
+            $scope.user = response;
+            console.log( "FirstName: " + response.first_name + 
+              " LastName: " + response.last_name + 
+              " Gender: " + response.gender + 
+              " Birthday: " + response.birthday + 
+              " SchoolName: " + response.education[1].school.name + 
+              " Concentration: " + response.education[1].concentration[0].name + 
+              " Year: " + response.education[1].year.name + 
+              " FavoriteTeam: " + response.favorite_teams[0].name);
+          });
+
+
           changeLocation('/home', true);
         }
       }, {
-          scope: "email,user_likes" // permission requests
+          scope: "user_likes,email,user_birthday,public_profile,user_education_history,user_about_me" // permission requests
         });
     };
 
@@ -136,7 +159,7 @@ angular.module('projectsApp')
           console.log("Authenticated successfully with payload:", authData);
 
           console.log("TwitterFirstName: " + authData.twitter.cachedUserProfile.name + 
-            " TwiterLastName: " + authData.twitter.cachedUserProfile.familys_name +  // **** SOMEHOW GET LAST NAME ****
+            " TwiterLastName: " + authData.twitter.cachedUserProfile.family_name +  // **** SOMEHOW GET LAST NAME ****
             " TwitterEmail: " + authData.twitter.cachedUserProfile.screen_name + // **** SOMEHOW GET EMAIL ****
             " TwitterPicture: " + authData.twitter.cachedUserProfile.profile_image_url);
 

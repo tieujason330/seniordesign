@@ -21,7 +21,8 @@ angular
     'ngTouch',
     'ngMaterial',
     'firebase',
-    'ui.router'
+    'ui.router',
+    'facebook'
   ])
   .run(["$rootScope", "$location", function($rootScope, $location) {
     $rootScope.$on("$routeChangeError", function(event, next, previous, error) {
@@ -34,7 +35,7 @@ angular
       }
     });
   }])
-  .config(function ($urlRouterProvider, $stateProvider,  $mdThemingProvider) {
+  .config(function ($urlRouterProvider, $stateProvider,  $mdThemingProvider, FacebookProvider) {
     $mdThemingProvider.theme('default');//.light();//.dark();
     $urlRouterProvider.otherwise('/');
     $stateProvider
@@ -76,6 +77,7 @@ angular
           ]
         }
       })
+      FacebookProvider.init('1571917669752119');
   });
 // themes colors:
 // Limit your selection of colors by choosing three color hues from the primary palette
