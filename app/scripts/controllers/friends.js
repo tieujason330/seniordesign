@@ -22,6 +22,7 @@ Do not use controllers to:
 **/
 angular.module('projectsApp')
 .controller('UsersController', function($scope, $http) {
+
   $scope.currentPage = 1;
   $scope.pageSize = 20;
   $scope.meals = [];
