@@ -39,6 +39,50 @@ angular.module('projectsApp')
     var authObj = $firebaseAuth(ref);
     var authData = authObj.$getAuth();
 
+
+   var loginFB = function() {
+        ref.authWithOAuthPopup('facebook', function(error, authData) {
+          if (error) {
+            console.log('Login Failed!', error);
+          } else {
+
+            console.log("Authenticated successfully with payload:", authData);
+
+
+           Facebook.api('/me', function(response) {
+              $scope.user = response;
+              console.log("FirstName: " + response.first_name + 
+                " LastName: " + response.last_name + 
+                " Gender: " + response.gender + 
+                " Birthday: " + response.birthday + 
+                " SchoolName: " + response.education[1].school.name + 
+                " Concentration: " + response.education[1].concentration[0].name + 
+                " Year: " + response.education[1].year.name + 
+                " FavoriteTeam: " + response.favorite_teams[0].name);
+
+               var userInfo = {
+                  firstName: response.first_name,
+                  lastName: response.last_name,
+                  birthday: response.birthday,
+                  schoolName: response.education[1].school.name,
+                  concentration: response.education[1].concentration[0].name,
+                  schoolYear: response.education[1].year.name,
+                  favoriteTeam: response.favorite_teams[0].name,
+                  gender: response.gender,
+               };
+
+            });
+            return userInfo;
+
+            changeLocation('/home', true);
+          }
+        }, {
+            scope: "user_likes,email,user_birthday,public_profile,user_education_history,user_about_me" // permission requests
+          });
+      };
+
+
+
     var saveMoreSettings = function(user, imageSrc) {
       console.log('saving more info...');
       if(user !== undefined){
