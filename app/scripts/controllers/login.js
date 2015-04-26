@@ -22,8 +22,7 @@ Do not use controllers to:
 
 **/
 angular.module('projectsApp')
-
-  .controller('LoginCtrl', function ($scope, $location, $state, $firebaseAuth, firebaseService, $mdDialog, alertService, Facebook) {
+  .controller('LoginCtrl', function ($scope, $location, $state, $firebaseAuth, firebaseService, $mdDialog, alertService, userService, Facebook) {
     var ref = new Firebase(firebaseService.getFirebBaseURL());
     var auth = $firebaseAuth(ref);
     //registers users on firebase
@@ -131,20 +130,21 @@ angular.module('projectsApp')
           console.log('Login Failed!', error);
         } else {
           console.log('Authenticated successfully with payload:', authData);
-          console.log(authData.uid);
 
           ref.child('users').child(authData.uid).set({
               email: authData.google.email,
               firstName: authData.google.cachedUserProfile.given_name,
               lastName: authData.google.cachedUserProfile.family_name,
+              provisioned: 0,
               picture: authData.google.cachedUserProfile.picture
           });
-          changeLocation('/home', true);
+          $state.go('home.dashboard');
         }
       }, {
-          scope: "email" // permission requests
-      }
-      )};
+          scope: "email, profile" // permission requests
+      });
+      };
+      
 
     $scope.registerTwitter = function() {
       ref.authWithOAuthPopup("twitter", function(error, authData) {
