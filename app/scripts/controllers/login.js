@@ -22,7 +22,7 @@ Do not use controllers to:
 
 **/
 angular.module('projectsApp')
-  .controller('LoginCtrl', function ($scope, $location, $state, $firebaseAuth, firebaseService, $mdDialog, alertService, userService, $http) {
+  .controller('LoginCtrl', function ($scope, $location, $state, $firebaseAuth, firebaseService, $mdDialog, alertService, userService) {
     var ref = new Firebase(firebaseService.getFirebBaseURL());
     var auth = $firebaseAuth(ref);
     //registers users on firebase
@@ -115,58 +115,20 @@ angular.module('projectsApp')
         } else {
           console.log('Authenticated successfully with payload:', authData);
 
-          googleImport();
-
-
           ref.child('users').child(authData.uid).set({
               email: authData.google.email,
               firstName: authData.google.cachedUserProfile.given_name,
               lastName: authData.google.cachedUserProfile.family_name,
+              provisioned: 0,
               picture: authData.google.cachedUserProfile.picture
           });
-          console.log('..change location..');
-          //$state.go('home.dashboard');
+          $state.go('home.dashboard');
         }
       }, {
           scope: "email, profile" // permission requests
       });
       };
-      var clientId = '824361687622-oigige156t3n418c8p14or24pqdqrdkq.apps.googleusercontent.com';
-      var scopes = 'https://www.googleapis.com/auth/plus.me';
-      var googleImport = function(){
-        console.log('...requesting deeper google auth...');
-        var apiKey = 'AIzaSyAAY3m6JlU7DVn5GdNMcilJ0jP7qW7p7PI';
-        gapi.client.setApiKey(apiKey);
-        gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: true}, handleAuthResult);
-
-      };
-
-      var handleAuthResult = function(authResult) {
-        if (authResult && !authResult.error) {
-          googleInfo();
-        } else {
-          gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: false}, handleAuthResult);
-        }
-      };
-
-      // Load the API and make an API call.  Display the results on the screen.
-      function googleInfo() {
-        gapi.client.load('plus', 'v1').then(function() {
-          var request = gapi.client.plus.people.get({
-            'userId': 'me'
-          });
-          request.execute(function(resp) {
-            console.log('Display Name: ' + resp.displayName);
-            console.log('About Me: ' + resp.aboutMe);
-            console.log('Organizations: ' + resp.organizations);
-            console.log('Gender: ' + resp.gender);
-            console.log('Birthday: ' + resp.birthday);
-          }, function(reason) {
-            console.log('Error: ' + reason.result.error.message);
-          });
-        });
-      };
-
+      
 
     $scope.registerTwitter = function() {
       ref.authWithOAuthPopup("twitter", function(error, authData) {

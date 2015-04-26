@@ -22,7 +22,8 @@ angular
     'ngMaterial',
     'firebase',
     'ui.router',
-    'flow'
+    'flow',
+    'angular-datepicker'
   ])
   .run(["$rootScope", "$location", function($rootScope, $location) {
     $rootScope.$on("$routeChangeError", function(event, next, previous, error) {
@@ -88,7 +89,7 @@ angular
         views: {
           'container@': {
             templateUrl: '/views/profile.html',
-            controller: 'ToolBarCtrl',
+            controller: 'ProfileCtrl',
             resolve: {
             // controller will not be loaded until $requireAuth resolves
               "currentAuth": ["$firebaseAuth", function ($firebaseAuth) {

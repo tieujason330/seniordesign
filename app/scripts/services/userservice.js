@@ -33,15 +33,16 @@ angular.module('projectsApp')
       }
     };
   })
-  .factory('provisionSettings', function ($firebaseAuth, $mdDialog) {
+  .factory('provisionSettings', function ($firebaseAuth, $mdDialog, userService) {
   	var firebaseURL = 'https://shining-torch-23.firebaseio.com/';
     var ref = new Firebase(firebaseURL);
     var authObj = $firebaseAuth(ref);
     var authData = authObj.$getAuth();
+    userService.setCurrentUser(authData);
 
-    var saveMoreSettings = function(user) {
+    var saveMoreSettings = function(user, imageSrc) {
       console.log('saving more info...');
-      if(user !== undefined ){
+      if(user !== undefined){
         console.log(user);  
         // update the user with additional info that was submitted  
         if(user.birthday !== undefined){
@@ -67,12 +68,12 @@ angular.module('projectsApp')
             music: user.music
           });
         }
+      }
 
-        if(user.picture !== undefined){
+      if(imageSrc !== undefined){
           ref.child('users').child(authData.uid).update({
-            picture: user.picture
+            profilePic: imageSrc
           });
-        }
       }
     };
 
@@ -94,20 +95,23 @@ angular.module('projectsApp')
       });
     };
 
-    function MoreInfoController($scope, $mdDialog, $state, fileReader) {
+    function MoreInfoController($scope, $mdDialog, $state, fileReader, userService) {
+      $scope.provider = userService.getCurrentUser().provider;
+
       $scope.save = function(user) {
         $mdDialog.hide();
         setUserProvision();
-        saveMoreSettings(user);
+        saveMoreSettings(user, imageSrc);
       };
       $scope.cancel = function() {
         $mdDialog.cancel();
       };
+
       $scope.import = function(provider) {
         //$mdDialog.hide()
         switch(provider){
           case 'google':
-            
+            googleImport();
           break;
           case 'twitter':
           break;
@@ -116,24 +120,60 @@ angular.module('projectsApp')
         }
       };
 
+      var clientId = '824361687622-oigige156t3n418c8p14or24pqdqrdkq.apps.googleusercontent.com';
+      var scopes = 'https://www.googleapis.com/auth/plus.me';
+      var googleImport = function(){
+        console.log('...requesting deeper google auth...');
+        var apiKey = 'AIzaSyAAY3m6JlU7DVn5GdNMcilJ0jP7qW7p7PI';
+        gapi.client.setApiKey(apiKey);
+        gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: true}, handleAuthResult);
+
+      };
+
+      var handleAuthResult = function(authResult) {
+        if (authResult && !authResult.error) {
+          googleInfo();
+        } else {
+          gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: false}, handleAuthResult);
+        }
+      };
+
+      // Load the API and make an API call.  Display the results on the screen.
+      function googleInfo() {
+        gapi.client.load('plus', 'v1').then(function() {
+          var request = gapi.client.plus.people.get({
+            'userId': 'me'
+          });
+          request.execute(function(resp) {
+            console.log('Display Name: ' + resp.displayName);
+            console.log('About Me: ' + resp.aboutMe);
+            console.log('Organizations: ' + resp.organizations);
+            console.log('Gender: ' + resp.gender);
+            console.log('Birthday: ' + resp.birthday);
+          }, function(reason) {
+            console.log('Error: ' + reason.result.error.message);
+          });
+        });
+      };
+
+
 
       $scope.uploadImage = function(image) {
         readImage(image);
         console.log('uploading image...');
       };
 
-        $scope.getFile = function () {
-        $scope.progress = 0;
-        console.log('qwerqwer');
-        fileReader.readAsDataUrl($scope.file, $scope)
-                      .then(function(result) {
-                          $scope.imageSrc = result;
-                      });
-        };
-     
-        $scope.$on("fileProgress", function(e, progress) {
-            $scope.progress = progress.loaded / progress.total;
-        });
+      $scope.getFile = function (file) {
+      $scope.progress = 0;
+      fileReader.readAsDataUrl(file, $scope)
+                    .then(function(result) {
+                        $scope.imageSrc = result;
+                    });
+      };
+   
+      $scope.$on("fileProgress", function(e, progress) {
+          $scope.progress = progress.loaded / progress.total;
+      });
     }
 
     var showAboutForm = function() {
