@@ -114,6 +114,9 @@ angular.module('projectsApp')
           console.log('Login Failed!', error);
         } else {
           console.log('Authenticated successfully with payload:', authData);
+          //todo: remove from login and add to 'import from google'
+          googleImport();
+
           ref.child('users').child(authData.uid).set({
               email: authData.google.email,
               firstName: authData.google.cachedUserProfile.given_name,
@@ -121,12 +124,46 @@ angular.module('projectsApp')
               picture: authData.google.cachedUserProfile.picture
           });
           console.log('..change location..');
-          $state.go('home.dashboard');
+          //$state.go('home.dashboard');
         }
       }, {
           scope: "email, profile" // permission requests
       });
       };
+      var clientId = '824361687622-oigige156t3n418c8p14or24pqdqrdkq.apps.googleusercontent.com';
+      var scopes = 'https://www.googleapis.com/auth/plus.me';
+      var googleImport = function(){
+        console.log('...requesting deeper google auth...');
+        gapi.client.setApiKey(apiKey);
+        gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: true}, handleAuthResult);
+
+      };
+
+      var handleAuthResult = function(authResult) {
+        if (authResult && !authResult.error) {
+          googleInfo();
+        } else {
+          gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: false}, handleAuthResult);
+        }
+      };
+
+      function googleInfo() {
+        gapi.client.load('plus', 'v1').then(function() {
+          var request = gapi.client.plus.people.get({
+            'userId': 'me'
+          });
+          request.execute(function(resp) {
+            console.log('Display Name: ' + resp.displayName);
+            console.log('About Me: ' + resp.aboutMe);
+            console.log('Organizations: ' + resp.organizations);
+            console.log('Gender: ' + resp.gender);
+            console.log('Birthday: ' + resp.birthday);
+          }, function(reason) {
+            console.log('Error: ' + reason.result.error.message);
+          });
+        });
+      };
+
 
     $scope.registerTwitter = function() {
       ref.authWithOAuthPopup("twitter", function(error, authData) {

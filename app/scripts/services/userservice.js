@@ -107,59 +107,15 @@ angular.module('projectsApp')
         //$mdDialog.hide()
         switch(provider){
           case 'google':
-            googleImport();
+            
           break;
           case 'twitter':
           break;
           case 'facebook':
           break;
         }
-      }
-
-      var googleImport = function(){
-        console.log('...requesting deeper google auth...');
-        var clientId = '824361687622-oigige156t3n418c8p14or24pqdqrdkq.apps.googleusercontent.com';
-        var apiKey = 'AIzaSyAAY3m6JlU7DVn5GdNMcilJ0jP7qW7p7PI';
-        var scopes = 'https://www.googleapis.com/auth/plus.me';
-        gapi.client.setApiKey(apiKey);
-        gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: true}, handleAuthResult);
-
       };
 
-      var handleAuthResult = function(authResult) {
-        //var authorizeButton = document.getElementById('authorize-button');
-        if (authResult && !authResult.error) {
-        //  authorizeButton.style.visibility = 'hidden';
-          googleApiCall();
-        } else {
-        //  authorizeButton.style.visibility = '';
-        //  authorizeButton.onclick = handleAuthClick;
-          console.log('...pass to authentication click...');
-        }
-      };
-
-      function handleAuthClick(event) {
-        // Step 3: get authorization to use private data
-        gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: false}, handleAuthResult);
-        return false;
-      };
-
-      // Load the API and make an API call.  Display the results on the screen.
-      function googleApiCall() {
-        gapi.client.load('plus', 'v1').then(function() {
-          var request = gapi.client.plus.people.get({
-            'userId': 'me'
-          });
-          request.execute(function(resp) {
-            console.log('ID: ' + resp.id);
-            console.log('Display Name: ' + resp.displayName);
-            console.log('Image URL: ' + resp.image.url);
-            console.log('Profile URL: ' + resp.url);
-          }, function(reason) {
-            console.log('Error: ' + reason.result.error.message);
-          });
-        });
-      };
 
       $scope.uploadImage = function(image) {
         readImage(image);
