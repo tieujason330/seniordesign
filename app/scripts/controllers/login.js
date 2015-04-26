@@ -25,6 +25,27 @@ angular.module('projectsApp')
   .controller('LoginCtrl', function ($scope, $location, $state, $firebaseAuth, firebaseService, $mdDialog, alertService) {
     var ref = new Firebase(firebaseService.getFirebBaseURL());
     var auth = $firebaseAuth(ref);
+
+    var createFireAcc = function(userData, user) {
+      ref.child('profileInfo').child(userData.uid).set({
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName
+      });
+
+      ref.child('privacySettings').child(userData.uid).set({
+          provisionSettings: 0
+      });
+      
+      ref.child('friends').child(userData.uid).set({
+          friendTotal: 0
+      });
+
+      ref.child('pending').child(userData.uid).set({
+          pendingTotal: 0
+      });
+    };
+    
     //registers users on firebase
     $scope.createUser = function(user, form) {
       //Valid form fields
@@ -40,12 +61,10 @@ angular.module('projectsApp')
           var title= 'Welcome';
           var msg = 'The new user account has been successfully created.';
           alertService.show(title,msg,'');
-          ref.child('users').child(userData.uid).set({
-              email: user.email,
-              firstName: user.firstName,
-              lastName: user.lastName,
-              provisioned: 0
-          });
+
+          // set up firebase endpoints to match account creation
+          createFireAcc(userData, user);
+
         }).catch(function (error) {
           if(error.code == 'EMAIL_TAKEN')
           {
@@ -116,11 +135,32 @@ angular.module('projectsApp')
           console.log('Authenticated successfully with payload:', authData);
           console.log(authData.uid);
 
-          ref.child('users').child(authData.uid).set({
+          /*
+           *ref.child('users').child(authData.uid).set({
+           *    email: authData.google.email,
+           *    firstName: authData.google.cachedUserProfile.given_name,
+           *    lastName: authData.google.cachedUserProfile.family_name,
+           *    picture: authData.google.cachedUserProfile.picture
+           *});
+           */
+
+          ref.child('profileInfo').child(authData.uid).set({
               email: authData.google.email,
               firstName: authData.google.cachedUserProfile.given_name,
               lastName: authData.google.cachedUserProfile.family_name,
               picture: authData.google.cachedUserProfile.picture
+          });
+
+          ref.child('privacySettings').child(authData.uid).set({
+              provisionSettings: 0
+          });
+          
+          ref.child('friends').child(authData.uid).set({
+              friendTotal: 0
+          });
+
+          ref.child('pending').child(authData.uid).set({
+              pendingTotal: 0
           });
           changeLocation('/home', true);
         }
