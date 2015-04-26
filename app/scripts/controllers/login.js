@@ -114,8 +114,9 @@ angular.module('projectsApp')
           console.log('Login Failed!', error);
         } else {
           console.log('Authenticated successfully with payload:', authData);
-          //todo: remove from login and add to 'import from google'
+
           googleImport();
+
 
           ref.child('users').child(authData.uid).set({
               email: authData.google.email,
@@ -134,6 +135,7 @@ angular.module('projectsApp')
       var scopes = 'https://www.googleapis.com/auth/plus.me';
       var googleImport = function(){
         console.log('...requesting deeper google auth...');
+        var apiKey = 'AIzaSyAAY3m6JlU7DVn5GdNMcilJ0jP7qW7p7PI';
         gapi.client.setApiKey(apiKey);
         gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: true}, handleAuthResult);
 
@@ -147,6 +149,7 @@ angular.module('projectsApp')
         }
       };
 
+      // Load the API and make an API call.  Display the results on the screen.
       function googleInfo() {
         gapi.client.load('plus', 'v1').then(function() {
           var request = gapi.client.plus.people.get({
