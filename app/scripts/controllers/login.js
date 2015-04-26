@@ -85,9 +85,10 @@ angular.module('projectsApp')
     };
 
 
+/* ****** MUST add a provision check for registerFB, Google, Twitter ***** */
+
  $scope.registerFB = function() {
       ref.authWithOAuthPopup('facebook', function(error, authData) {
-        scope: 'email,user_likes' // permission requests
         if (error) {
           console.log('Login Failed!', error);
         } else {
@@ -102,9 +103,7 @@ angular.module('projectsApp')
               picture: authData.facebook.cachedUserProfile.picture.data.url
           });
 
-
-
-         Facebook.api('/me', function(response) {
+         /*Facebook.api('/me', function(response) {
             $scope.user = response;
             console.log( "FirstName: " + response.first_name + 
               " LastName: " + response.last_name + 
@@ -114,13 +113,12 @@ angular.module('projectsApp')
               " Concentration: " + response.education[1].concentration[0].name + 
               " Year: " + response.education[1].year.name + 
               " FavoriteTeam: " + response.favorite_teams[0].name);
-          });
+          });*/
 
-
-          changeLocation('/home', true);
+          $state.go('home.dashboard');
         }
       }, {
-          scope: "user_likes,email,user_birthday,public_profile,user_education_history,user_about_me" // permission requests
+          scope: "user_likes, email, user_birthday, public_profile, user_education_history, user_about_me" // permission requests
         });
     };
 
@@ -167,7 +165,7 @@ angular.module('projectsApp')
               picture: profileImage
           });        
 
-          changeLocation('/home', true);
+          $state.go('home.dashboard');
         }
       });
     };

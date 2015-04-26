@@ -40,50 +40,6 @@ angular.module('projectsApp')
     var authData = authObj.$getAuth();
     userService.setCurrentUser(authData);
 
-
-   var loginFB = function() {
-        ref.authWithOAuthPopup('facebook', function(error, authData) {
-          if (error) {
-            console.log('Login Failed!', error);
-          } else {
-
-            console.log("Authenticated successfully with payload:", authData);
-
-
-           Facebook.api('/me', function(response) {
-              $scope.user = response;
-              console.log("FirstName: " + response.first_name + 
-                " LastName: " + response.last_name + 
-                " Gender: " + response.gender + 
-                " Birthday: " + response.birthday + 
-                " SchoolName: " + response.education[1].school.name + 
-                " Concentration: " + response.education[1].concentration[0].name + 
-                " Year: " + response.education[1].year.name + 
-                " FavoriteTeam: " + response.favorite_teams[0].name);
-
-               var userInfo = {
-                  firstName: response.first_name,
-                  lastName: response.last_name,
-                  birthday: response.birthday,
-                  schoolName: response.education[1].school.name,
-                  concentration: response.education[1].concentration[0].name,
-                  schoolYear: response.education[1].year.name,
-                  favoriteTeam: response.favorite_teams[0].name,
-                  gender: response.gender,
-               };
-
-            });
-            return userInfo;
-
-            changeLocation('/home', true);
-          }
-        }, {
-            scope: "user_likes,email,user_birthday,public_profile,user_education_history,user_about_me" // permission requests
-          });
-      };
-
-
-
     var saveMoreSettings = function(user, imageSrc) {
       console.log('saving more info...');
       if(user !== undefined){
@@ -156,11 +112,15 @@ angular.module('projectsApp')
         switch(provider){
           case 'google':
             googleImport();
-          break;
+            break;
           case 'twitter':
-          break;
+            break;
           case 'facebook':
-          break;
+            //facebookImport();
+            break;
+          default:
+            console("Invalid Provider!");
+            break;
         }
       };
 
@@ -173,6 +133,11 @@ angular.module('projectsApp')
         gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: true}, handleAuthResult);
 
       };
+
+     /* var facebookImport = function(){
+
+
+      };*/
 
       var handleAuthResult = function(authResult) {
         if (authResult && !authResult.error) {
@@ -199,6 +164,48 @@ angular.module('projectsApp')
           });
         });
       };
+
+
+
+   /*var loginFB = function() {
+        ref.authWithOAuthPopup('facebook', function(error, authData) {
+          if (error) {
+            console.log('Login Failed!', error);
+          } else {
+
+            console.log("Authenticated successfully with payload:", authData);
+
+
+           Facebook.api('/me', function(response) {
+              $scope.user = response;
+              console.log("FirstName: " + response.first_name + 
+                " LastName: " + response.last_name + 
+                " Gender: " + response.gender + 
+                " Birthday: " + response.birthday + 
+                " SchoolName: " + response.education[1].school.name + 
+                " Concentration: " + response.education[1].concentration[0].name + 
+                " Year: " + response.education[1].year.name + 
+                " FavoriteTeam: " + response.favorite_teams[0].name);
+
+               var userInfo = {
+                  firstName: response.first_name,
+                  lastName: response.last_name,
+                  birthday: response.birthday,
+                  schoolName: response.education[1].school.name,
+                  concentration: response.education[1].concentration[0].name,
+                  schoolYear: response.education[1].year.name,
+                  favoriteTeam: response.favorite_teams[0].name,
+                  gender: response.gender,
+               };
+
+            });
+            return userInfo;
+          }
+        }, {
+            scope: "user_likes,email,user_birthday,public_profile,user_education_history,user_about_me" // permission requests
+          });
+      };*/
+
 
 
 
