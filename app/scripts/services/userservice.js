@@ -97,7 +97,7 @@ angular.module('projectsApp')
 
     function MoreInfoController($scope, $mdDialog, $state, fileReader, userService) {
       $scope.provider = userService.getCurrentUser().provider;
-
+      $scope.user = {school: ''};
       $scope.save = function(user) {
         $mdDialog.hide();
         setUserProvision();
@@ -145,11 +145,24 @@ angular.module('projectsApp')
             'userId': 'me'
           });
           request.execute(function(resp) {
-            console.log('Display Name: ' + resp.displayName);
-            console.log('About Me: ' + resp.aboutMe);
-            console.log('Organizations: ' + resp.organizations);
-            console.log('Gender: ' + resp.gender);
-            console.log('Birthday: ' + resp.birthday);
+            console.log('About Me: ' + resp.aboutMe); //todo: add to text when added to about html
+            if(resp.organizations !== undefined){
+              for (var i = resp.organizations.length - 1; i >= 0; i--) {
+                if(resp.organizations[i].type == 'school'){
+                  console.log('School: ' + resp.organizations[i].name);
+                  $scope.$apply(function() {
+                    $scope.user.school = resp.organizations[i].name;
+                  });
+                  break;
+                }
+              }
+            }
+            if(resp.birthday !== undefined){
+              console.log(resp.birthday);
+              $scope.$apply(function() {
+                $scope.user.birthday = resp.birthday;
+              });
+            }
           }, function(reason) {
             console.log('Error: ' + reason.result.error.message);
           });
