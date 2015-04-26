@@ -45,32 +45,32 @@ angular.module('projectsApp')
         console.log(user);  
         // update the user with additional info that was submitted  
         if(user.birthday !== undefined){
-          ref.child('users').child(authData.uid).update({
+          ref.child('profileInfo').child(authData.uid).update({
             birthday: user.birthday
           });
         }
 
         if(user.school !== undefined){
-          ref.child('users').child(authData.uid).update({
+          ref.child('profileInfo').child(authData.uid).update({
             school: user.school
           });
         }
 
         if(user.movies !== undefined){
-          ref.child('users').child(authData.uid).update({
+          ref.child('profileInfo').child(authData.uid).update({
             movies: user.movies
           });
         }
 
         if(user.music !== undefined){
-          ref.child('users').child(authData.uid).update({
+          ref.child('profileInfo').child(authData.uid).update({
             music: user.music
           });
         }
       }
 
       if(imageSrc !== undefined){
-          ref.child('users').child(authData.uid).update({
+          ref.child('profileInfo').child(authData.uid).update({
             profilePic: imageSrc
           });
       }
@@ -80,7 +80,7 @@ angular.module('projectsApp')
         if ( input.files && input.files[0] ) {
             var FR= new FileReader();
             FR.onload = function(e) {
-                 $('#img').attr( "src", e.target.result );
+                 $('#img').attr( 'src', e.target.result );
                  $('#base').text( e.target.result );
             };       
             FR.readAsDataURL( input.files[0] );
@@ -138,16 +138,16 @@ angular.module('projectsApp')
         }
       },
       getUserProvision: function(callback) {
-        var provisionedData = ref.child('users').child(authData.uid).child('provisioned').once('value', function (snapshot) {
+        var provisionedData = ref.child('privacy').child(authData.uid).child('provisionSettings').once('value', function (snapshot) {
           var val = snapshot.val();
           callback(val);
           return val;
         });
       },
       setUserProvision: function() {
-        var provisionedData = ref.child('users').child(authData.uid);
+        var provisionedData = ref.child('privacy').child(authData.uid);
         provisionedData.update({
-          provisioned: 1
+          provisionSettings: 1
         });
       }
     };
