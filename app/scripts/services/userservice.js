@@ -33,12 +33,12 @@ angular.module('projectsApp')
       }
     };
   })
-  .factory('provisionSettings', function ($firebaseAuth, $mdDialog, userService) {
+  .factory('provisionSettings', function ($firebaseAuth, $mdDialog, userService, Facebook) {
   	var firebaseURL = 'https://shining-torch-23.firebaseio.com/';
     var ref = new Firebase(firebaseURL);
     var authObj = $firebaseAuth(ref);
     var authData = authObj.$getAuth();
-    userService.setCurrentUser(authData);
+    //userService.setCurrentUser(authData);
 
     var saveMoreSettings = function(user, imageSrc) {
       console.log('saving more info...');
@@ -96,7 +96,12 @@ angular.module('projectsApp')
     };
 
     function MoreInfoController($scope, $mdDialog, $state, fileReader, userService) {
-      $scope.provider = userService.getCurrentUser().provider;
+      var firebaseURL = 'https://shining-torch-23.firebaseio.com/';
+      var ref = new Firebase(firebaseURL);
+      var authObj = $firebaseAuth(ref);
+      var authData = authObj.$getAuth();
+    
+      $scope.provider = authData.provider;
       $scope.user = {school: ''};
       $scope.save = function(user) {
         $mdDialog.hide();
@@ -116,7 +121,7 @@ angular.module('projectsApp')
           case 'twitter':
             break;
           case 'facebook':
-            //facebookImport();
+              facebookImport();
             break;
           default:
             console("Invalid Provider!");
@@ -134,10 +139,51 @@ angular.module('projectsApp')
 
       };
 
-     /* var facebookImport = function(){
 
 
-      };*/
+
+   var facebookImport = function() {
+        ref.authWithOAuthPopup('facebook', function(error, authData) {
+          if (error) {
+            console.log('Login Failed!', error);
+          } else {
+
+            console.log("Authenticated successfully with payload:", authData);
+
+
+           Facebook.api('/me', function(response) {
+              $scope.user = response;
+              console.log("FirstName: " + response.first_name + 
+                " LastName: " + response.last_name + 
+                " Gender: " + response.gender + 
+                " Birthday: " + response.birthday + 
+                " SchoolName: " + response.education[1].school.name + 
+                " Concentration: " + response.education[1].concentration[0].name + 
+                " Year: " + response.education[1].year.name + 
+                " FavoriteTeam: " + response.favorite_teams[0].name);
+
+
+              if(response.birthday !== undefined){
+                console.log(response.birthday);
+                $scope.$apply(function() {
+                  $scope.user.birthday = new Date(response.birthday);
+                });
+              }
+
+              if(response.education[1].school.name !== undefined){
+                console.log(response.education[1].school.name);
+                $scope.$apply(function() {
+                  $scope.user.school = response.education[1].school.name;
+                });
+              }
+               
+
+            });
+          }
+        }, {
+            scope: "user_likes,email,user_birthday,public_profile,user_education_history,user_about_me" // permission requests
+          });
+      };
 
       var handleAuthResult = function(authResult) {
         if (authResult && !authResult.error) {
@@ -177,50 +223,6 @@ angular.module('projectsApp')
           });
         });
       };
-
-
-
-   /*var loginFB = function() {
-        ref.authWithOAuthPopup('facebook', function(error, authData) {
-          if (error) {
-            console.log('Login Failed!', error);
-          } else {
-
-            console.log("Authenticated successfully with payload:", authData);
-
-
-           Facebook.api('/me', function(response) {
-              $scope.user = response;
-              console.log("FirstName: " + response.first_name + 
-                " LastName: " + response.last_name + 
-                " Gender: " + response.gender + 
-                " Birthday: " + response.birthday + 
-                " SchoolName: " + response.education[1].school.name + 
-                " Concentration: " + response.education[1].concentration[0].name + 
-                " Year: " + response.education[1].year.name + 
-                " FavoriteTeam: " + response.favorite_teams[0].name);
-
-               var userInfo = {
-                  firstName: response.first_name,
-                  lastName: response.last_name,
-                  birthday: response.birthday,
-                  schoolName: response.education[1].school.name,
-                  concentration: response.education[1].concentration[0].name,
-                  schoolYear: response.education[1].year.name,
-                  favoriteTeam: response.favorite_teams[0].name,
-                  gender: response.gender,
-               };
-
-            });
-            return userInfo;
-          }
-        }, {
-            scope: "user_likes,email,user_birthday,public_profile,user_education_history,user_about_me" // permission requests
-          });
-      };*/
-
-
-
 
       $scope.uploadImage = function(image) {
         readImage(image);

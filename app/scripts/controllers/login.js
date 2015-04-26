@@ -94,12 +94,13 @@ angular.module('projectsApp')
         } else {
 
           console.log("Authenticated successfully with payload:", authData);
-
+          userService.setCurrentUser(authData);
           // creating firebase endpoint
           ref.child('users').child(authData.uid).set({
               email: authData.facebook.cachedUserProfile.email,
               firstName: authData.facebook.cachedUserProfile.first_name,
               lastName: authData.facebook.cachedUserProfile.last_name,
+              provisioned: 0,
               picture: authData.facebook.cachedUserProfile.picture.data.url
           });
 
