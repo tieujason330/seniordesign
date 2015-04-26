@@ -1,0 +1,49 @@
+<md-dialog aria-label="Profile Info">
+  <md-content class="sticky-container">
+    <div class="more-info-container">
+      <form name="moreInfoForm" novalidate>
+        <md-input-container flex>
+          <label>Birthday</label>
+          <input type="date" ng-model="user.birthday"> 
+        </md-input-container>
+
+        <md-input-container flex>
+          <label>Name of Current School</label>
+          <input name="school" ng-model="user.school">
+        </md-input-container>
+        <md-input-container flex>
+          <label>Favorite Movies</label>
+          <input name="movies" ng-model="user.movies">
+        </md-input-container>
+        <md-input-container flex>
+          <label>Favorite Music</label>
+          <input name="music" ng-model="user.music">
+        </md-input-container>
+        <!--Upload a profile picture -->
+        <section layout="row" layout-sm="column" layout-align="center center">
+          <form name="profilePicForm">
+            <div>
+              <form>
+                  <input type="file" ng-file-select="onFileSelect($files)" >
+              </form>
+              <b>Preview:</b><br/>
+              <i ng-hide="imageSrc">No image chosen</i>
+              <img ng-src="{{imageSrc}}" /><br/>
+                Only PNG,GIF,JPG files allowed.
+              </p>
+            </div>
+          </form>
+        </section>
+      </form>
+    </div>
+  </md-content>
+  <div class="md-actions" layout="row">
+    <span flex></span>
+    <md-button ng-click="cancel()">
+      Maybe later
+    </md-button>
+    <md-button ng-click="save(user, imageSrc)" class="md-primary">
+      Save
+    </md-button>
+  </div>
+</md-dialog>

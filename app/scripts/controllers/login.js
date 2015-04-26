@@ -77,7 +77,7 @@ angular.module('projectsApp')
             password: user.password
         }).then(function (authData) {
           console.log('Logged in as:' + authData.uid);
-          $state.go('home');
+          $state.go('home.dashboard');
           //changeLocation('/home', true);
         }).catch(function (error) {
           var msg = 'Invalid E-mail or password. Please try again';
@@ -92,6 +92,7 @@ angular.module('projectsApp')
         if (error) {
           console.log('Login Failed!', error);
         } else {
+
           console.log("Authenticated successfully with payload:", authData);
 
           // creating firebase endpoint
