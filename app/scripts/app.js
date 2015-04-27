@@ -30,6 +30,8 @@ angular
         var title= 'Auth Required';
         var msg = 'You are not logged in. You shall not pass';
         alertService.show(title,msg,"");
+        console.log("auth required");
+
         $location.path("/");
       }
     });
@@ -55,6 +57,7 @@ angular
               "currentAuth": ["$firebaseAuth", function ($firebaseAuth) {
                 var ref = new Firebase('https://shining-torch-23.firebaseio.com/');
                 var authObj = $firebaseAuth(ref);
+                //console.log(authObj.$requireAuth());
                 return authObj.$requireAuth();
               }]
             }

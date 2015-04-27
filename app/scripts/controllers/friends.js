@@ -21,7 +21,65 @@ Do not use controllers to:
 5. Manage the life-cycle of other components (for example, to create service instances).
 **/
 angular.module('projectsApp')
-.controller('UsersController', function($scope, $http) {
+.controller('UsersController',  function($scope, $http, $firebaseAuth, $firebaseArray, $firebaseObject , firebaseService, profileService) {
+  var ref = new Firebase(firebaseService.getFirebBaseURL());
+  var authObj = $firebaseAuth(ref);
+  var authData = authObj.$getAuth();
+  console.log("Logged in as:", authData.uid);
+
+  // ref.once("value", function(data) {
+  //   friendList = data.val();
+  //   var friendRef = new Firebase("https://shining-torch-23.firebaseio.com/profileInfo/");
+  //   $scope.profile = $firebaseObject(friendRef.child(friendList));
+  //   //console.log($scope.profile);
+  // });
+
+  var ref = new Firebase("https://shining-torch-23.firebaseio.com/friends/"+ authData.uid);
+  $scope.messages = $firebaseArray(ref);
+
+  var list = $firebaseArray(ref);
+  var friendProfile = [];
+  list.$loaded(
+  function(x) {
+    x === list; // true
+    console.log(x);
+    x.forEach(function(entry) {
+     getUserProfileInfo(entry.uid);
+     console.log(entry.uid);
+
+    });
+
+    console.log("hello");
+  }, function(error) {
+    console.error("Error:", error);
+  });
+
+  $scope.addFriend = function(useruid) {
+    var userID = useruid;
+    $scope.messages.$add({
+      uid: userID
+    });
+  };
+  $scope.data;
+
+  var getUserProfileInfo = function(userid){
+    var userID = userid;
+    console.log("entered");
+    var ref = new Firebase("https://shining-torch-23.firebaseio.com/profileInfo/"+ userID);
+    var profileData = $firebaseObject(ref);
+    profileData.$loaded(
+      function(data) {
+        console.log(data.name); // true
+        friendProfile.push(data);
+      },
+      function(error) {
+        console.error("Error:", error);
+      }
+    );
+    console.log(profileData);
+    $scope.friendProfiles = friendProfile;
+    console.log("end");
+  }
 
   $scope.currentPage = 1;
   $scope.pageSize = 20;

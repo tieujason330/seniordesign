@@ -1,18 +1,14 @@
 'use strict';
-//this factory returns information about users and their friends
+//this factory returns information about a user's friends
 angular.module('projectsApp')
-  .factory('friendService', function (firebaseService) {
+  .factory('profileService', function ($firebaseArray) {
     var user;
+    var ref = new Firebase("https://shining-torch-23.firebaseio.com/profileInfo");
     return {
-      setCurrentUser: function(val) {
-        user = val;
-      },
-      getCurrentUser: function() {
-        return user;
-      },
-      updateKey: function(key, value){
-        user.key = value;
-        return user;
+      getUserProfileInfo: function(userUID) {
+        var userFriendRef = ref.child(userUID);
+        console.log(userFriendRef);
+        return $firebaseArray(userFriendRef);//userFriendRef);
       }
     }
   })

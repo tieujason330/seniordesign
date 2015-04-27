@@ -4,6 +4,25 @@
 <h1 class="md-display-3">Friends</h1>
   <p><a class="btn btn-lg btn-success" ng-href="#/">Splendid!<span class="glyphicon glyphicon-ok"></span></a></p>
 </div>
+  {{profile.aboutme}}
+  <md-button ng-click="addFriend(simplelogin)">add Friend </md-button>
+
+  <div ng-repeat="friend in friendProfiles">
+    <md-button ng-click="addFriend(friend.uid)">add Friend </md-button>
+     <md-card>
+          <!-- <img src="img/washedout.png" class="md-card-image" alt="Washed Out"> -->
+          <md-card-content>
+            <h2 class="md-title">{{friend.name}}</h2>
+            <p>
+            </p>
+          </md-card-content>
+          <md-action-bar layout="row">
+            <md-button>Action 1</md-button>
+            <md-button>Action 2</md-button>
+          </md-action-bar>
+      </md-card>
+
+  </div>
 
   <div class="row">
   <br>
