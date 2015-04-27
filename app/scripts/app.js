@@ -22,7 +22,8 @@ angular
     'ngMaterial',
     'firebase',
     'ui.router',
-    'flow'
+    'facebook',
+    'angular-datepicker'
   ])
   .run(["$rootScope", "$location", function($rootScope, $location) {
     $rootScope.$on("$routeChangeError", function(event, next, previous, error) {
@@ -35,7 +36,7 @@ angular
       }
     });
   }])
-  .config(function ($urlRouterProvider, $stateProvider,  $mdThemingProvider) {
+  .config(function ($urlRouterProvider, $stateProvider,  $mdThemingProvider, FacebookProvider) {
     $mdThemingProvider.theme('default');//.light();//.dark();
     $urlRouterProvider.otherwise('/');
     $stateProvider
@@ -88,7 +89,7 @@ angular
         views: {
           'container@': {
             templateUrl: '/views/profile.html',
-            controller: 'ToolBarCtrl',
+            controller: 'ProfileCtrl',
             resolve: {
             // controller will not be loaded until $requireAuth resolves
               "currentAuth": ["$firebaseAuth", function ($firebaseAuth) {
@@ -169,6 +170,7 @@ angular
           }
         }
       })
+      FacebookProvider.init('1571917669752119');
   });
 // themes colors:
 // Limit your selection of colors by choosing three color hues from the primary palette
