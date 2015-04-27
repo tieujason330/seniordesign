@@ -91,7 +91,7 @@ angular.module('projectsApp')
     var setUserProvision = function() {
       var provisionedData = ref.child('users').child(authData.uid);
       provisionedData.update({
-        provisioned: 1
+        provisionSettings: 1
       });
     };
 
@@ -257,20 +257,21 @@ angular.module('projectsApp')
     };
 
     return {
-      getMoreUserInfo: function(provision) {
-        if (provision == '0') {
+      getMoreUserInfo: function(provisionSettings) {
+        console.log(provisionSettings);
+        if (provisionSettings == '0') {
           showAboutForm();
         }
       },
       getUserProvision: function(callback) {
-        var provisionedData = ref.child('privacy').child(authData.uid).child('provisionSettings').once('value', function (snapshot) {
+        var provisionedData = ref.child('privacySettings').child(authData.uid).child('provisionSettings').once('value', function (snapshot) {
           var val = snapshot.val();
           callback(val);
           return val;
         });
       },
       setUserProvision: function() {
-        var provisionedData = ref.child('privacy').child(authData.uid);
+        var provisionedData = ref.child('privacySettings').child(authData.uid);
         provisionedData.update({
           provisionSettings: 1
         });

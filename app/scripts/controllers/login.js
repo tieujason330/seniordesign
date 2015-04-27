@@ -119,7 +119,6 @@ angular.module('projectsApp')
               email: authData.facebook.cachedUserProfile.email,
               firstName: authData.facebook.cachedUserProfile.first_name,
               lastName: authData.facebook.cachedUserProfile.last_name,
-              provisioned: 0,
               picture: authData.facebook.cachedUserProfile.picture.data.url
           });
           $state.go('home.dashboard');
@@ -140,7 +139,6 @@ angular.module('projectsApp')
               email: authData.google.email,
               firstName: authData.google.cachedUserProfile.given_name,
               lastName: authData.google.cachedUserProfile.family_name,
-              provisioned: 0,
               picture: authData.google.cachedUserProfile.picture
           });
           ref.child('privacySettings').child(authData.uid).set({
