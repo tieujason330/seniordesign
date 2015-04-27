@@ -88,7 +88,7 @@ angular.module('projectsApp')
 
     $scope.postSettings = function (selection) {
       console.log('Setting post privacy: ' + selection);
-      ref.child('privacy').child($scope.userCurrent.uid).update({
+      ref.child('privacySettings').child($scope.userCurrent.uid).update({
         postPrivacy: selection
       });
       $scope.userCurrent.postPrivacy = selection;
@@ -96,7 +96,7 @@ angular.module('projectsApp')
 
     $scope.messageSettings = function (selection) {
       console.log('Setting message privacy: ' + selection);
-      ref.child('privacy').child($scope.userCurrent.uid).update({
+      ref.child('privacySettings').child($scope.userCurrent.uid).update({
         messagePrivacy: selection
       });
       $scope.userCurrent.messagePrivacy = selection;
