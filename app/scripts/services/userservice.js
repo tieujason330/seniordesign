@@ -42,6 +42,7 @@ angular.module('projectsApp')
 
     var saveMoreSettings = function(user, imageSrc) {
       console.log('saving more info...');
+      console.log(user);  
       if(user !== undefined){
         console.log(user);  
         // update the user with additional info that was submitted  
@@ -89,7 +90,7 @@ angular.module('projectsApp')
     }
 
     var setUserProvision = function() {
-      var provisionedData = ref.child('users').child(authData.uid);
+      var provisionedData = ref.child('privacySettings').child(authData.uid);
       provisionedData.update({
         provisionSettings: 1
       });
@@ -106,7 +107,7 @@ angular.module('projectsApp')
       $scope.save = function(user) {
         $mdDialog.hide();
         setUserProvision();
-        saveMoreSettings(user, imageSrc);
+        saveMoreSettings(user, $scope.imageSrc);
       };
       $scope.cancel = function() {
         $mdDialog.cancel();
