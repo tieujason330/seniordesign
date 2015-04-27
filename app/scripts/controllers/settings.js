@@ -13,13 +13,21 @@ angular.module('projectsApp')
       var ref = new Firebase(firebaseService.getFirebBaseURL());
       var authObj = $firebaseAuth(ref);
       var authData = authObj.$getAuth();
-      ref.child('users').child(authData.uid).once('value', function (snapshot) {
+      $scope.userCurrent;
+
+      ref.child('profileInfo').child(authData.uid).once('value', function (snapshot) {
           var val = snapshot.val();
+          console.log(val);
           val.uid = authData.uid;
           userService.setCurrentUser(val);
+          $scope.userCurrent = userService.getCurrentUser();
+          $scope.$apply(function() {
+            $scope.userCurrent.firstName = val.firstName;
+            $scope.userCurrent.lastName  = val.lastName;
+            $scope.userCurrent.email  = val.email;
+        });
       });
 
-      $scope.userCurrent = userService.getCurrentUser();
       $scope.user;
       $scope.alert = '';
 
@@ -61,13 +69,13 @@ angular.module('projectsApp')
         console.log('Attempting to save settings...');
         //Email changes require authorization from old email
         if(user.firstName !== undefined){
-          ref.child('users').child($scope.userCurrent.uid).update({
+          ref.child('profileInfo').child($scope.userCurrent.uid).update({
                 firstName: user.firstName
           });
           $scope.userCurrent.firstName = user.firstName;
         }
         if(user.lastName !== undefined){
-          ref.child('users').child($scope.userCurrent.uid).update({
+          ref.child('profileInfo').child($scope.userCurrent.uid).update({
                 lastName: user.lastName
           });
           $scope.userCurrent.lastName = user.lastName;
@@ -80,7 +88,7 @@ angular.module('projectsApp')
 
     $scope.postSettings = function (selection) {
       console.log('Setting post privacy: ' + selection);
-      ref.child('users').child($scope.userCurrent.uid).update({
+      ref.child('privacy').child($scope.userCurrent.uid).update({
         postPrivacy: selection
       });
       $scope.userCurrent.postPrivacy = selection;
@@ -88,7 +96,7 @@ angular.module('projectsApp')
 
     $scope.messageSettings = function (selection) {
       console.log('Setting message privacy: ' + selection);
-      ref.child('users').child($scope.userCurrent.uid).update({
+      ref.child('privacy').child($scope.userCurrent.uid).update({
         messagePrivacy: selection
       });
       $scope.userCurrent.messagePrivacy = selection;
@@ -106,7 +114,7 @@ angular.module('projectsApp')
             }
             else{
               $scope.alert = 'Email changed!';
-              ref.child('users').child($scope.userCurrent.uid).update({
+              ref.child('profileInfo').child($scope.userCurrent.uid).update({
                 email: userMail
               });
               $scope.userCurrent.email = userMail;
