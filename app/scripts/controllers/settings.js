@@ -62,13 +62,13 @@ angular.module('projectsApp')
         console.log('Attempting to save settings...');
         //Email changes require authorization from old email
         if(user.firstName !== undefined){
-          ref.child('users').child($scope.userCurrent.uid).update({
+          ref.child('profileInfo').child($scope.userCurrent.uid).update({
                 firstName: user.firstName
           });
           $scope.userCurrent.firstName = user.firstName;
         }
         if(user.lastName !== undefined){
-          ref.child('users').child($scope.userCurrent.uid).update({
+          ref.child('profileInfo').child($scope.userCurrent.uid).update({
                 lastName: user.lastName
           });
           $scope.userCurrent.lastName = user.lastName;
@@ -81,7 +81,7 @@ angular.module('projectsApp')
 
     $scope.postSettings = function (selection) {
       console.log('Setting post privacy: ' + selection);
-      ref.child('users').child($scope.userCurrent.uid).update({
+      ref.child('privacy').child($scope.userCurrent.uid).update({
         postPrivacy: selection
       });
       $scope.userCurrent.postPrivacy = selection;
@@ -89,7 +89,7 @@ angular.module('projectsApp')
 
     $scope.messageSettings = function (selection) {
       console.log('Setting message privacy: ' + selection);
-      ref.child('users').child($scope.userCurrent.uid).update({
+      ref.child('privacy').child($scope.userCurrent.uid).update({
         messagePrivacy: selection
       });
       $scope.userCurrent.messagePrivacy = selection;
@@ -107,7 +107,7 @@ angular.module('projectsApp')
             }
             else{
               $scope.alert = 'Email changed!';
-              ref.child('users').child($scope.userCurrent.uid).update({
+              ref.child('profileInfo').child($scope.userCurrent.uid).update({
                 email: userMail
               });
               $scope.userCurrent.email = userMail;

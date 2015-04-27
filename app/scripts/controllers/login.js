@@ -120,7 +120,7 @@ angular.module('projectsApp')
             }
         );*/
 
-          changeLocation('/home', true);
+          $state.go('home.dashboard');
         }
       }, {
           scope: "email,user_likes" // permission requests
@@ -134,15 +134,6 @@ angular.module('projectsApp')
         } else {
           console.log('Authenticated successfully with payload:', authData);
           console.log(authData.uid);
-
-          /*
-           *ref.child('users').child(authData.uid).set({
-           *    email: authData.google.email,
-           *    firstName: authData.google.cachedUserProfile.given_name,
-           *    lastName: authData.google.cachedUserProfile.family_name,
-           *    picture: authData.google.cachedUserProfile.picture
-           *});
-           */
 
           ref.child('profileInfo').child(authData.uid).set({
               email: authData.google.email,
@@ -162,7 +153,7 @@ angular.module('projectsApp')
           ref.child('pending').child(authData.uid).set({
               pendingTotal: 0
           });
-          changeLocation('/home', true);
+          $state.go('home.dashboard');
         }
       }, {
           scope: "email" // permission requests
@@ -175,7 +166,7 @@ angular.module('projectsApp')
           console.log("Login Failed!", error);
         } else {
           console.log("Authenticated successfully with payload:", authData);
-          changeLocation('/home', true);
+          $state.go('home.dashboard');
         }
       });
     };
