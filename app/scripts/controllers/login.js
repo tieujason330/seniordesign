@@ -164,7 +164,7 @@ angular.module('projectsApp')
           });
 
           $state.go('home.dashboard');
-        }
+        }},{
           scope: "email, profile" // permission requests
       });
     };
