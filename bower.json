@@ -15,6 +15,7 @@
     "bootstrap-social": "~4.8.0",
     "firebase": "~2.2.4",
     "angularfire": "~1.0.0",
+    "angular-utils-pagination": "~0.7.0", 
     "angular-facebook": "~0.2.3",
     "angular-native-picker": "~1.0.4"
   },

@@ -8,7 +8,7 @@
  * Controller of the projectsApp
  */
 angular.module('projectsApp')
-  .controller('SettingsCtrl', 
+  .controller('SettingsCtrl',
     function ($scope, $mdDialog, firebaseService, userService, $firebaseAuth) {
       var ref = new Firebase(firebaseService.getFirebBaseURL());
       var authObj = $firebaseAuth(ref);

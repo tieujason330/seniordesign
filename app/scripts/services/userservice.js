@@ -16,22 +16,13 @@ angular.module('projectsApp')
         user = val;
       },
       getCurrentUser: function() {
-        console.log(user);
         return user;
       },
       updateKey: function(key, value){
         user.key = value;
         return user;
-      },
-      getUserProvisionSetting: function() {
-        console.log(user);
-        return user;
-      },
-      setUserProvisionSetting: function() {
-        console.log(user);
-        return user;
       }
-    };
+    }
   })
   .factory('provisionSettings', function ($firebaseAuth, $mdDialog, userService, Facebook) {
   	var firebaseURL = 'https://shining-torch-23.firebaseio.com/';
@@ -84,7 +75,7 @@ angular.module('projectsApp')
             FR.onload = function(e) {
                  $('#img').attr( 'src', e.target.result );
                  $('#base').text( e.target.result );
-            };       
+            };
             FR.readAsDataURL( input.files[0] );
         }
     }
