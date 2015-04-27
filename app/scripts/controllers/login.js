@@ -115,12 +115,23 @@ angular.module('projectsApp')
           console.log("Authenticated successfully with payload:", authData);
           userService.setCurrentUser(authData);
           // creating firebase endpoint
-          ref.child('users').child(authData.uid).set({
+          ref.child('profileInfo').child(authData.uid).set({
               email: authData.facebook.cachedUserProfile.email,
               firstName: authData.facebook.cachedUserProfile.first_name,
               lastName: authData.facebook.cachedUserProfile.last_name,
               picture: authData.facebook.cachedUserProfile.picture.data.url
           });
+          ref.child('privacySettings').child(authData.uid).set({
+              provisionSettings: 0
+          });
+          ref.child('friends').child(authData.uid).set({
+              friendTotal: 0
+          });
+
+          ref.child('pending').child(authData.uid).set({
+              pendingTotal: 0
+          });
+
           $state.go('home.dashboard');
         }
       }, {
@@ -144,7 +155,6 @@ angular.module('projectsApp')
           ref.child('privacySettings').child(authData.uid).set({
               provisionSettings: 0
           });
-          
           ref.child('friends').child(authData.uid).set({
               friendTotal: 0
           });
@@ -152,12 +162,12 @@ angular.module('projectsApp')
           ref.child('pending').child(authData.uid).set({
               pendingTotal: 0
           });
+
           $state.go('home.dashboard');
         }
-      }, {
           scope: "email, profile" // permission requests
       });
-      };
+    };
       
 
     $scope.registerTwitter = function() {
@@ -174,13 +184,23 @@ angular.module('projectsApp')
           var twitterEmail = authData.twitter.cachedUserProfile.screen_name + "@ucrpal.com";
           var profileImage = authData.twitter.cachedUserProfile.profile_image_url;
 
-         
-         ref.child('users').child(authData.uid).set({
+          ref.child('profileInfo').child(authData.uid).set({
               email:  twitterEmail,
               firstName: firstName,
               lastName: lastName,
               picture: profileImage
-          });        
+          });
+          ref.child('privacySettings').child(authData.uid).set({
+              provisionSettings: 0
+          });
+          ref.child('friends').child(authData.uid).set({
+              friendTotal: 0
+          });
+
+          ref.child('pending').child(authData.uid).set({
+              pendingTotal: 0
+          });
+
           $state.go('home.dashboard');
         }
       });
