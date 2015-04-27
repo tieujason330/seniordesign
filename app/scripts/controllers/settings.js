@@ -13,19 +13,26 @@ angular.module('projectsApp')
       var ref = new Firebase(firebaseService.getFirebBaseURL());
       var authObj = $firebaseAuth(ref);
       var authData = authObj.$getAuth();
-      ref.child('users').child(authData.uid).once('value', function (snapshot) {
+      $scope.userCurrent;
+
+      ref.child('profileInfo').child(authData.uid).once('value', function (snapshot) {
           var val = snapshot.val();
+          console.log(val);
           val.uid = authData.uid;
           userService.setCurrentUser(val);
+          $scope.userCurrent = userService.getCurrentUser();
+          $scope.$apply(function() {
+            $scope.userCurrent.firstName = val.firstName;
+            $scope.userCurrent.lastName  = val.lastName;
+            $scope.userCurrent.email  = val.email;
+        });
       });
 
-      $scope.userCurrent = userService.getCurrentUser();
       $scope.user;
       $scope.alert = '';
 
       if (authData) {
         console.log('Logged in as:' + authData.uid);
-        console.log($scope.userCurrent);
       } else {
       console.log('Logged out');
       }
