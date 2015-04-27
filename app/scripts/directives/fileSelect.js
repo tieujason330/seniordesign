@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('projectsApp')
 .directive("ngFileSelect",function(){
 

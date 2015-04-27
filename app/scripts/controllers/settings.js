@@ -23,6 +23,25 @@ angular.module('projectsApp')
       $scope.user;
       $scope.alert = '';
 
+      if (authData) {
+        console.log('Logged in as:' + authData.uid);
+      } else {
+      console.log('Logged out');
+      }
+
+
+    function DialogController($scope, $mdDialog) {
+      $scope.hide = function() {
+        $mdDialog.hide();
+      };
+      $scope.enter = function(input) {
+        $mdDialog.hide(input);
+      };
+      $scope.cancel = function() {
+        $mdDialog.cancel();
+      };
+    }
+
     $scope.emailConfirm = function(userMail, oldMail) {
       // Appending dialog to document.body to cover sidenav in docs app
       $mdDialog.show({
