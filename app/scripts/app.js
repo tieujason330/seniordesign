@@ -8,6 +8,9 @@
  *
  * Main module of the application.
  */
+
+
+
 angular
   .module('projectsApp', [
     'ngAnimate',
@@ -19,20 +22,16 @@ angular
     'ngMaterial',
     'firebase',
     'ui.router',
-    'angularUtils.directives.dirPagination',
     'facebook',
     'angular-datepicker'
   ])
-  .run(["$rootScope", "$location", function($rootScope, $location, alertService) {
+  .run(["$rootScope", "$location", function($rootScope, $location) {
     $rootScope.$on("$routeChangeError", function(event, next, previous, error) {
       // We can catch the error thrown when the $requireAuth promise is rejected
       // and redirect the user back to the home page
       if (error === "AUTH_REQUIRED") {
-        var title= 'Auth Required';
-        var msg = 'You are not logged in. You shall not pass';
-        alertService.show(title,msg,"");
+        window.alert('You forgot to log in!');
         console.log("auth required");
-
         $location.path("/");
       }
     });
@@ -58,7 +57,6 @@ angular
               "currentAuth": ["$firebaseAuth", function ($firebaseAuth) {
                 var ref = new Firebase('https://shining-torch-23.firebaseio.com/');
                 var authObj = $firebaseAuth(ref);
-                //console.log(authObj.$requireAuth());
                 return authObj.$requireAuth();
               }]
             }
@@ -144,25 +142,6 @@ angular
           'container@': {
             templateUrl: '/views/photos.html',
             controller: 'ToolBarCtrl',
-            resolve: {
-            // controller will not be loaded until $requireAuth resolves
-              "currentAuth": ["$firebaseAuth", function ($firebaseAuth) {
-                var ref = new Firebase('https://shining-torch-23.firebaseio.com/');
-                var authObj = $firebaseAuth(ref);
-                return authObj.$requireAuth();
-              }]
-            }
-          }
-        }
-      })
-      .state('home.search', {
-        url: '/search',
-        onEnter: function(){
-        },
-        views: {
-          'container@': {
-            templateUrl: '/views/search.html',
-            controller: 'SearchCtrl',
             resolve: {
             // controller will not be loaded until $requireAuth resolves
               "currentAuth": ["$firebaseAuth", function ($firebaseAuth) {
