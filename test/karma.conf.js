@@ -34,6 +34,7 @@ module.exports = function(config) {
       'bower_components/bootstrap/dist/js/bootstrap.js',
       'bower_components/firebase/firebase.js',
       'bower_components/angularfire/dist/angularfire.js',
+      'bower_components/angular-utils-pagination/dirPagination.js',
       'bower_components/angular-facebook/lib/angular-facebook.js',
       'bower_components/angular-native-picker/build/angular-datepicker.js',
       'bower_components/angular-mocks/angular-mocks.js',

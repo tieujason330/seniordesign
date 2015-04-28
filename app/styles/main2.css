@@ -1,0 +1,98 @@
+body, html {
+    width: 100%;
+    height: 100%;
+}
+
+
+body{
+	background-color: #E9EAED;
+}
+
+.fullwidth{
+	width: 90%;
+	margin-left: auto;
+	margin-right: auto;
+	max-width: initial;
+}
+
+
+.title{
+	font-weight: bold;	
+}
+
+.title:hover{
+	color: #2BB0FA;
+}
+
+.tile {
+	display: block;
+	margin-right: auto;
+	margin-left: auto;
+	padding: 30px;
+	margin-bottom: 40px;
+	background-color: #FFF;	
+}
+
+#sidebar{
+	padding: 40px 0;
+}
+.post{
+	padding: 30px;
+	position: relative;
+}
+
+.comment{
+	padding-left: 40px;
+    padding-top: 1px;
+	position: relative;
+}
+
+.commentInput{
+	text-align: left;
+    max-width: 300px;
+}
+
+.description{
+	text-align: center;
+}
+
+.content {
+    max-width: 500px;
+	background-color: #FFF;
+	padding: 40px;
+}
+
+.date{
+	display:block ;
+	position: absolute;
+	left: -10px;
+	top: 20px; /* how far from the top do push it down */
+
+	background-color: #333;
+	color: #fff; /* text color */
+	width: 80px;
+	height: 80px;
+	border-radius: 50%; /* set radius 50% of the width */
+	text-align: center;
+	padding: 20px;
+	line-height: 14pt;
+}
+
+.day{
+	font-size: 32px;
+}
+
+.month{
+	font-size:12px
+}
+
+hr.postLine:before { 
+  display: block;
+  content: "";
+  height: 30px;
+  margin-top: -31px;
+  border-style: solid;
+  border-color: #8c8b8b;
+  border-width: 0 0 1px 0;
+  border-radius: 20px;
+}
