@@ -10,12 +10,7 @@
  angular.module('projectsApp')
  .controller('SearchCtrl', function ($scope, $timeout, firebaseService) {
 
-    $scope.filterFunction = function(element) {
-      //return element.name.match(/^T/) ? true : false;
-      return true
-    };
     $scope.selectedProfile = {};
-    $scope.input = '';
     $scope.loaded = false;
     $scope.profiles = [];
 
@@ -37,9 +32,7 @@
 
     $scope.searchProfiles = function(name){
       if(!$scope.loaded){
-        //$scope.loadProfiles().then(function(profiles){
         $scope.loadProfiles();
-        //console.log('queried profiles: ', $scope.profiles);
         $scope.loaded = true;
       }
     };
@@ -47,7 +40,6 @@
   }).directive('keyboardPoster', function($parse, $timeout){
   var DELAY_TIME_BEFORE_POSTING = 0;
   return function(scope, elem, attrs) {
-    
     var element = angular.element(elem)[0];
     var currentTimeout = null;
    
@@ -60,7 +52,6 @@
       }
       currentTimeout = $timeout(function(){
            poster(angular.element(element).val());
-          
       }, DELAY_TIME_BEFORE_POSTING)
     }
   }
