@@ -36,7 +36,7 @@ angular.module('projectsApp')
 
   var ref = new Firebase("https://shining-torch-23.firebaseio.com/friends/"+ authData.uid);
   $scope.messages = $firebaseArray(ref);
-
+  
   var list = $firebaseArray(ref);
   var friendProfile = [];
   list.$loaded(
@@ -59,6 +59,19 @@ angular.module('projectsApp')
     $scope.messages.$add({
       uid: userID
     });
+
+    // add to pending list of requested friend
+    var pendingRef = new Firebase("https://shining-torch-23.firebaseio.com/pending/"+ userID);
+    $scope.pending = $firebaseArray(pendingRef);
+
+    var senderID = authData.uid;
+    $scope.pending.$add({
+      userID: senderID 
+    });
+    // update pendingTotal at Firebase endpt
+    pendingRef.child('pendingTotal').transaction(function(current_value) {
+      return (current_value || 0) + 1;
+    }); 
   };
   $scope.data;
 
