@@ -30,7 +30,8 @@ angular.module('projectsApp')
       ref.child('profileInfo').child(userData.uid).set({
           email: user.email,
           firstName: user.firstName,
-          lastName: user.lastName
+          lastName: user.lastName,
+          loggedIn: false
       });
 
       ref.child('privacySettings').child(userData.uid).set({
@@ -46,6 +47,13 @@ angular.module('projectsApp')
       ref.child('pending').child(userData.uid).set({
           pendingTotal: 0
       });
+    };
+
+    var goToDashboard = function(userData){
+      ref.child('profileInfo').child(userData.uid).update({
+        loggedIn: true
+      });
+      $state.go('home.dashboard');
     };
     
     //registers users on firebase
@@ -66,7 +74,8 @@ angular.module('projectsApp')
 
           // set up firebase endpoints to match account creation
           createFireAcc(userData, user);
-          //$state.go('home.dashboard');
+          //logged in state
+          goToDashboard(userData);
 
         }).catch(function (error) {
 
@@ -81,14 +90,6 @@ angular.module('projectsApp')
       }
     }
 
-    var changeLocation = function(url, forceReload) {
-      $location.path(url);
-      $scope = $scope || angular.element(document).scope();
-      if(forceReload || !$scope.$$phase) {
-        $scope.$apply();
-      }
-    };
-
     $scope.login = function(user, form, ev) {
         if(!form.$valid) {
             return;
@@ -98,8 +99,8 @@ angular.module('projectsApp')
             password: user.password
         }).then(function (authData) {
           console.log('Logged in as:' + authData.uid);
+          //todo: logged in state
           $state.go('home.dashboard');
-          //changeLocation('/home', true);
         }).catch(function (error) {
           var msg = 'Invalid E-mail or password. Please try again';
           alertService.show(msg,ev);
@@ -136,8 +137,7 @@ angular.module('projectsApp')
           ref.child('pending').child(authData.uid).set({
               pendingTotal: 0
           });
-
-          $state.go('home.dashboard');
+          goToDashboard(authData);
         }
       }, {
           scope: "user_likes, email, user_birthday, public_profile, user_education_history, user_about_me" // permission requests
@@ -169,8 +169,7 @@ angular.module('projectsApp')
           ref.child('pending').child(authData.uid).set({
               pendingTotal: 0
           });
-
-          $state.go('home.dashboard');
+          goToDashboard(authData);
         }},{
           scope: "email, profile" // permission requests
       });
@@ -209,8 +208,7 @@ angular.module('projectsApp')
           ref.child('pending').child(authData.uid).set({
               pendingTotal: 0
           });
-
-          $state.go('home.dashboard');
+          goToDashboard(authData);
         }
       });
     };
