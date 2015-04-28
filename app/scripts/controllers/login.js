@@ -22,9 +22,32 @@ Do not use controllers to:
 
 **/
 angular.module('projectsApp')
-  .controller('LoginCtrl', function ($scope, $location, $state, $firebaseAuth, firebaseService, $mdDialog, alertService) {
+  .controller('LoginCtrl', function ($scope, $location, $state, $firebaseAuth, firebaseService, $mdDialog, alertService, userService, Facebook) {
     var ref = new Firebase(firebaseService.getFirebBaseURL());
     var auth = $firebaseAuth(ref);
+
+    var createFireAcc = function(userData, user) {
+      ref.child('profileInfo').child(userData.uid).set({
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName
+      });
+
+      ref.child('privacySettings').child(userData.uid).set({
+          provisionSettings: 0,
+          messagePrivacy: 'everyone',
+          postPrivacy: 'everyone',
+      });
+      
+      ref.child('friends').child(userData.uid).set({
+          friendTotal: 0
+      });
+
+      ref.child('pending').child(userData.uid).set({
+          pendingTotal: 0
+      });
+    };
+    
     //registers users on firebase
     $scope.createUser = function(user, form) {
       //Valid form fields
@@ -40,19 +63,20 @@ angular.module('projectsApp')
           var title= 'Welcome';
           var msg = 'The new user account has been successfully created.';
           alertService.show(title,msg,'');
-          ref.child('users').child(userData.uid).set({
-              email: user.email,
-              firstName: user.firstName,
-              lastName: user.lastName,
-              provisioned: 0
-          });
+
+          // set up firebase endpoints to match account creation
+          createFireAcc(userData, user);
+          //$state.go('home.dashboard');
+
         }).catch(function (error) {
+
           if(error.code == 'EMAIL_TAKEN')
           {
               var title= 'Error Creating Account';
               var msg = 'The new user account cannot be created because the email is already in use.';
               alertService.show(title,msg,"");
           }
+
         });
       }
     }
@@ -82,29 +106,41 @@ angular.module('projectsApp')
         });
     };
 
+
+/* ****** MUST add a provision check for registerFB, Google, Twitter ***** */
+
  $scope.registerFB = function() {
       ref.authWithOAuthPopup('facebook', function(error, authData) {
-        scope: 'email,user_likes' // permission requests
         if (error) {
           console.log('Login Failed!', error);
         } else {
-          console.log('Authenticated successfully with payload:', authData);
-          console.log('FacebookName: ' + authData.facebook.displayName  + ' ID: ' + authData.facebook.id +
-                      ' Email: ' + authData.facebook.email);
 
-        /*FB.api(
-            "/{user-id}",
-            function (response) {
-              if (response && !response.error) {
-                console.log(response);
-              }
-            }
-        );*/
+          console.log("Authenticated successfully with payload:", authData);
+          userService.setCurrentUser(authData);
+          // creating firebase endpoint
+          ref.child('profileInfo').child(authData.uid).set({
+              email: authData.facebook.cachedUserProfile.email,
+              firstName: authData.facebook.cachedUserProfile.first_name,
+              lastName: authData.facebook.cachedUserProfile.last_name,
+              picture: authData.facebook.cachedUserProfile.picture.data.url
+          });
+          ref.child('privacySettings').child(authData.uid).set({
+              provisionSettings: 0,
+              messagePrivacy: 'everyone',
+              postPrivacy: 'everyone',
+          });
+          ref.child('friends').child(authData.uid).set({
+              friendTotal: 0
+          });
 
-          changeLocation('/home', true);
+          ref.child('pending').child(authData.uid).set({
+              pendingTotal: 0
+          });
+
+          $state.go('home.dashboard');
         }
       }, {
-          scope: "email,user_likes" // permission requests
+          scope: "user_likes, email, user_birthday, public_profile, user_education_history, user_about_me" // permission requests
         });
     };
 
@@ -114,20 +150,32 @@ angular.module('projectsApp')
           console.log('Login Failed!', error);
         } else {
           console.log('Authenticated successfully with payload:', authData);
-          console.log(authData.uid);
 
-          ref.child('users').child(authData.uid).set({
+          ref.child('profileInfo').child(authData.uid).set({
               email: authData.google.email,
               firstName: authData.google.cachedUserProfile.given_name,
               lastName: authData.google.cachedUserProfile.family_name,
               picture: authData.google.cachedUserProfile.picture
           });
-          changeLocation('/home', true);
-        }
-      }, {
-          scope: "email" // permission requests
-      }
-      )};
+          ref.child('privacySettings').child(authData.uid).set({
+              provisionSettings: 0,
+              messagePrivacy: 'everyone',
+              postPrivacy: 'everyone',
+          });
+          ref.child('friends').child(authData.uid).set({
+              friendTotal: 0
+          });
+
+          ref.child('pending').child(authData.uid).set({
+              pendingTotal: 0
+          });
+
+          $state.go('home.dashboard');
+        }},{
+          scope: "email, profile" // permission requests
+      });
+    };
+      
 
     $scope.registerTwitter = function() {
       ref.authWithOAuthPopup("twitter", function(error, authData) {
@@ -135,12 +183,35 @@ angular.module('projectsApp')
           console.log("Login Failed!", error);
         } else {
           console.log("Authenticated successfully with payload:", authData);
-          changeLocation('/home', true);
+
+          var name = authData.twitter.cachedUserProfile.name; name = name.split(" ");
+          var firstName = name[0];
+          var lastName = name[name.length-1];
+          var aboutMe = authData.twitter.cachedUserProfile.description;
+          var twitterEmail = authData.twitter.cachedUserProfile.screen_name + "@ucrpal.com";
+          var profileImage = authData.twitter.cachedUserProfile.profile_image_url;
+
+          ref.child('profileInfo').child(authData.uid).set({
+              email:  twitterEmail,
+              firstName: firstName,
+              lastName: lastName,
+              picture: profileImage
+          });
+          ref.child('privacySettings').child(authData.uid).set({
+              provisionSettings: 0,
+              messagePrivacy: 'everyone',
+              postPrivacy: 'everyone',
+          });
+          ref.child('friends').child(authData.uid).set({
+              friendTotal: 0
+          });
+
+          ref.child('pending').child(authData.uid).set({
+              pendingTotal: 0
+          });
+
+          $state.go('home.dashboard');
         }
       });
     };
-    /*
-    function populateSettings(user) {
-    }
-    */
   });

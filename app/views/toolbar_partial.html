@@ -1,14 +1,22 @@
 <div layout="column" layout-fill ng-controller='ToolBarCtrl'>
-  <md-toolbar>
+  <md-toolbar style="position: fixed;">
     <div class="md-toolbar-tools">
       <!-- fill up the space between left and right area -->
       <md-button class="md-icon-button" aria-label="Settings" ng-click='toggleLeft()'>
           <md-icon md-svg-icon="images/icons/menu.svg"></md-icon>
       </md-button>
       <span flex></span>
+      <span flex></span>
       some cool logo
       <span flex></span>
-      search
+      <span ></span>
+			<input ng-model="user.name" type="text" class="form-control" flex placeholder="Name">
+      <md-button class="md-icon-button" aria-label="Settings" ng-click='goToSearch(user.name)'>
+          <md-icon md-svg-icon="images/icons/menu.svg"></md-icon>
+      </md-button>
+      <md-input-container placeholder="Search">
+        
+      </md-input-container>
 <!--       <md-button ng-click='toggleRight()'>
         Right Bar Button
       </md-button>
@@ -17,7 +25,7 @@
   </md-toolbar>
 </div>
 
-<md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left">
+<md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" style="position: fixed;">
   <md-toolbar class="md-theme-dark">
     <h1 class="md-toolbar-tools">Menu</h1>
   </md-toolbar>

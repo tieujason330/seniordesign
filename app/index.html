@@ -5,6 +5,7 @@
     <title></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
+    <script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
@@ -12,6 +13,9 @@
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
     <link rel="stylesheet" href="bower_components/bootstrap-social/bootstrap-social.css" />
+    <link rel="stylesheet" href="bower_components/angular-native-picker/build/themes/default.css" />
+    <link rel="stylesheet" href="bower_components/angular-native-picker/build/themes/default.date.css" />
+    <link rel="stylesheet" href="bower_components/angular-native-picker/build/themes/default.time.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -26,13 +30,6 @@
       <div id="content" ui-view> </div>
       <div ui-view="header"></div>
       <div style="margin: 15px" ui-view="container"></div>
-  <!--
-    <div class="footer">
-      <div class="container flex" layout-align="start end">
-        <p><span class="glyphicon glyphicon-heart" style="right"></span> from the Riverside Pals Team</p>
-      </div>
-    </div>
-  -->
 
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -63,8 +60,9 @@
     <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="bower_components/firebase/firebase.js"></script>
     <script src="bower_components/angularfire/dist/angularfire.js"></script>
-    <script src="bower_components/flow.js/dist/flow.js"></script>
-    <script src="bower_components/ng-flow/dist/ng-flow.js"></script>
+    <script src="bower_components/angular-utils-pagination/dirPagination.js"></script>
+    <script src="bower_components/angular-facebook/lib/angular-facebook.js"></script>
+    <script src="bower_components/angular-native-picker/build/angular-datepicker.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -75,9 +73,14 @@
     <script src="scripts/controllers/settings.js"></script>
     <script src="scripts/controllers/search.js"></script>
     <script src="scripts/controllers/routes.js"></script>
+    <script src="scripts/controllers/search.js"></script>
+    <script src="scripts/controllers/friends.js"></script>
+    <script src="scripts/controllers/profile.js"></script>
     <script src="scripts/services/myservice.js"></script>
     <script src="scripts/services/userservice.js"></script>
     <script src="scripts/services/alertservice.js"></script>
+    <script src="scripts/services/searchservice.js"></script>
+    <script src="scripts/services/friendservice.js"></script>
     <script src="scripts/directives/fileSelect.js"></script>
 
         <!-- endbuild -->
