@@ -34,7 +34,9 @@ angular.module('projectsApp')
       });
 
       ref.child('privacySettings').child(userData.uid).set({
-          provisionSettings: 0
+          provisionSettings: 0,
+          messagePrivacy: 'everyone',
+          postPrivacy: 'everyone',
       });
       
       ref.child('friends').child(userData.uid).set({
@@ -64,6 +66,7 @@ angular.module('projectsApp')
 
           // set up firebase endpoints to match account creation
           createFireAcc(userData, user);
+          //$state.go('home.dashboard');
 
         }).catch(function (error) {
 
@@ -122,7 +125,9 @@ angular.module('projectsApp')
               picture: authData.facebook.cachedUserProfile.picture.data.url
           });
           ref.child('privacySettings').child(authData.uid).set({
-              provisionSettings: 0
+              provisionSettings: 0,
+              messagePrivacy: 'everyone',
+              postPrivacy: 'everyone',
           });
           ref.child('friends').child(authData.uid).set({
               friendTotal: 0
@@ -153,7 +158,9 @@ angular.module('projectsApp')
               picture: authData.google.cachedUserProfile.picture
           });
           ref.child('privacySettings').child(authData.uid).set({
-              provisionSettings: 0
+              provisionSettings: 0,
+              messagePrivacy: 'everyone',
+              postPrivacy: 'everyone',
           });
           ref.child('friends').child(authData.uid).set({
               friendTotal: 0
@@ -164,7 +171,7 @@ angular.module('projectsApp')
           });
 
           $state.go('home.dashboard');
-        }
+        }},{
           scope: "email, profile" // permission requests
       });
     };
@@ -191,7 +198,9 @@ angular.module('projectsApp')
               picture: profileImage
           });
           ref.child('privacySettings').child(authData.uid).set({
-              provisionSettings: 0
+              provisionSettings: 0,
+              messagePrivacy: 'everyone',
+              postPrivacy: 'everyone',
           });
           ref.child('friends').child(authData.uid).set({
               friendTotal: 0
