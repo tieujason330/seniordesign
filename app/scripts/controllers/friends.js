@@ -56,24 +56,137 @@ angular.module('projectsApp')
 
   $scope.addFriend = function(useruid) {
     var userID = useruid;
+    console.log('adding ' + userID + ' as friend');
+
     $scope.messages.$add({
       uid: userID
     });
 
-    // add to pending list of requested friend
+    // add to pending list of requested friend only if the sender's uid isn't there
     var pendingRef = new Firebase("https://shining-torch-23.firebaseio.com/pending/"+ userID);
-    $scope.pending = $firebaseArray(pendingRef);
-
+    var pendingObj = $firebaseObject(pendingRef);
     var senderID = authData.uid;
-    $scope.pending.$add({
-      userID: senderID 
-    });
-    // update pendingTotal at Firebase endpt
-    pendingRef.child('pendingTotal').transaction(function(current_value) {
-      return (current_value || 0) + 1;
-    }); 
+
+    pendingObj.$loaded()
+      .then(function(data) {
+        console.log(data === pendingObj); //true 
+        
+        var senderList = {};
+        if (data.senderList !== undefined) {          
+          senderList = data.senderList;
+        }
+
+        // TODO retrieve sender's full name 
+        //var name = getUserFullName(senderID);
+        //console.log(name);
+
+        // update pendingTotal
+        if (senderList[senderID] == undefined) {
+          pendingRef.child('pendingTotal').transaction(function(current_value) {
+            return (current_value || 0) + 1;
+          }); 
+        }
+
+        // add to senderList
+        senderList[senderID] = 'User\'s full name';
+
+        // update Firebase endpoint      
+        pendingRef.update({
+          senderList: senderList
+        });
+
+      })
+      .catch(function(error) {
+        console.error("Error:", error);
+      });
   };
   $scope.data;
+
+  $scope.confirmFriend = function(useruid) {
+    var senderID = useruid;
+    console.log('confirming ' + senderID + ' as friend');
+
+    var receiverID = authData.uid;
+    var pendingRef = new Firebase("https://shining-torch-23.firebaseio.com/pending/"+ receiverID);
+    var pendingObj = $firebaseObject(pendingRef);
+
+    pendingObj.$loaded()
+      .then(function(data) {
+        console.log(data === pendingObj); //true 
+        
+        var senderList = {};
+        if (data.senderList !== undefined) {          
+          senderList = data.senderList;
+        }
+
+        // update pendingTotal
+        pendingRef.child('pendingTotal').transaction(function(current_value) {
+          return (current_value || 0) - 1;
+        }); 
+
+        // remove sender from receiver's pending sender list
+        delete senderList[senderID];
+
+        // update Firebase endpoint      
+        pendingRef.update({
+          senderList: senderList
+        });
+
+      })
+      .catch(function(error) {
+        console.error("Error:", error);
+      });
+
+    // add sender to receiever's friends list and vice versa
+    addToFriendList(receiverID, senderID);
+    addToFriendList(senderID, receiverID);
+  };
+    
+  var addToFriendList = function(receiverID, senderID) {
+    var ref = new Firebase("https://shining-torch-23.firebaseio.com/friends/" + receiverID);
+    var obj = $firebaseObject(ref);
+    obj.$loaded()
+      .then(function(data) {
+        console.log(data === obj); //true 
+        
+        var friendList = {};
+        if (data.friendList !== undefined) {          
+          friendList = data.friendList;
+        }
+
+        // update pendingTotal
+        if (friendList[senderID] == undefined) {
+          ref.child('friendTotal').transaction(function(current_value) {
+            return (current_value || 0) + 1;
+          }); 
+        }
+
+        // add to friendList
+        friendList[senderID] = 'User\'s full name';
+
+        // update Firebase endpoint      
+        ref.update({
+          friendList: friendList
+        });
+
+      })
+      .catch(function(error) {
+        console.error("Error:", error);
+      });
+  };
+  
+  var getUserFullName = function(userid) {
+    var ref = new Firebase("https://shining-torch-23.firebaseio.com/profileInfo/"+ userid);
+    var profileData = $firebaseObject(ref);
+    profileData.$loaded(
+      function(data) {
+        return data.firstName + " " + data.lastName;
+      },
+      function(error) {
+        console.error("Error:", error);
+      }
+    );
+  };
 
   var getUserProfileInfo = function(userid){
     var userID = userid;
