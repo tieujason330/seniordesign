@@ -31,15 +31,9 @@ angular.module('projectsApp')
 angular.module('projectsApp')
   .controller('ToolBarCtrl', function ($scope, $firebaseAuth, $location, $timeout, $mdSidenav, $log, $state, searchService ) {
     var ref = new Firebase('https://shining-torch-23.firebaseio.com/');
-     var authObj = $firebaseAuth(ref);
-     var authData = authObj.$getAuth();
+    var authObj = $firebaseAuth(ref);
+    var authData = authObj.$getAuth();
 
-    // if (authData) {
-    //   console.log("Logged in as:", authData.uid);
-    // } else {
-    //   console.log("Logged out");
-    // }
-    
     // notification: check # of pending friends 
     var pending = ref.child('pending').child(authData.uid).child('pendingTotal').once('value', function(snapshot) {
       var val = snapshot.val();
@@ -101,6 +95,9 @@ angular.module('projectsApp')
 
     $scope.logout = function(){
       console.log("Logging Out!")
+      ref.child('profileInfo').child(authData.uid).update({
+        loggedIn: false
+      });
       ref.unauth();
       $state.go('login');
     };
