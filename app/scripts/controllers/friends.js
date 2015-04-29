@@ -46,11 +46,8 @@ angular.module('projectsApp')
     x.forEach(function(entry) {
      getUserProfileInfo(entry.uid);
      console.log(entry.uid);
-
     });
-
-    console.log("hello");
-  }, function(error) {
+    }, function(error) {
     console.error("Error:", error);
   });
 
@@ -80,6 +77,9 @@ angular.module('projectsApp')
     $scope.friendProfiles = friendProfile;
     console.log("end");
   }
+
+  var profileRef = new Firebase("https://shining-torch-23.firebaseio.com/profileInfo/");
+  $scope.allProfiles = $firebaseArray(profileRef);
 
   $scope.currentPage = 1;
   $scope.pageSize = 20;
