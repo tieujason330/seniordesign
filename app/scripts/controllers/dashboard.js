@@ -12,10 +12,6 @@
     var ref = new Firebase(firebaseService.getFirebBaseURL());
 
 
-    $scope.loadMessages = function(){
-
-    };
-
 
 
   }); 
