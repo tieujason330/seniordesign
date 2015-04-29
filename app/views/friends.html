@@ -1,27 +1,26 @@
 <div layout="column" flex layout-fill ng-controller='UsersController'>
 
-  <md-content>
+  <md-content style="margin-top: 75px;" class="md-padding">
   <md-card>
-    <div class>
-      <h3>Meals Page: {{ currentPage }}</h3>
-    </div>
-    <md-input-container md-no-float>
-      <input ng-model="q" id="search" class="form-control" placeholder="Search" type="text">
+    <md-input-container md-no-float style="padding: 0px;">
+      <input ng-model="q" style="font-size:25px; margin: 20px; padding: 40px" id="search" class="form-control" placeholder="Search..." type="text">
     </md-input-container>
-    <div class>
-      <label for="search">Search:</label>
-      <input ng-model="q" id="search" class="form-control" placeholder="Filter text">
-    </div>
-    <div class>
+    <!-- <p>Selected Value: <span class="radioValue">{{ data.group1 }}</span> </p> -->
+    <md-radio-group ng-model="data.group1">
+      <md-radio-button value="Friends" class="md-primary">Friends</md-radio-button>
+      <md-radio-button value="Everyone">Everyone</md-radio-button>
+    </md-radio-group>
+<!--     <div class>
       <label for="search">items per page:</label>
       <input type="number" min="1" max="100" class="form-control" ng-model="pageSize">
     </div>
-  </md-card>
+ -->  </md-card>
   </md-content>
 
-  <md-content dir-paginate="friend in friendProfiles | filter:q | itemsPerPage: pageSize" current-page="currentPage">
+  <md-content dir-paginate="friend in friendProfiles | filter:q | itemsPerPage: pageSize" current-page="currentPage" ng-show="data.group1 == 'Friends'">
     <md-card>
       <!-- <img src="img/washedout.png" class="md-card-image" alt="Washed Out"> -->
+      {{friend}}
       <md-card-content>
        <h2 class="md-title">{{friend.name}}</h2>
       <h2 class="md-title">{{friend.firstName}}</h2>
@@ -30,28 +29,34 @@
       </md-card-content>
       <md-action-bar layout="row">
         <md-button>Connect with me</md-button>
-         <md-button class="md-fab"> Connect with me
+         <md-button class="md-fab">
         </md-button>
       </md-action-bar>
     </md-card>
   </md-content>
 
-  <div ng-controller="OtherController" class="other-controller">
+  <div ng-controller="OtherController" class="other-controller" ng-show="data.group1">
     <div class="text-center">
       <dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)" template-url="views/dirPagination.tpl.html"></dir-pagination-controls>
     </div>
   </div>
 
-  <md-content ng-repeat="user in allProfiles" style="margin: 20px">
+  <md-content style="margin: 20px" dir-paginate="user in allProfiles | filter:q | itemsPerPage: pageSize" current-page="currentPage" ng-show="data.group1 == 'Everyone'">
     <md-card>
       <md-toolbar class="md-accent" style="position: relative; z-index: 1;">
         <div class="md-toolbar-tools">
-          <h2 class="md-flex">{{user.firstName}}  {{user.lastName}}</h2>
+          <h2 class="md-headline md-flex">{{user.firstName}}  {{user.lastName}}</h2>
         </div>
       </md-toolbar>
       <md-card-content>
-
-        <img src={{user.picture}}  width="120" height="120"/>
+        <img src={{user.picture}}   width="140" height="120"/>
+        <br>Online: {{user.loggedIn}}</br>
+        <br>Email: {{user.email}}</br>
+        <br>School: {{user.email}}</br>
+        <br>Birthday: {{user.email}}</br>
+        <br>Favorite Movie: {{user.email}}</br>
+        <br>About Me: {{user.email}}</br>
+        <br></br>
        <md-divider ></md-divider>
         <md-subheader class="md-no-sticky">md-offset class</md-subheader>
         <p>
@@ -59,7 +64,7 @@
           two most important words in Ernest Greene's musical language: feel it. It's a simple request, as well...
         </p>
         <div class="md-actions" layout="row" layout-align="end center">
-         <md-button class="md-fab"> Connect with me
+         <md-button class="md-fab"> Add
         </md-button>
       </div>
       </md-card-content>

@@ -82,7 +82,7 @@ angular.module('projectsApp')
   $scope.allProfiles = $firebaseArray(profileRef);
 
   $scope.currentPage = 1;
-  $scope.pageSize = 20;
+  $scope.pageSize = 5;
   $scope.meals = [];
 
   var dishes = [
