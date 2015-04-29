@@ -62,7 +62,6 @@ angular.module('projectsApp')
       if(form.$valid)
       {
         console.log('register user on firebase');
-
         auth.$createUser({
           email: user.email,
           password: user.password
@@ -71,21 +70,17 @@ angular.module('projectsApp')
           var title= 'Welcome';
           var msg = 'The new user account has been successfully created.';
           alertService.show(title,msg,'');
-
           // set up firebase endpoints to match account creation
           createFireAcc(userData, user);
           //logged in state
           goToDashboard(userData);
-
         }).catch(function (error) {
-
           if(error.code == 'EMAIL_TAKEN')
           {
-              var title= 'Error Creating Account';
-              var msg = 'The new user account cannot be created because the email is already in use.';
-              alertService.show(title,msg,"");
+            var title= 'Error Creating Account';
+            var msg = 'The new user account cannot be created because the email is already in use.';
+            alertService.show(title,msg,'');
           }
-
         });
       }
     }
@@ -107,37 +102,38 @@ angular.module('projectsApp')
         });
     };
 
-
-/* ****** MUST add a provision check for registerFB, Google, Twitter ***** */
-
- $scope.registerFB = function() {
+    $scope.registerFB = function() {
       ref.authWithOAuthPopup('facebook', function(error, authData) {
         if (error) {
           console.log('Login Failed!', error);
         } else {
-
           console.log("Authenticated successfully with payload:", authData);
           userService.setCurrentUser(authData);
-          // creating firebase endpoint
-          ref.child('profileInfo').child(authData.uid).set({
-              email: authData.facebook.cachedUserProfile.email,
-              firstName: authData.facebook.cachedUserProfile.first_name,
-              lastName: authData.facebook.cachedUserProfile.last_name,
-              picture: authData.facebook.cachedUserProfile.picture.data.url
-          });
-          ref.child('privacySettings').child(authData.uid).set({
-              provisionSettings: 0,
-              messagePrivacy: 'everyone',
-              postPrivacy: 'everyone',
-          });
-          ref.child('friends').child(authData.uid).set({
-              friendTotal: 0
-          });
+          ref.child('profileInfo').child(authData.uid).once('value', function (snapshot){
 
-          ref.child('pending').child(authData.uid).set({
-              pendingTotal: 0
-          });
-          goToDashboard(authData);
+            if(snapshot.val() === null){
+            // creating firebase endpoint
+            ref.child('profileInfo').child(authData.uid).set({
+                email: authData.facebook.cachedUserProfile.email,
+                firstName: authData.facebook.cachedUserProfile.first_name,
+                lastName: authData.facebook.cachedUserProfile.last_name,
+                picture: authData.facebook.cachedUserProfile.picture.data.url
+            });
+            ref.child('privacySettings').child(authData.uid).set({
+                provisionSettings: 0,
+                messagePrivacy: 'everyone',
+                postPrivacy: 'everyone',
+            });
+            ref.child('friends').child(authData.uid).set({
+                friendTotal: 0
+            });
+            ref.child('pending').child(authData.uid).set({
+                pendingTotal: 0
+            });
+            goToDashboard(authData);
+          } else{
+            goToDashboard(authData);
+          }
         }
       }, {
           scope: "user_likes, email, user_birthday, public_profile, user_education_history, user_about_me" // permission requests
@@ -150,28 +146,40 @@ angular.module('projectsApp')
           console.log('Login Failed!', error);
         } else {
           console.log('Authenticated successfully with payload:', authData);
+          
+          ref.child('profileInfo').child(authData.uid).once('value', function (snapshot){
 
-          ref.child('profileInfo').child(authData.uid).set({
-              email: authData.google.email,
-              firstName: authData.google.cachedUserProfile.given_name,
-              lastName: authData.google.cachedUserProfile.family_name,
-              picture: authData.google.cachedUserProfile.picture
+            if(snapshot.val() === null){
+              console.log('making new user profile');
+              //If account doesn't exist set new data
+              ref.child('profileInfo').child(authData.uid).set({
+                  email: authData.google.email,
+                  firstName: authData.google.cachedUserProfile.given_name,
+                  lastName: authData.google.cachedUserProfile.family_name,
+                  picture: authData.google.cachedUserProfile.picture
+              });
+              ref.child('privacySettings').child(authData.uid).set({
+                  provisionSettings: 0,
+                  messagePrivacy: 'everyone',
+                  postPrivacy: 'everyone',
+              });
+              ref.child('friends').child(authData.uid).set({
+                  friendTotal: 0
+              });
+              ref.child('pending').child(authData.uid).set({
+                  pendingTotal: 0
+              });
+              console.log('...moving to dashboard...');
+              goToDashboard(authData);
+            }
+            else{
+              console.log('...moving to dashboard...');
+              goToDashboard(authData);
+            }
           });
-          ref.child('privacySettings').child(authData.uid).set({
-              provisionSettings: 0,
-              messagePrivacy: 'everyone',
-              postPrivacy: 'everyone',
-          });
-          ref.child('friends').child(authData.uid).set({
-              friendTotal: 0
-          });
-
-          ref.child('pending').child(authData.uid).set({
-              pendingTotal: 0
-          });
-          goToDashboard(authData);
-        }},{
-          scope: "email, profile" // permission requests
+        }
+      },{
+        scope: "email, profile" // permission requests
       });
     };
       
@@ -182,33 +190,38 @@ angular.module('projectsApp')
           console.log("Login Failed!", error);
         } else {
           console.log("Authenticated successfully with payload:", authData);
+          ref.child('profileInfo').child(authData.uid).once('value', function (snapshot){
 
-          var name = authData.twitter.cachedUserProfile.name; name = name.split(" ");
-          var firstName = name[0];
-          var lastName = name[name.length-1];
-          var aboutMe = authData.twitter.cachedUserProfile.description;
-          var twitterEmail = authData.twitter.cachedUserProfile.screen_name + "@ucrpal.com";
-          var profileImage = authData.twitter.cachedUserProfile.profile_image_url;
+            if(snapshot.val() === null){
+              var name = authData.twitter.cachedUserProfile.name; name = name.split(" ");
+              var firstName = name[0];
+              var lastName = name[name.length-1];
+              var aboutMe = authData.twitter.cachedUserProfile.description;
+              var twitterEmail = authData.twitter.cachedUserProfile.screen_name + "@ucrpal.com";
+              var profileImage = authData.twitter.cachedUserProfile.profile_image_url;
 
-          ref.child('profileInfo').child(authData.uid).set({
-              email:  twitterEmail,
-              firstName: firstName,
-              lastName: lastName,
-              picture: profileImage
-          });
-          ref.child('privacySettings').child(authData.uid).set({
-              provisionSettings: 0,
-              messagePrivacy: 'everyone',
-              postPrivacy: 'everyone',
-          });
-          ref.child('friends').child(authData.uid).set({
-              friendTotal: 0
-          });
+              ref.child('profileInfo').child(authData.uid).set({
+                  email:  twitterEmail,
+                  firstName: firstName,
+                  lastName: lastName,
+                  picture: profileImage
+              });
+              ref.child('privacySettings').child(authData.uid).set({
+                  provisionSettings: 0,
+                  messagePrivacy: 'everyone',
+                  postPrivacy: 'everyone',
+              });
+              ref.child('friends').child(authData.uid).set({
+                  friendTotal: 0
+              });
+              ref.child('pending').child(authData.uid).set({
+                  pendingTotal: 0
+              });
+              goToDashboard(authData);
+            } else{
+              goToDashboard(authData);
+            }
 
-          ref.child('pending').child(authData.uid).set({
-              pendingTotal: 0
-          });
-          goToDashboard(authData);
         }
       });
     };
