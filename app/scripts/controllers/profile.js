@@ -8,14 +8,14 @@ angular.module('projectsApp')
     $scope.userCurrentID = $scope.authData.uid;
     $scope.userCurrentFirstName;  
     $scope.userCurrentLastName;  
-
-
     $scope.postText;
 
 
-
+    //$scope.profileID;
     $scope.posts = [];
     $scope.loadPosts = function(){  
+
+
       ref.child('posts').once('value', function (snapshot) {
         console.log('...fetching posts...');
       	// profileID loop
@@ -42,6 +42,7 @@ angular.module('projectsApp')
       });
       // store profile information
       ref.child('profileInfo').once('value', function (snapshot){
+        console.log("PROFILEID: " + snapshot.key());
         snapshot.forEach(function(profileInfoFire){
           if(profileInfoFire.key() === $scope.userCurrentID){
             $scope.userCurrentFirstName = profileInfoFire.val().firstName;
@@ -80,7 +81,6 @@ angular.module('projectsApp')
       });
     };
 
-    // postID
     $scope.sendComment = function(commentText, postID){
       console.log('SendComment Called!');
       console.log("THE POSTID: " + postID);
@@ -114,9 +114,4 @@ angular.module('projectsApp')
         })
       });
     };
-
-
-
-
-
 });

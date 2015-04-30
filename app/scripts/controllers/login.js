@@ -25,6 +25,7 @@ angular.module('projectsApp')
   .controller('LoginCtrl', function ($scope, $location, $state, $firebaseAuth, firebaseService, $mdDialog, alertService, userService, Facebook) {
     var ref = new Firebase(firebaseService.getFirebBaseURL());
     var auth = $firebaseAuth(ref);
+    $scope.profileObjects= [];
 
     var createFireAcc = function(userData, user) {
       ref.child('profileInfo').child(userData.uid).set({
@@ -39,6 +40,11 @@ angular.module('projectsApp')
           postPrivacy: 'everyone',
       });
       
+      ref.child('posts').child(userData.uid).set({
+          // null
+          ignore: 0
+      });
+
       ref.child('friends').child(userData.uid).set({
           friendTotal: 0
       });
