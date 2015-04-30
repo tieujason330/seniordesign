@@ -20,22 +20,23 @@ angular.module('projectsApp')
         console.log('...fetching posts...');
       	// profileID loop
       	snapshot.forEach(function(profileFire) {
-          if(profileFire.key() === $scope.userCurrentID){
-            // postID loop
-            profileFire.forEach(function(postFire){     
-              var post = {sender: postFire.val().senderName, senderID: postFire.val().senderID, text: postFire.val().text, postID: postFire.key(), timestamp: postFire.val().timestamp, comments: []};
-              // commentID loop
-              postFire.forEach(function(commentFire){
-              if(commentFire.val().senderName !== undefined && commentFire.val().text !== undefined){
-                  var comment = {sender: commentFire.val().senderName, text: commentFire.val().text, timestamp: commentFire.val().timestamp};
-                  post.comments.push(comment);
-                }
-              })
-              $scope.posts.push(post);
-            })
-          }
-          else{
-            console.log("Posts belong to: " + child.key());
+          if(profileFire.exists()){
+            if(profileFire.key() === $scope.userCurrentID){
+              if(profileFire.exists()){
+                // postID loop
+                profileFire.forEach(function(postFire){     
+                  var post = {sender: postFire.val().senderName, senderID: postFire.val().senderID, text: postFire.val().text, postID: postFire.key(), timestamp: postFire.val().timestamp, comments: []};
+                  // commentID loop
+                  postFire.forEach(function(commentFire){
+                  if(commentFire.val().senderName !== undefined && commentFire.val().text !== undefined){
+                      var comment = {sender: commentFire.val().senderName, text: commentFire.val().text, timestamp: commentFire.val().timestamp};
+                      post.comments.push(comment);
+                    }
+                  })
+                  $scope.posts.push(post);
+                })
+              }
+            }
           }
       	})
       });
