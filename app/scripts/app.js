@@ -103,6 +103,23 @@ angular
           }
         }
       })
+      .state('home.profile.user', {
+        url: '/profile/:user',
+        views: {
+          'container@': {
+            templateUrl: '/views/profile.html',
+            controller: 'ProfileCtrl',
+            resolve: {
+            // controller will not be loaded until $requireAuth resolves
+              "currentAuth": ["$firebaseAuth", function ($firebaseAuth) {
+                var ref = new Firebase('https://shining-torch-23.firebaseio.com/');
+                var authObj = $firebaseAuth(ref);
+                return authObj.$requireAuth();
+              }]
+            }
+          }
+        }
+      })
       .state('home.friends', {
         url: '/friends',
         views: {
