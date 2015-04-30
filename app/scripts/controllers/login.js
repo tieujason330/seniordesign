@@ -83,7 +83,7 @@ angular.module('projectsApp')
           }
         });
       }
-    }
+    };
 
     $scope.login = function(user, form, ev) {
         if(!form.$valid) {
@@ -106,45 +106,49 @@ angular.module('projectsApp')
       ref.authWithOAuthPopup('facebook', function(error, authData) {
         if (error) {
           console.log('Login Failed!', error);
-        } else {
+        } 
+        else {
           console.log("Authenticated successfully with payload:", authData);
           userService.setCurrentUser(authData);
           ref.child('profileInfo').child(authData.uid).once('value', function (snapshot){
 
             if(snapshot.val() === null){
-            // creating firebase endpoint
-            ref.child('profileInfo').child(authData.uid).set({
-                email: authData.facebook.cachedUserProfile.email,
-                firstName: authData.facebook.cachedUserProfile.first_name,
-                lastName: authData.facebook.cachedUserProfile.last_name,
-                picture: authData.facebook.cachedUserProfile.picture.data.url
-            });
-            ref.child('privacySettings').child(authData.uid).set({
-                provisionSettings: 0,
-                messagePrivacy: 'everyone',
-                postPrivacy: 'everyone',
-            });
-            ref.child('friends').child(authData.uid).set({
-                friendTotal: 0
-            });
-            ref.child('pending').child(authData.uid).set({
-                pendingTotal: 0
-            });
-            goToDashboard(authData);
-          } else{
-            goToDashboard(authData);
-          }
+              // creating firebase endpoint
+              ref.child('profileInfo').child(authData.uid).set({
+                  email: authData.facebook.cachedUserProfile.email,
+                  firstName: authData.facebook.cachedUserProfile.first_name,
+                  lastName: authData.facebook.cachedUserProfile.last_name,
+                  picture: authData.facebook.cachedUserProfile.picture.data.url
+              });
+              ref.child('privacySettings').child(authData.uid).set({
+                  provisionSettings: 0,
+                  messagePrivacy: 'everyone',
+                  postPrivacy: 'everyone'
+              });
+              ref.child('friends').child(authData.uid).set({
+                  friendTotal: 0
+              });
+              ref.child('pending').child(authData.uid).set({
+                  pendingTotal: 0
+              });
+              goToDashboard(authData);
+            }
+            else{
+              goToDashboard(authData);
+            }
+          });
         }
-      }, {
+    }, {
           scope: "user_likes, email, user_birthday, public_profile, user_education_history, user_about_me" // permission requests
-        });
-    };
+    });
+  };
 
     $scope.registerGoogle = function() {
       ref.authWithOAuthPopup('google', function(error, authData) {
         if (error) {
           console.log('Login Failed!', error);
-        } else {
+        } 
+        else {
           console.log('Authenticated successfully with payload:', authData);
           
           ref.child('profileInfo').child(authData.uid).once('value', function (snapshot){
@@ -177,7 +181,7 @@ angular.module('projectsApp')
               goToDashboard(authData);
             }
           });
-        }
+      }
       },{
         scope: "email, profile" // permission requests
       });
@@ -188,41 +192,42 @@ angular.module('projectsApp')
       ref.authWithOAuthPopup("twitter", function(error, authData) {
         if (error) {
           console.log("Login Failed!", error);
-        } else {
+        } 
+        else {
           console.log("Authenticated successfully with payload:", authData);
           ref.child('profileInfo').child(authData.uid).once('value', function (snapshot){
-
             if(snapshot.val() === null){
-              var name = authData.twitter.cachedUserProfile.name; name = name.split(" ");
-              var firstName = name[0];
-              var lastName = name[name.length-1];
-              var aboutMe = authData.twitter.cachedUserProfile.description;
-              var twitterEmail = authData.twitter.cachedUserProfile.screen_name + "@ucrpal.com";
-              var profileImage = authData.twitter.cachedUserProfile.profile_image_url;
+                  var name = authData.twitter.cachedUserProfile.name; name = name.split(" ");
+                  var firstName = name[0];
+                  var lastName = name[name.length-1];
+                  var aboutMe = authData.twitter.cachedUserProfile.description;
+                  var twitterEmail = authData.twitter.cachedUserProfile.screen_name + "@ucrpal.com";
+                  var profileImage = authData.twitter.cachedUserProfile.profile_image_url;
 
-              ref.child('profileInfo').child(authData.uid).set({
-                  email:  twitterEmail,
-                  firstName: firstName,
-                  lastName: lastName,
-                  picture: profileImage
-              });
-              ref.child('privacySettings').child(authData.uid).set({
-                  provisionSettings: 0,
-                  messagePrivacy: 'everyone',
-                  postPrivacy: 'everyone',
-              });
-              ref.child('friends').child(authData.uid).set({
-                  friendTotal: 0
-              });
-              ref.child('pending').child(authData.uid).set({
-                  pendingTotal: 0
-              });
-              goToDashboard(authData);
-            } else{
-              goToDashboard(authData);
+                  ref.child('profileInfo').child(authData.uid).set({
+                      email:  twitterEmail,
+                      firstName: firstName,
+                      lastName: lastName,
+                      picture: profileImage
+                  });
+                  ref.child('privacySettings').child(authData.uid).set({
+                      provisionSettings: 0,
+                      messagePrivacy: 'everyone',
+                      postPrivacy: 'everyone'
+                  });
+                  ref.child('friends').child(authData.uid).set({
+                      friendTotal: 0
+                  });
+                  ref.child('pending').child(authData.uid).set({
+                      pendingTotal: 0
+                  });
+                  goToDashboard(authData);
+            } 
+            else{
+                  goToDashboard(authData);
             }
-
+          });
         }
-      });
-    };
-  });
+    });
+  };
+});
