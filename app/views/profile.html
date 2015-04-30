@@ -268,10 +268,11 @@
                                   <div class="tab-content">
                                       <div id="information" class="tab-pane active">
                                         <div class="input-group">
-                                          <input id="btn-input" type="text" class="form-control input-sm" placeholder="Type your message here..." />
+                                          <input id="btn-input" type="text" class="form-control input-sm" placeholder="Type your message here..." ng-model="postText"/>
                                           <span class="input-group-btn">
-                                          <button class="btn btn-warning btn-sm" id="btn-chat">
-                                          Send</button>
+                                          <button class="btn btn-warning btn-sm" id="btn-chat" ng-click="sendPost(postText)">
+                                            Send
+                                          </button>
                                           </span>
                                         </div>
                                       </div>
@@ -289,7 +290,7 @@
                         <div class="panel panel-default chat-widget">
                             <div class="panel-heading">
                                 <h3 class="panel-title">{{post.sender}}</h3>
-                                <small>April 2 at 1:36pm</small>
+                                <small>{{post.timestamp}}</small>
                             </div>
                             <div class="panel-body">
                                 <div class="row wrapper post-details">
@@ -313,7 +314,7 @@
                                               <a href=""><span class="posted-by">{{comment.sender}}</span></a>:
                                               {{comment.text}}
                                               <br />
-                                              <small>April 2 at 1:36pm</small>
+                                              <small>{{comment.timestamp}}</small>
                                             </p>
                                         </div>
                                     </div>
@@ -322,9 +323,9 @@
                             <div class="panel-footer">
                                 <form>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Say something">
+                                        <input type="text" class="form-control" placeholder="Write a comment..." ng-model="commentText">
                                         <span class="input-group-btn">
-                                          <button class="btn btn-primary" type="button">SEND</button>
+                                          <button class="btn btn-primary" type="button" ng-click="sendComment(commentText, post.postID)">SEND</button>
                                          </span>
                                     </div>
                                 </form>

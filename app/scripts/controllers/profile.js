@@ -2,23 +2,32 @@ angular.module('projectsApp')
   .controller('ProfileCtrl', 
     function ($scope, firebaseService, userService, $firebaseAuth) {
     var ref = new Firebase(firebaseService.getFirebBaseURL());
+    var auth = $firebaseAuth(ref);
 
-    $scope.userCurrent = userService.getCurrentUser();
+    $scope.authData = auth.$getAuth();
+    $scope.userCurrentID = $scope.authData.uid;
+    $scope.userCurrentFirstName;  
+    $scope.userCurrentLastName;  
+
+
+    $scope.postText;
+
+
+
     $scope.posts = [];
-    $scope.loadPosts = function(){
+    $scope.loadPosts = function(){  
       ref.child('posts').once('value', function (snapshot) {
         console.log('...fetching posts...');
       	// profileID loop
       	snapshot.forEach(function(profileFire) {
-      		if(profileFire.key() === "facebook:1583361245263366"){
-            console.log("ProfileID: " + profileFire.key());
+          if(profileFire.key() === $scope.userCurrentID){
             // postID loop
-            profileFire.forEach(function(postFire){              
-              var post = {sender: postFire.val().senderName, text: postFire.val().text, comments: []};
+            profileFire.forEach(function(postFire){     
+              var post = {sender: postFire.val().senderName, senderID: postFire.val().senderID, text: postFire.val().text, postID: postFire.key(), timestamp: postFire.val().timestamp, comments: []};
               // commentID loop
               postFire.forEach(function(commentFire){
-                if(commentFire.val().senderName !== undefined && commentFire.val().text !== undefined){
-                  var comment = {sender: commentFire.val().senderName, text: commentFire.val().text};
+              if(commentFire.val().senderName !== undefined && commentFire.val().text !== undefined){
+                  var comment = {sender: commentFire.val().senderName, text: commentFire.val().text, timestamp: commentFire.val().timestamp};
                   post.comments.push(comment);
                 }
               })
@@ -30,7 +39,83 @@ angular.module('projectsApp')
           }
       	})
       });
+      // store profile information
+      ref.child('profileInfo').once('value', function (snapshot){
+        snapshot.forEach(function(profileInfoFire){
+          if(profileInfoFire.key() === $scope.userCurrentID){
+            $scope.userCurrentFirstName = profileInfoFire.val().firstName;
+            $scope.userCurrentLastName = profileInfoFire.val().lastName;
+          }
+        })
+      });
+
     };
+
+//    $scope.sendPost = function(postText, profileID){
+    $scope.sendPost = function(postText){
+      console.log("PostText: " + postText);
+      ref.child('posts').once('value', function (snapshot) {
+        var pathFire = ref.child(snapshot.key());
+        // profileID loop
+        snapshot.forEach(function(profileFire){
+          if(profileFire.key() === $scope.userCurrentID){ // profileID GOES HERE!!
+            pathFire = pathFire.child(profileFire.key());
+            var d = new Date();
+            var time = [d.getMonth()+1,
+                       d.getDate(),
+                       d.getFullYear()].join('/')+' '+
+                      [d.getHours(),
+                       d.getMinutes(),
+                       d.getSeconds()].join(':'); 
+            // push a post
+            var fullName = $scope.userCurrentFirstName + " " + $scope.userCurrentLastName
+            console.log('Pushing a new post to Firebase...');
+            pathFire.push({ 'senderID': $scope.userCurrentID, /* CHANGE */
+                            'senderName': fullName,
+                            'text': postText,
+                            'timestamp': time});
+          }
+        })
+      });
+    };
+
+    // postID
+    $scope.sendComment = function(commentText, postID){
+      console.log('SendComment Called!');
+      console.log("THE POSTID: " + postID);
+      ref.child('posts').once('value', function (snapshot) {
+        var pathFire = ref.child(snapshot.key());
+        // profileID loop
+        snapshot.forEach(function(profileFire){
+          if(profileFire.key() === $scope.userCurrentID){
+            pathFire = pathFire.child(profileFire.key());
+            // postID loop
+            profileFire.forEach(function(postFire){
+              if(postFire.key() === postID){
+                pathFire = pathFire.child(postFire.key());
+                console.log("Pushing a new comment to firebase...");
+                var d = new Date();
+                var time = [d.getMonth()+1,
+                           d.getDate(),
+                           d.getFullYear()].join('/')+' '+
+                          [d.getHours(),
+                           d.getMinutes(),
+                           d.getSeconds()].join(':'); 
+                // push a comment
+                var fullName = $scope.userCurrentFirstName + " " + $scope.userCurrentLastName
+                pathFire.push({ 'senderID': $scope.userCurrentID, 
+                                'senderName': fullName,
+                                'text': commentText,
+                                'timestamp': time});
+              }  
+            })
+          }
+        })
+      });
+    };
+
+
+
 
 
 });
