@@ -104,11 +104,11 @@ angular
         }
       })
       .state('home.profile.user', {
-        url: '/profile/:user',
+        url: '/:user',
         views: {
           'container@': {
-            templateUrl: '/views/profile.html',
-            controller: 'ProfileCtrl',
+            templateUrl: '/views/friendProfile.html',
+            controller: 'FriendProfileCtrl',
             resolve: {
             // controller will not be loaded until $requireAuth resolves
               "currentAuth": ["$firebaseAuth", function ($firebaseAuth) {
