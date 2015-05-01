@@ -42,10 +42,22 @@ angular.module('projectsApp')
   list.$loaded(
   function(x) {
     x === list; // true
-    console.log(x);
+    //console.log(x);
     x.forEach(function(entry) {
-     getUserProfileInfo(entry.uid);
-     console.log(entry.uid);
+      getUserProfileInfo(entry.uid);
+    });
+    }, function(error) {
+    console.error("Error:", error);
+  });
+
+  var friendRequestRef = new Firebase("https://shining-torch-23.firebaseio.com/pending/"+ authData.uid);
+  var pendingFriendList = $firebaseArray(friendRequestRef.child('senderList'));
+  var pendingFriendProfile = [];
+  pendingFriendList.$loaded(
+  function(x) {
+    x === list; // true
+    x.forEach(function(entry) {
+      getPendingUserProfileInfo(entry.$id);
     });
     }, function(error) {
     console.error("Error:", error);
@@ -55,9 +67,11 @@ angular.module('projectsApp')
     var userID = useruid;
     console.log('adding ' + userID + ' as friend');
 
-    $scope.messages.$add({
-      uid: userID
-    });
+    /*
+     *$scope.messages.$add({
+     *  uid: userID
+     *});
+     */
 
     // add to pending list of requested friend only if the sender's uid isn't there
     var pendingRef = new Firebase("https://shining-torch-23.firebaseio.com/pending/"+ userID);
@@ -77,20 +91,22 @@ angular.module('projectsApp')
         //var name = getUserFullName(senderID);
         //console.log(name);
 
+        // TODO check if sender and receiver are friends
         // update pendingTotal
         if (senderList[senderID] == undefined) {
           pendingRef.child('pendingTotal').transaction(function(current_value) {
             return (current_value || 0) + 1;
           }); 
+
+          // add to senderList
+          senderList[senderID] = 'User\'s full name';
+
+          // update Firebase endpoint      
+          pendingRef.update({
+            senderList: senderList
+          });
         }
 
-        // add to senderList
-        senderList[senderID] = 'User\'s full name';
-
-        // update Firebase endpoint      
-        pendingRef.update({
-          senderList: senderList
-        });
 
       })
       .catch(function(error) {
@@ -99,7 +115,18 @@ angular.module('projectsApp')
   };
   $scope.data;
 
-  $scope.confirmFriend = function(useruid) {
+  $scope.removeFriend = function(useruid) {
+    var senderID = authData.uid;
+    console.log('confirming ' + deletedID + ' as friend');
+    
+  };
+
+  /**
+   * Confirms or rejects the friend request and removes the senderID from the receiverID's senderList 
+   * @param {string} useruid The user's uid that is pending confirmation.
+   * @param {number} confirmValue Confirmation is 1 and rejection is 0. 
+   */
+  $scope.confirmFriendRequest = function(useruid, confirmValue) {
     var senderID = useruid;
     console.log('confirming ' + senderID + ' as friend');
 
@@ -128,17 +155,32 @@ angular.module('projectsApp')
         pendingRef.update({
           senderList: senderList
         });
+      
+        if (confirmValue == '1') {
+          // add sender to receiever's friends list and vice versa
+          addToFriendList(receiverID, senderID);
+          addToFriendList(senderID, receiverID);
+        }
 
       })
       .catch(function(error) {
         console.error("Error:", error);
       });
-
-    // add sender to receiever's friends list and vice versa
-    addToFriendList(receiverID, senderID);
-    addToFriendList(senderID, receiverID);
   };
-    
+
+  /**
+   * Removes receiverID from senderID Friend List 
+   * @param {string} receiverID The uid of the removed friend.
+   * @param {string} senderID The uid of the user performing the friend removal.
+   */
+  var removeFromFriendList = function(receiverID, senderID) {
+  };    
+
+  /**
+   * Adds receiverID to senderID Friend List 
+   * @param {string} receiverID The uid of the added friend.
+   * @param {string} senderID The uid of the user performing the friend adding.
+   */
   var addToFriendList = function(receiverID, senderID) {
     var ref = new Firebase("https://shining-torch-23.firebaseio.com/friends/" + receiverID);
     var obj = $firebaseObject(ref);
@@ -185,9 +227,25 @@ angular.module('projectsApp')
     );
   };
 
+  var getPendingUserProfileInfo = function(userid){
+    var userID = userid;
+    var ref = new Firebase("https://shining-torch-23.firebaseio.com/profileInfo/"+ userID);
+    var profileData = $firebaseObject(ref);
+    profileData.$loaded(
+      function(data) {
+        console.log(data.name); // true
+        pendingFriendProfile.push(data);
+      },
+      function(error) {
+        console.error("Error:", error);
+      }
+    );
+    $scope.friendRequests = pendingFriendProfile;
+  }
+
   var getUserProfileInfo = function(userid){
     var userID = userid;
-    console.log("entered");
+    //console.log("entered");
     var ref = new Firebase("https://shining-torch-23.firebaseio.com/profileInfo/"+ userID);
     var profileData = $firebaseObject(ref);
     profileData.$loaded(
@@ -199,9 +257,9 @@ angular.module('projectsApp')
         console.error("Error:", error);
       }
     );
-    console.log(profileData);
+    //console.log(profileData);
     $scope.friendProfiles = friendProfile;
-    console.log("end");
+    //console.log("end");
   }
 
   var profileRef = new Firebase("https://shining-torch-23.firebaseio.com/profileInfo/");
